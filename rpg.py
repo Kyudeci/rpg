@@ -35,7 +35,7 @@ class Player:
                 print("The enemy used a Physical Attack!")
                 print(attacker.name,"took",format(abs(dmg*2),".2f"),"damage!")
                 defender.battle_state()
-                sounds.tackle()
+                # sounds.tackle()
                 return dmg
     def combat_magic_offense(self,current):
         base_dmg=0
@@ -60,7 +60,7 @@ class Player:
                 print("The enemy used a Magic Attack!")
                 print(defender.name,"took",format(abs(dmg*2),".2f"),"damage!")
                 defender.battle_state()
-                sounds.magicAttack()
+                # sounds.magicAttack()
                 return dmg
 
     def defend(self,current):
@@ -102,12 +102,12 @@ class Player:
             attacker.hp=0
             print(attacker.name,"has",attacker.hp,"hit points!")
         else:
-            print(attacker.name,"has",attacker.hp,"hit points!")
+            print(attacker.name,"has",format(attacker.hp,".2f"),"hit points!")
         if defender.hp<=0:
             defender.hp=0
             print(defender.name, "has",defender.hp,"hit points!")
         else:
-            print(defender.name, "has",defender.hp,"hit points!")
+            print(defender.name, "has",format(defender.hp,".2f"),"hit points!")
 
     def speed_check(self,attacker,defender):
         if attacker.spd>defender.spd:
@@ -125,7 +125,7 @@ class Player:
                 attacker.battle_options()
 
     def comp(self):
-        # currently does not defend
+        # currently does not defend//all offense
         comp_options=random.randint(0,1)
         if comp_options==0:
             defender.combat_offense(defender)
@@ -175,19 +175,26 @@ def general():
 # attacker.battle_options(attacker,defender)
 def main():
     sounds.background_music()
-    while attacker.hp!=0 or defender.hp!=0:
+    while attacker.hp!=0.00 or defender.hp!=0.00:
         attacker.speed_check(attacker,defender)
         print("")
-        if attacker.hp<=0:
+        if attacker.hp<=0.00:
             attacker.hp=0
             print(defender.name,"is the winner")
             sounds.victory()
             break
-        elif defender.hp<=0:
+        elif defender.hp<=0.00:
             defender.hp=0
             print(attacker.name,"is the winner")
             sounds.victory()
             break
+    pygame.mixer.music.pause()
+    restart=int(input("Would you like to start a new battle?(1 for yes): "))
+    if restart==1:
+        attacker.hp=100
+        defender.hp=100
+        main()
+
 main()
 # attacker.combat_offense(attacker)
 
@@ -195,3 +202,4 @@ main()
 # Change attack/defense comparison to dice rolls where the sum is multplied by a fraction of the attackers atk/matk--Creator
 # In the event that we implement crits every point of luck will be 0.33%--Savon
 # https://codereview.stackexchange.com/questions/94116/turn-based-battle-simulator
+# Either create a new function or append main() that switches the players which will be saved in a list
