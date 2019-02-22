@@ -1,4 +1,7 @@
 import random
+import pygame
+import sounds
+pygame.mixer.init()
 class Player:
     def __init__(self,name,hp,atk,dfn,matk,mdef,spd):
         self.name=name
@@ -22,6 +25,7 @@ class Player:
                 print("You used a Physical Attack!")
                 print(defender.name,"took",format(abs(dmg*2),".2f"),"damage!")
                 attacker.battle_state()
+                sounds.punch()
                 return dmg
         else:
             if defender.atk:
@@ -31,6 +35,7 @@ class Player:
                 print("The enemy used a Physical Attack!")
                 print(attacker.name,"took",format(abs(dmg*2),".2f"),"damage!")
                 defender.battle_state()
+                sounds.tackle()
                 return dmg
     def combat_magic_offense(self,current):
         base_dmg=0
@@ -39,20 +44,24 @@ class Player:
             base_dmg+=roll
         if current==attacker:
             if attacker.matk:
-                dmg=(base_dmg+(attacker.matk*0.2))-(defender.mdef*0.9)
+                dmg=(base_dmg+(attacker.matk*0.2))-(defender.mdef*0.6)
                 defender.hp-=abs(dmg*2)
                 print("")
                 print("You used a Magic Attack!")
                 print(defender.name,"took",format(abs(dmg*2),".2f"),"damage!")
                 attacker.battle_state()
+                sounds.magicAttack()
+                return dmg
         else:
             if defender.matk:
-                dmg=(base_dmg+(defender.matk*0.2))-(attacker.mdef*0.9)
+                dmg=(base_dmg+(defender.matk*0.2))-(attacker.mdef*0.6)
                 attacker.hp-=abs(dmg*2)
                 print("")
                 print("The enemy used a Magic Attack!")
                 print(defender.name,"took",format(abs(dmg*2),".2f"),"damage!")
                 defender.battle_state()
+                sounds.magicAttack()
+                return dmg
 
     def defend(self,current):
         if current==defender:
@@ -89,8 +98,16 @@ class Player:
                 defender.battle_state()
 
     def battle_state(self):
-        print(attacker.name,"has",attacker.hp,"hit points!")
-        print(defender.name, "has",defender.hp,"hit points!")
+        if attacker.hp<=0:
+            attacker.hp=0
+            print(attacker.name,"has",attacker.hp,"hit points!")
+        else:
+            print(attacker.name,"has",attacker.hp,"hit points!")
+        if defender.hp<=0:
+            defender.hp=0
+            print(defender.name, "has",defender.hp,"hit points!")
+        else:
+            print(defender.name, "has",defender.hp,"hit points!")
 
     def speed_check(self,attacker,defender):
         if attacker.spd>defender.spd:
@@ -108,7 +125,8 @@ class Player:
                 attacker.battle_options()
 
     def comp(self):
-        comp_options=random.randint(0,2)
+        # currently does not defend
+        comp_options=random.randint(0,1)
         if comp_options==0:
             defender.combat_offense(defender)
         elif comp_options==1:
@@ -156,16 +174,19 @@ def general():
     # confirm=input("Do you wish to fight?")
 # attacker.battle_options(attacker,defender)
 def main():
+    sounds.background_music()
     while attacker.hp!=0 or defender.hp!=0:
         attacker.speed_check(attacker,defender)
         print("")
         if attacker.hp<=0:
             attacker.hp=0
             print(defender.name,"is the winner")
+            sounds.victory()
             break
         elif defender.hp<=0:
             defender.hp=0
             print(attacker.name,"is the winner")
+            sounds.victory()
             break
 main()
 # attacker.combat_offense(attacker)
@@ -173,3 +194,4 @@ main()
 # Flee function should to changed to dodge/evade, chance 505, set damage equal to zero --Savon
 # Change attack/defense comparison to dice rolls where the sum is multplied by a fraction of the attackers atk/matk--Creator
 # In the event that we implement crits every point of luck will be 0.33%--Savon
+# https://codereview.stackexchange.com/questions/94116/turn-based-battle-simulator
