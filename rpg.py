@@ -11,7 +11,7 @@ class Player:
         self.matk=matk
         self.mdef=mdef
         self.spd=spd
-        self.list=[]
+        self.playerList=[]
     def combat_offense(self,current):
         base_dmg=0
         for n in range(5):

@@ -1,0 +1,4 @@
+In order to run rpg.py, must have:
+
+Latest version of Python(3.7.2)-- https://www.python.org/downloads/
+Run 'py -m pip install -U pygame --user' in the command line in order to install Pygame on Windows.
