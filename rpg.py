@@ -1,6 +1,7 @@
 import random
 import pygame
 import sounds
+from math import floor, ceil
 pygame.mixer.init()
 class Player:
     def __init__(self,name,hp,atk,dfn,matk,mdef,spd):
@@ -23,7 +24,7 @@ class Player:
                 defender.hp-=abs(dmg*2)
                 print("")
                 print("You used a Physical Attack!")
-                print(defender.name,"took",format(abs(dmg*2),".2f"),"damage!")
+                print(defender.name,"took",ceil(abs(dmg*2)),"damage!")
                 attacker.battle_state()
                 sounds.punch()
                 return dmg
@@ -33,9 +34,9 @@ class Player:
                 attacker.hp-=abs(dmg*2)
                 print("")
                 print("The enemy used a Physical Attack!")
-                print(attacker.name,"took",format(abs(dmg*2),".2f"),"damage!")
+                print(attacker.name,"took",ceil(abs(dmg*2)),"damage!")
                 defender.battle_state()
-                # sounds.tackle()
+                sounds.tackle()
                 return dmg
     def combat_magic_offense(self,current):
         base_dmg=0
@@ -48,7 +49,7 @@ class Player:
                 defender.hp-=abs(dmg*2)
                 print("")
                 print("You used a Magic Attack!")
-                print(defender.name,"took",format(abs(dmg*2),".2f"),"damage!")
+                print(defender.name,"took",ceil(abs(dmg*2)),"damage!")
                 attacker.battle_state()
                 sounds.magicAttack()
                 return dmg
@@ -58,9 +59,9 @@ class Player:
                 attacker.hp-=abs(dmg*2)
                 print("")
                 print("The enemy used a Magic Attack!")
-                print(defender.name,"took",format(abs(dmg*2),".2f"),"damage!")
+                print(attacker.name,"took",ceil(abs(dmg*2)),"damage!")
                 defender.battle_state()
-                # sounds.magicAttack()
+                sounds.magicAttack()
                 return dmg
 
     def defend(self,current):
@@ -102,12 +103,12 @@ class Player:
             attacker.hp=0
             print(attacker.name,"has",attacker.hp,"hit points!")
         else:
-            print(attacker.name,"has",format(attacker.hp,".2f"),"hit points!")
+            print(attacker.name,"has",floor(attacker.hp),"hit points!")
         if defender.hp<=0:
             defender.hp=0
             print(defender.name, "has",defender.hp,"hit points!")
         else:
-            print(defender.name, "has",format(defender.hp,".2f"),"hit points!")
+            print(defender.name, "has",floor(defender.hp),"hit points!")
 
     def speed_check(self,attacker,defender):
         if attacker.spd>defender.spd:
@@ -115,6 +116,7 @@ class Player:
             attacker.battle_options()
             defender.comp()
         elif attacker.spd<defender.spd:
+            print("The enemy charges forth")
             defender.comp()
             attacker.battle_options()
         else:
@@ -150,16 +152,14 @@ class Player:
         elif battle==4:
             print("Hahahahaha There is no running!")
             attacker.battle_options()
-            defender.comp()
         else:
             print("Definitely not valid, what is you doing?")
             attacker.battle_options()
-            defender.comp()
 Player1=Player("Kyu",100,23,24,56,57,60)
 Player2=Player("Varis",100,45,54,34,24,60)
 Player3=Player("Y",100,23,25,54,34,90)
-attacker=Player3
-defender=Player2
+attacker=Player1
+defender=Player3
 # Figure out how to create a list of players and append each new created player
 def general():
     name=input("Give me a name peasant! =>")
@@ -174,22 +174,29 @@ def general():
     # confirm=input("Do you wish to fight?")
 # attacker.battle_options(attacker,defender)
 def main():
-    sounds.background_music()
-    while attacker.hp!=0.00 or defender.hp!=0.00:
+    print("Skipping character creation...")
+    sounds.background_music(1)
+    pygame.time.wait(2000)
+    print("")
+    print("Deciding who is moving first...")
+    pygame.time.wait(4000)
+    print("")
+    while attacker.hp!=0 or defender.hp!=0:
         attacker.speed_check(attacker,defender)
         print("")
-        if attacker.hp<=0.00:
+        if attacker.hp<=0:
             attacker.hp=0
             print(defender.name,"is the winner")
             sounds.victory()
             break
-        elif defender.hp<=0.00:
+        elif defender.hp<=0:
             defender.hp=0
             print(attacker.name,"is the winner")
             sounds.victory()
             break
     pygame.mixer.music.pause()
     restart=int(input("Would you like to start a new battle?(1 for yes): "))
+    pygame.mixer.stop()
     if restart==1:
         attacker.hp=100
         defender.hp=100
@@ -198,8 +205,9 @@ def main():
 main()
 # attacker.combat_offense(attacker)
 
-# Flee function should to changed to dodge/evade, chance 505, set damage equal to zero --Savon
+# Flee function should to changed to dodge/evade, chance 50%, set damage equal to zero --Savon
 # Change attack/defense comparison to dice rolls where the sum is multplied by a fraction of the attackers atk/matk--Creator
 # In the event that we implement crits every point of luck will be 0.33%--Savon
 # https://codereview.stackexchange.com/questions/94116/turn-based-battle-simulator
 # Either create a new function or append main() that switches the players which will be saved in a list
+# Nice to have: dynamic music shift at low health
