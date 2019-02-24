@@ -26,3 +26,6 @@ def magicAttack():
 def victory():
     victory_sound=pygame.mixer.Sound("audio/victory.ogg")
     pygame.mixer.Sound.play(victory_sound,-1)
+def defeat():
+    defeat_sound=pygame.mixer.Sound("audio/gameOver.ogg")
+    pygame.mixer.Sound.play(defeat_sound,-1)

@@ -12,7 +12,6 @@ class Player:
         self.matk=matk
         self.mdef=mdef
         self.spd=spd
-        self.playerList=[]
     def combat_offense(self,current):
         base_dmg=0
         for n in range(5):
@@ -122,8 +121,12 @@ class Player:
         else:
             choose=random.randint(1,2)
             if choose=="1":
+                print("The enemy makes thier move!")
                 defender.comp()
             else:
+                print("")
+                print("Your fate had been decided in a coin flip.\nYou may make the first move!")
+                print("")
                 attacker.battle_options()
 
     def comp(self):
@@ -155,13 +158,23 @@ class Player:
         else:
             print("Definitely not valid, what is you doing?")
             attacker.battle_options()
+    def give_stats(num):
+        print("Name:",playerList[num].name)
+        print("HP:",playerList[num].hp)
+        print("Attack:",playerList[num].atk)
+        print("Defense:",playerList[num].dfn)
+        print("Magic Attack:",playerList[num].matk)
+        print("Magic Defence:",playerList[num].mdef)
+        print("Speed:",playerList[num].spd)
+# End of class #
+playerList=["Null"]
 Player1=Player("Kyu",100,23,24,56,57,60)
 Player2=Player("Varis",100,45,54,34,24,60)
 Player3=Player("Y",100,23,25,54,34,90)
 attacker=Player1
-defender=Player3
-# Figure out how to create a list of players and append each new created player
-def general():
+defender=Player2
+def create_player():
+    global attacker
     name=input("Give me a name peasant! =>")
     atk=random.randint(20,100)
     dfn=random.randint(20,100)
@@ -169,13 +182,43 @@ def general():
     mdef=random.randint(20,100)
     spd=random.randint(20,100)
     new_player=Player(name,100,atk,dfn,matk,mdef,spd)
-    return new_player
+    playerList.append(new_player)
+    attacker=playerList[1]
+def random_player():
+    names=["NorthStar","Ventus","Xero","Anna","Malla"]
+    for i in range(len(names)):
+        atk=random.randint(20,100)
+        dfn=random.randint(20,100)
+        matk=random.randint(20,100)
+        mdef=random.randint(20,100)
+        spd=random.randint(20,100)
+        new_player=Player(names[i],100,atk,dfn,matk,mdef,spd)
+        playerList.append(new_player)
+def enemy_assign_manual():
+    global defender
+    for x in range(2,len(playerList)):
+        print(x-1,".",playerList[x].name,sep="")
+    enemy=int(input("Choose an opponent by selecting a number: "))
+    defender=playerList[enemy+1]
+    print("You have chosen",defender.name)
     # print(new_player.name)
     # confirm=input("Do you wish to fight?")
-# attacker.battle_options(attacker,defender)
+def enemy_assign_random():
+    global defender
+    enemy=random.randint(2,len(playerList))
+    defender=playerList[enemy]
+repeat=0
 def main():
-    print("Skipping character creation...")
-    sounds.background_music(1)
+    global repeat
+    if repeat==0:
+        sounds.background_music(1)
+        create_player()
+        Player.give_stats(1)
+        random_player()
+    else:
+        sounds.background_music(1)
+    pygame.time.wait(2000)
+    enemy_assign_random()
     pygame.time.wait(2000)
     print("")
     print("Deciding who is moving first...")
@@ -187,7 +230,7 @@ def main():
         if attacker.hp<=0:
             attacker.hp=0
             print(defender.name,"is the winner")
-            sounds.victory()
+            sounds.defeat()
             break
         elif defender.hp<=0:
             defender.hp=0
@@ -197,17 +240,19 @@ def main():
     pygame.mixer.music.pause()
     restart=int(input("Would you like to start a new battle?(1 for yes): "))
     pygame.mixer.stop()
+    repeat+=1
     if restart==1:
         attacker.hp=100
         defender.hp=100
+        pygame.time.wait(4000)
         main()
-
+### Testing Below ###
 main()
+# create_player()
+# random_player()
+# enemy_assign_random()
+# print(defender.name)
+# for x in range(0,len(playerList)):
+#     Player.give_stats(x)
+#     print("")
 # attacker.combat_offense(attacker)
-
-# Flee function should to changed to dodge/evade, chance 50%, set damage equal to zero --Savon
-# Change attack/defense comparison to dice rolls where the sum is multplied by a fraction of the attackers atk/matk--Creator
-# In the event that we implement crits every point of luck will be 0.33%--Savon
-# https://codereview.stackexchange.com/questions/94116/turn-based-battle-simulator
-# Either create a new function or append main() that switches the players which will be saved in a list
-# Nice to have: dynamic music shift at low health

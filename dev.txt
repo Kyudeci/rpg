@@ -1,0 +1,16 @@
+Tasks
+# Flee function should to changed to dodge/evade, chance 50%, set damage equal to zero --Savon
+# Change attack/defense comparison to dice rolls where the sum is multplied by a fraction of the attackers atk/matk--Creator
+# In the event that we implement crits every point of luck will be 0.33%--Savon
+# Either create a new function or append main() that switches the players which will be saved in a list
+# Nice to have: dynamic music shift at low health
+# Compile a list of random names
+# Options: Free Play and Random
+$ When/if enemy attacks first and player health is zero
+
+Completed
+# Figure out how to create a list of players and append each new created player
+
+
+References
+# https://codereview.stackexchange.com/questions/94116/turn-based-battle-simulator
