@@ -7,7 +7,7 @@ Tasks
 # Compile a list of random names
 # Options: Free Play and Random
 $ Defend flaw
-
+$ Bug occurs when player chooses invalid option
 Completed
 # Figure out how to create a list of players and append each new created player
 $ When/if enemy attacks first and player health is zero

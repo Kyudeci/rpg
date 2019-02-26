@@ -217,7 +217,6 @@ def enemy_assign_manual():
         print("You have chosen",defender.name)
     # print(new_player.name)
     print(" ")
-<<<<<<< HEAD
     print("""Are you sure?
 1.Yes       2.No """)
     print(" ")
@@ -226,16 +225,6 @@ def enemy_assign_manual():
         enemy_assign_manual()
     else:
         return enemy
-=======
-    print("""Confirm Choice
-1.Yes       2.No """)
-    print(" ")
-    confirm=int(input("Do you wish to fight? "))
-    if confirm==1:
-        pass
-    else:
-        enemy_assign_manual()
->>>>>>> 47050e715d534dae4c6cc6966d061fe9ddf0a29c
 def enemy_assign_random():
     global defender
     enemy=random.randint(2,len(playerList))
@@ -253,8 +242,15 @@ def main():
     else:
         sounds.background_music(1)
     pygame.time.wait(2000)
-
-    val=enemy_assign_manual()
+    print("")
+    print("""Pick Game Mode:
+1.Free Play       2.Random """)
+    print("")
+    game_mode=int(input("Choose one: "))
+    if game_mode==1:
+        enemy_assign_manual()
+    else:
+        enemy_assign_random()
     pygame.time.wait(2000)
     print("")
     print("Deciding who is moving first...")
