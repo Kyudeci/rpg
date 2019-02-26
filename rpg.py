@@ -217,6 +217,7 @@ def enemy_assign_manual():
         print("You have chosen",defender.name)
     # print(new_player.name)
     print(" ")
+<<<<<<< HEAD
     print("""Are you sure?
 1.Yes       2.No """)
     print(" ")
@@ -225,6 +226,16 @@ def enemy_assign_manual():
         enemy_assign_manual()
     else:
         return enemy
+=======
+    print("""Confirm Choice
+1.Yes       2.No """)
+    print(" ")
+    confirm=int(input("Do you wish to fight? "))
+    if confirm==1:
+        pass
+    else:
+        enemy_assign_manual()
+>>>>>>> 47050e715d534dae4c6cc6966d061fe9ddf0a29c
 def enemy_assign_random():
     global defender
     enemy=random.randint(2,len(playerList))
