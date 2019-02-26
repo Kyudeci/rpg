@@ -109,10 +109,10 @@ class Player:
         else:
             print(defender.name, "has",floor(defender.hp),"hit points!")
 
-    def speed_check(self,attacker,defender):
+    def speed_check(self,attacker,defender,enemy):
         if attacker.spd>defender.spd:
             print("You may attack first!")
-            attacker.battle_options()
+            attacker.battle_options(enemy)
             defender.comp()
         elif attacker.spd<defender.spd:
             print("The enemy charges forth")
@@ -120,7 +120,7 @@ class Player:
             while attacker.hp<=0:
                 break
             else:
-                attacker.battle_options()
+                attacker.battle_options(enemy)
         else:
             choose=random.randint(1,2)
             if choose=="1":
@@ -129,12 +129,12 @@ class Player:
                 while attacker.hp<=0:
                     break
                 else:
-                    attacker.battle_options()
+                    attacker.battle_options(enemy)
             else:
                 print("")
                 print("Your fate had been decided in a coin flip.\nYou may make the first move!")
                 print("")
-                attacker.battle_options()
+                attacker.battle_options(enemy)
                 defender.comp()
 
     def comp(self):
@@ -147,11 +147,11 @@ class Player:
         elif comp_options==2:
             defender.defend(defender)
 
-    def battle_options(self):
+    def battle_options(self,enemy):
         # battle=["Physical Attack", "Magic Attack","Defend","Flee"]
         print(""" --------------------------------------
 | 1.Physical Attack    2.Magic Attack  |
-| 3.Defend             4.Flee          |
+| 3.Defend             4.Inspect       |
  --------------------------------------""")
         battle=int(input())
         if battle==1:
@@ -161,19 +161,11 @@ class Player:
         elif battle==3:
             attacker.defend(attacker)
         elif battle==4:
-            print("Hahahahaha There is no running!")
-            attacker.battle_options()
+            give_stats(enemy)
+            attacker.battle_options(enemy)
         else:
             print("Definitely not valid, what are you doing?")
-            attacker.battle_options()
-    def give_stats(num):
-        print("Name:",playerList[num].name)
-        print("HP:",playerList[num].hp)
-        print("Attack:",playerList[num].atk)
-        print("Defense:",playerList[num].dfn)
-        print("Magic Attack:",playerList[num].matk)
-        print("Magic Defence:",playerList[num].mdef)
-        print("Speed:",playerList[num].spd)
+            attacker.battle_options(enemy)
 # End of class #
 playerList=["Null"]
 Player1=Player("Kyu",100,23,24,56,57,60)
@@ -181,6 +173,14 @@ Player2=Player("Varis",100,45,54,34,24,60)
 Player3=Player("Y",100,23,25,54,34,90)
 attacker=Player1
 defender=Player2
+def give_stats(num):
+    print("Name:",playerList[num].name)
+    print("HP:",playerList[num].hp)
+    print("Attack:",playerList[num].atk)
+    print("Defense:",playerList[num].dfn)
+    print("Magic Attack:",playerList[num].matk)
+    print("Magic Defence:",playerList[num].mdef)
+    print("Speed:",playerList[num].spd)
 def create_player():
     global attacker
     name=input("Give me a name peasant! =>")
@@ -224,11 +224,12 @@ def enemy_assign_manual():
     if confirm==2:
         enemy_assign_manual()
     else:
-        return enemy
+        return enemy+1
 def enemy_assign_random():
     global defender
     enemy=random.randint(2,len(playerList))
     defender=playerList[enemy]
+    return enemy+1
 repeat=0
 low_health=0
 def main():
@@ -237,7 +238,7 @@ def main():
     if repeat==0:
         sounds.background_music(1)
         create_player()
-        Player.give_stats(1)
+        give_stats(1)
         random_player()
     else:
         sounds.background_music(1)
@@ -248,16 +249,16 @@ def main():
     print("")
     game_mode=int(input("Choose one: "))
     if game_mode==1:
-        enemy_assign_manual()
+        enemy=enemy_assign_manual()
     else:
-        enemy_assign_random()
+        enemy=enemy_assign_random()
     pygame.time.wait(2000)
     print("")
     print("Deciding who is moving first...")
     pygame.time.wait(3000)
     print("")
     while attacker.hp!=0 or defender.hp!=0:
-        attacker.speed_check(attacker,defender)
+        attacker.speed_check(attacker,defender,enemy)
         print("")
         if low_health==0:
             if attacker.hp<50:
