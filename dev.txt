@@ -6,11 +6,11 @@ Tasks
 # Nice to have: dynamic music shift at low health
 # Compile a list of random names
 # Options: Free Play and Random
-$ When/if enemy attacks first and player health is zero
+$ Defend flaw
 
 Completed
 # Figure out how to create a list of players and append each new created player
-
+$ When/if enemy attacks first and player health is zero
 
 References
 # https://codereview.stackexchange.com/questions/94116/turn-based-battle-simulator

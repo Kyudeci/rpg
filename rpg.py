@@ -1,7 +1,7 @@
 import random
 import pygame
 import sounds
-from math import floor, ceil
+from math import floor
 pygame.mixer.init()
 class Player:
     def __init__(self,name,hp,atk,dfn,matk,mdef,spd):
@@ -23,7 +23,7 @@ class Player:
                 defender.hp-=abs(dmg*2)
                 print("")
                 print("You used a Physical Attack!")
-                print(defender.name,"took",ceil(abs(dmg*2)),"damage!")
+                print(defender.name,"took",floor(abs(dmg*2)),"damage!")
                 attacker.battle_state()
                 sounds.punch()
                 return dmg
@@ -33,7 +33,7 @@ class Player:
                 attacker.hp-=abs(dmg*2)
                 print("")
                 print("The enemy used a Physical Attack!")
-                print(attacker.name,"took",ceil(abs(dmg*2)),"damage!")
+                print(attacker.name,"took",floor(abs(dmg*2)),"damage!")
                 defender.battle_state()
                 sounds.tackle()
                 return dmg
@@ -48,7 +48,7 @@ class Player:
                 defender.hp-=abs(dmg*2)
                 print("")
                 print("You used a Magic Attack!")
-                print(defender.name,"took",ceil(abs(dmg*2)),"damage!")
+                print(defender.name,"took",floor(abs(dmg*2)),"damage!")
                 attacker.battle_state()
                 sounds.magicAttack()
                 return dmg
@@ -58,7 +58,7 @@ class Player:
                 attacker.hp-=abs(dmg*2)
                 print("")
                 print("The enemy used a Magic Attack!")
-                print(attacker.name,"took",ceil(abs(dmg*2)),"damage!")
+                print(attacker.name,"took",floor(abs(dmg*2)),"damage!")
                 defender.battle_state()
                 sounds.magicAttack()
                 return dmg
@@ -117,17 +117,25 @@ class Player:
         elif attacker.spd<defender.spd:
             print("The enemy charges forth")
             defender.comp()
-            attacker.battle_options()
+            while attacker.hp<=0:
+                break
+            else:
+                attacker.battle_options()
         else:
             choose=random.randint(1,2)
             if choose=="1":
                 print("The enemy makes thier move!")
                 defender.comp()
+                while attacker.hp<=0:
+                    break
+                else:
+                    attacker.battle_options()
             else:
                 print("")
                 print("Your fate had been decided in a coin flip.\nYou may make the first move!")
                 print("")
                 attacker.battle_options()
+                defender.comp()
 
     def comp(self):
         # currently does not defend//all offense
@@ -156,7 +164,7 @@ class Player:
             print("Hahahahaha There is no running!")
             attacker.battle_options()
         else:
-            print("Definitely not valid, what is you doing?")
+            print("Definitely not valid, what are you doing?")
             attacker.battle_options()
     def give_stats(num):
         print("Name:",playerList[num].name)
@@ -185,7 +193,7 @@ def create_player():
     playerList.append(new_player)
     attacker=playerList[1]
 def random_player():
-    names=["NorthStar","Ventus","Xero","Anna","Malla"]
+    names=["NorthStar","Ventus","Xero","Anna","Malla","Korrin"]
     for i in range(len(names)):
         atk=random.randint(20,100)
         dfn=random.randint(20,100)
@@ -196,20 +204,36 @@ def random_player():
         playerList.append(new_player)
 def enemy_assign_manual():
     global defender
+    print("")
     for x in range(2,len(playerList)):
         print(x-1,".",playerList[x].name,sep="")
+    print("")
     enemy=int(input("Choose an opponent by selecting a number: "))
-    defender=playerList[enemy+1]
-    print("You have chosen",defender.name)
+    if enemy+1>=len(playerList):
+        enemy_assign_manual()
+    else:
+        defender=playerList[enemy+1]
+        print("")
+        print("You have chosen",defender.name)
     # print(new_player.name)
-    # confirm=input("Do you wish to fight?")
+    print(" ")
+    print("""Are you sure?
+1.Yes       2.No """)
+    print(" ")
+    confirm=int(input("Do you wish to fight? "))
+    if confirm==2:
+        enemy_assign_manual()
+    else:
+        return enemy
 def enemy_assign_random():
     global defender
     enemy=random.randint(2,len(playerList))
     defender=playerList[enemy]
 repeat=0
+low_health=0
 def main():
     global repeat
+    global low_health
     if repeat==0:
         sounds.background_music(1)
         create_player()
@@ -218,21 +242,27 @@ def main():
     else:
         sounds.background_music(1)
     pygame.time.wait(2000)
-    enemy_assign_random()
+
+    val=enemy_assign_manual()
     pygame.time.wait(2000)
     print("")
     print("Deciding who is moving first...")
-    pygame.time.wait(4000)
+    pygame.time.wait(3000)
     print("")
     while attacker.hp!=0 or defender.hp!=0:
         attacker.speed_check(attacker,defender)
         print("")
-        if attacker.hp<=0:
+        if low_health==0:
+            if attacker.hp<50:
+                pygame.mixer.stop()
+                sounds.background_music(2)
+                low_health+=1
+        if floor(attacker.hp)<=0:
             attacker.hp=0
             print(defender.name,"is the winner")
             sounds.defeat()
             break
-        elif defender.hp<=0:
+        elif floor(defender.hp)<=0:
             defender.hp=0
             print(attacker.name,"is the winner")
             sounds.victory()
@@ -244,7 +274,7 @@ def main():
     if restart==1:
         attacker.hp=100
         defender.hp=100
-        pygame.time.wait(4000)
+        low_health=0
         main()
 ### Testing Below ###
 main()
