@@ -63,6 +63,7 @@ def enemy():
                     enemyList.append(enemies)
 
 def enemy_stats(num):
+    print("")
     print("Monster Type:",enemyList[num].m_type)
     print("Rank:",enemyList[num].rank)
     print("HP:",enemyList[num].hp)
@@ -71,7 +72,13 @@ def enemy_stats(num):
     print("Magic Attack:",enemyList[num].matk)
     print("Magic Defence:",enemyList[num].mdef)
     print("Speed:",enemyList[num].spd)
-
+def monster_assign_random():
+    global defender
+    enemy=random.randint(0,len(enemyList))
+    defender=enemyList[enemy]
+    return enemy
+def monster_type():
+    return defender.m_type
 # enemy()
 # for x in range(0,len(enemyList)):
 #     enemy_stats(x)
