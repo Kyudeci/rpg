@@ -19,21 +19,21 @@ class Player:
             base_dmg+=roll
         if current==attacker:
             if attacker.atk:
-                dmg=(base_dmg+(attacker.atk*0.2))-(defender.dfn*0.6)
-                defender.hp-=abs(dmg*2)
+                dmg=base_dmg+(attacker.atk/defender.dfn)
+                defender.hp-=abs(dmg)
                 print("")
                 print("You used a Physical Attack!")
-                print(defender.name,"took",floor(abs(dmg*2)),"damage!")
+                print(defender.name,"took",floor(abs(dmg)),"damage!")
                 attacker.battle_state()
                 sounds.punch()
                 return dmg
         else:
             if defender.atk:
-                dmg=(base_dmg+(defender.atk*0.2))-(attacker.dfn*0.6)
-                attacker.hp-=abs(dmg*2)
+                dmg=base_dmg+(defender.atk/attacker.dfn)
+                attacker.hp-=abs(dmg)
                 print("")
                 print("The enemy used a Physical Attack!")
-                print(attacker.name,"took",floor(abs(dmg*2)),"damage!")
+                print(attacker.name,"took",floor(abs(dmg)),"damage!")
                 defender.battle_state()
                 sounds.tackle()
                 return dmg
@@ -44,21 +44,21 @@ class Player:
             base_dmg+=roll
         if current==attacker:
             if attacker.matk:
-                dmg=(base_dmg+(attacker.matk*0.2))-(defender.mdef*0.6)
-                defender.hp-=abs(dmg*2)
+                dmg=base_dmg+(attacker.matk/defender.mdef)
+                defender.hp-=abs(dmg)
                 print("")
                 print("You used a Magic Attack!")
-                print(defender.name,"took",floor(abs(dmg*2)),"damage!")
+                print(defender.name,"took",floor(abs(dmg)),"damage!")
                 attacker.battle_state()
                 sounds.magicAttack()
                 return dmg
         else:
             if defender.matk:
-                dmg=(base_dmg+(defender.matk*0.2))-(attacker.mdef*0.6)
-                attacker.hp-=abs(dmg*2)
+                dmg=base_dmg+(defender.matk/attacker.mdef)
+                attacker.hp-=abs(dmg)
                 print("")
                 print("The enemy used a Magic Attack!")
-                print(attacker.name,"took",floor(abs(dmg*2)),"damage!")
+                print(attacker.name,"took",floor(abs(dmg)),"damage!")
                 defender.battle_state()
                 sounds.magicAttack()
                 return dmg
@@ -161,7 +161,7 @@ class Player:
         elif battle==3:
             attacker.defend(attacker)
         elif battle==4:
-            give_stats(enemy)
+            give_stats(enemy-1)
             attacker.battle_options(enemy)
         else:
             print("Definitely not valid, what are you doing?")
