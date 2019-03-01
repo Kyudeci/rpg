@@ -1,0 +1,32 @@
+~~~ Monster Index ~~~ Not in effect yet
+"Jack Squat"
+  - Occasionally does nothing...
+  * As rank increases, Jack Squat does nothing less
+  * Lower ranks defend more and rarely attack
+
+"Dragonne"-- 'Drag On' or 'Dra Gone'
+  - Prevents escape but also occasionally runs.
+  * As rank increases, damage scales with each turn
+  * Lower ranks have a chance to flee; doesn't have damage scaling
+
+"Virus"
+  - Switches player stat values; can also scale player stats down.
+  * As rank increases, stat shuffles affects more stat attributes; scale multiplier from
+    0.1 to 0.5 [STAT_DOWN=floor(STAT-(STAT*multiplier))]
+  * Lower ranks switch 2 stats (can vary which are swapped)
+
+"Cherry Slime"
+  - Must be slain twice; second time has reduced health
+  * As rank increases, the amount of health the second slime spawns with increases
+  * Lower ranks have reduced health along with slightly lower stats
+
+"Slime"
+  - It's a slime. Basic enemy, does basic things.
+
+"Gooblins"
+  - Not a single enemy but a small group of goblins. Basic enemy nonetheless.
+
+"Sphiren/Sfiren"
+  - From a sphere emerges a siren and her song. Buffs herself with her songs.
+  * As rank increases, the Siren does greater buffs; can buff multiple stats
+  * Lower ranks have weaker buffs; buffs 1-2 random stats 

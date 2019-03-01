@@ -1,4 +1,5 @@
 import random
+from math import ceil,floor
 class Monster:
     def __init__(self,monstertype,rank,hp,atk,dfn,matk,mdef,spd):
         self.m_type=monstertype
@@ -11,8 +12,8 @@ class Monster:
         self.spd=spd
 enemyList=[]
 def enemy():
-    monstertype=["Gooblin","Slime","Cherry Slime","Dragonn","Virus","Jack Squat"]
-    for x in range(2):
+    monstertype=["Gooblins","Slime","Cherry Slime","Dragonn","Virus","Jack Squat","Sphiren","Sfiren"]
+    for x in range(1):
         for i in range(len(monstertype)):
             if monstertype:
                 rank=random.randint(1,5)
@@ -79,7 +80,26 @@ def monster_assign_random():
     return enemy
 def monster_type():
     return defender.m_type
-# enemy()
+
+def sphere_mode():
+    if defender.m_type == "Sphiren":
+        print("\nSphiren is now in sphere mode!")
+        defender.atk=floor(defender.atk*0.5)
+        defender.matk=floor(defender.matk*0.5)
+        defender.dfn=floor(defender.dfn*1.5)
+        defender.mdef=floor(defender.mdef*1.5)
+def exit_sphere_mode():
+    defender.atk=ceil(defender.atk*2)
+    defender.matk=ceil(defender.matk*2)
+    defender.dfn=ceil(defender.dfn/1.5)
+    defender.mdef=ceil(defender.mdef/1.5)
+enemy()
+defender=enemyList[6]
+enemy_stats(6)
+sphere_mode()
+enemy_stats(6)
+exit_sphere_mode()
+enemy_stats(6)
 # for x in range(0,len(enemyList)):
 #     enemy_stats(x)
 #     print("")

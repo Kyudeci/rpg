@@ -21,11 +21,11 @@ def combat_offense(current,enemy):
         base_dmg+=roll
     if current==attacker:
         if attacker.atk:
-            dmg=base_dmg+(attacker.atk/defender.dfn)
+            dmg=floor(((base_dmg*(attacker.atk/defender.dfn)*10)/5)+2)*2
             if game_mode==3:
-                defender.hp-=abs(dmg)
+                defender.hp-=dmg
             else:
-                defender.hp-=abs(dmg)
+                defender.hp-=dmg
             print("")
             print("You used a Physical Attack!")
             if game_mode==3:
@@ -37,8 +37,8 @@ def combat_offense(current,enemy):
             return dmg
     else:
         if defender.atk:
-            dmg=base_dmg+(defender.atk/attacker.dfn)
-            attacker.hp-=abs(dmg)
+            dmg=floor(((base_dmg+(defender.atk/attacker.dfn)*10)/5)+2)*2
+            attacker.hp-=dmg
             print("")
             print("The enemy used a Physical Attack!")
             print(attacker.name,"took",floor(abs(dmg)),"damage!")
@@ -52,11 +52,11 @@ def combat_magic_offense(current,enemy):
         base_dmg+=roll
     if current==attacker:
         if attacker.matk:
-            dmg=base_dmg+(attacker.matk/defender.mdef)
+            dmg=floor(((base_dmg+(attacker.matk/defender.mdef)*10)/5)+2)*2
             if game_mode==3:
-                defender.hp-=abs(dmg)
+                defender.hp-=dmg
             else:
-                defender.hp-=abs(dmg)
+                defender.hp-=dmg
             print("")
             print("You used a Magic Attack!")
             if game_mode==3:
@@ -68,8 +68,8 @@ def combat_magic_offense(current,enemy):
             return dmg
     else:
         if defender.matk:
-            dmg=base_dmg+(defender.matk/attacker.mdef)
-            attacker.hp-=abs(dmg)
+            dmg=floor(((base_dmg+(defender.matk/attacker.mdef)*10)/5)+2)*2
+            attacker.hp-=dmg
             print("")
             print("The enemy used a Magic Attack!")
             print(attacker.name,"took",floor(abs(dmg)),"damage!")
