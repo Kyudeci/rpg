@@ -93,13 +93,13 @@ def exit_sphere_mode():
     defender.matk=ceil(defender.matk*2)
     defender.dfn=ceil(defender.dfn/1.5)
     defender.mdef=ceil(defender.mdef/1.5)
-enemy()
-defender=enemyList[6]
-enemy_stats(6)
-sphere_mode()
-enemy_stats(6)
-exit_sphere_mode()
-enemy_stats(6)
+# enemy()
+# defender=enemyList[6]
+# enemy_stats(6)
+# sphere_mode()
+# enemy_stats(6)
+# exit_sphere_mode()
+# enemy_stats(6)
 # for x in range(0,len(enemyList)):
 #     enemy_stats(x)
 #     print("")
