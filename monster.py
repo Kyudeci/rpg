@@ -75,7 +75,7 @@ def enemy_stats(num):
     print("Speed:",enemyList[num].spd)
 def monster_assign_random():
     global defender
-    enemy=random.randint(0,len(enemyList))
+    enemy=random.randint(0,len(enemyList)-1)
     defender=enemyList[enemy]
     return enemy
 def monster_type():
@@ -94,6 +94,10 @@ def exit_sphere_mode():
     defender.dfn=ceil(defender.dfn/1.5)
     defender.mdef=ceil(defender.mdef/1.5)
 # enemy()
+# print(len(enemyList))
+# for x in range (0,10):
+#     enemy=monster_assign_random()
+#     print(x,enemy)
 # defender=enemyList[6]
 # enemy_stats(6)
 # sphere_mode()
