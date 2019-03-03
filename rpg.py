@@ -135,7 +135,7 @@ def health_A(maxHealth_A):
     currentDashes = int(attacker.hp/dashConvert)
     remainingHealth = healthDashes - currentDashes
 
-    healthDisplay = ''.join(['-' for i in range(currentDashes)])
+    healthDisplay = ''.join(['█' for i in range(currentDashes)])
     remainingDisplay = ''.join([' ' for i in range(remainingHealth)])
     percent = str(int((attacker.hp/maxHealth_A)*100)) + "%"
     print(attacker.name)
@@ -147,7 +147,7 @@ def health_D(game_mode,maxHealth_D):
         currentDashes = int(defender.hp/dashConvert)
         remainingHealth = healthDashes - currentDashes
 
-        healthDisplay = ''.join(['-' for i in range(currentDashes)])
+        healthDisplay = ''.join(['█' for i in range(currentDashes)])
         remainingDisplay = ''.join([' ' for i in range(remainingHealth)])
         percent = str(int((defender.hp/maxHealth_D)*100)) + "%"
         print(monster.monster_type())
@@ -157,7 +157,7 @@ def health_D(game_mode,maxHealth_D):
         currentDashes = int(defender.hp/dashConvert)
         remainingHealth = healthDashes - currentDashes
 
-        healthDisplay = ''.join(['-' for i in range(currentDashes)])
+        healthDisplay = ''.join(['█' for i in range(currentDashes)])
         remainingDisplay = ''.join([' ' for i in range(remainingHealth)])
         percent = str(int((defender.hp/maxHealth_D)*100)) + "%"
         print(defender.name)
