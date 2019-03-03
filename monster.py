@@ -81,29 +81,46 @@ def monster_assign_random():
 def monster_type():
     return defender.m_type
 
-def sphere_mode():
-    if defender.m_type == "Sphiren":
-        print("\nSphiren is now in sphere mode!")
-        defender.atk=floor(defender.atk*0.5)
-        defender.matk=floor(defender.matk*0.5)
-        defender.dfn=floor(defender.dfn*1.5)
-        defender.mdef=floor(defender.mdef*1.5)
-def exit_sphere_mode():
-    defender.atk=ceil(defender.atk*2)
-    defender.matk=ceil(defender.matk*2)
-    defender.dfn=ceil(defender.dfn/1.5)
-    defender.mdef=ceil(defender.mdef/1.5)
+def in_sphere_mode(counter,sphere_mode):
+    if defender.m_type == "Sphiren" or defender.m_type == "Sfiren" :
+        if sphere_mode==False and defender.hp!=0:
+            if counter%3==0:
+                print(defender.m_type,"is now in sphere mode!\n")
+                defender.atk=floor(defender.atk*0.5)
+                defender.matk=floor(defender.matk*0.5)
+                defender.dfn=floor(defender.dfn*1.5)
+                defender.mdef=floor(defender.mdef*1.5)
+                return True
+            else:
+                return False
+        else:
+            if counter%5==0:
+                print(defender.m_type, "is no longer in sphere mode!\n")
+                defender.atk=ceil(defender.atk*2)
+                defender.matk=ceil(defender.matk*2)
+                defender.dfn=ceil(defender.dfn/1.5)
+                defender.mdef=ceil(defender.mdef/1.5)
+                return False
+            else:
+                return True
+# def exit_sphere_mode(counter):
+#     if sphere_mode==True:
 # enemy()
+# sphere_mode=False
+# defender=enemyList[6]
+# defender.hp=45
+# counter=1
+# while defender.hp!=0:
+#     print("\nTurn",counter,"\n")
+#     counter+=1
+#     sphere_mode=in_sphere_mode(counter,sphere_mode)
+#     print(sphere_mode)
+#     defender.hp-=5
+# enemy_stats(6)
 # print(len(enemyList))
 # for x in range (0,10):
 #     enemy=monster_assign_random()
 #     print(x,enemy)
-# defender=enemyList[6]
-# enemy_stats(6)
-# sphere_mode()
-# enemy_stats(6)
-# exit_sphere_mode()
-# enemy_stats(6)
 # for x in range(0,len(enemyList)):
 #     enemy_stats(x)
 #     print("")

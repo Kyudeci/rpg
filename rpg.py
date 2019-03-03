@@ -131,6 +131,10 @@ def battle_state(maxHealth_A,maxHealth_D):
             health_D(game_mode,maxHealth_D)
 def health_A(maxHealth_A):
     healthDashes = 20
+    CEND = '\033[0m'
+    CRED2='\33[91m'
+    CGREEN2='\33[92m'
+    CYELLOW2='\33[93m'
     dashConvert = int(maxHealth_A/healthDashes)
     currentDashes = int(attacker.hp/dashConvert)
     remainingHealth = healthDashes - currentDashes
@@ -139,9 +143,18 @@ def health_A(maxHealth_A):
     remainingDisplay = ''.join([' ' for i in range(remainingHealth)])
     percent = str(int((attacker.hp/maxHealth_A)*100)) + "%"
     print(attacker.name)
-    print("|" + healthDisplay + remainingDisplay + "|" + percent)
+    if attacker.hp>66:
+        print("|" +CGREEN2+ healthDisplay + remainingDisplay +CEND+ "|" + percent)
+    elif attacker.hp>33:
+        print("|" +CYELLOW2+ healthDisplay + remainingDisplay + CEND+ "|" + percent)
+    else:
+        print("|" +CRED2+ healthDisplay + remainingDisplay + CEND+ "|" + percent)
 def health_D(game_mode,maxHealth_D):
     healthDashes = 20
+    CEND = '\033[0m'
+    CRED2='\33[91m'
+    CGREEN2='\33[92m'
+    CYELLOW2='\33[93m'
     if game_mode==3:
         dashConvert = int(maxHealth_D/healthDashes)
         currentDashes = int(defender.hp/dashConvert)
@@ -151,7 +164,12 @@ def health_D(game_mode,maxHealth_D):
         remainingDisplay = ''.join([' ' for i in range(remainingHealth)])
         percent = str(int((defender.hp/maxHealth_D)*100)) + "%"
         print(monster.monster_type())
-        print("|" + healthDisplay + remainingDisplay + "|"+ percent)
+        if defender.hp>0.66*maxHealth_D:
+            print("|" +CGREEN2+ healthDisplay + remainingDisplay +CEND+ "|" + percent)
+        elif defender.hp>0.33*maxHealth_D:
+            print("|" +CYELLOW2+ healthDisplay + remainingDisplay + CEND+ "|" + percent)
+        else:
+            print("|" +CRED2+ healthDisplay + remainingDisplay + CEND+ "|" + percent)
     else:
         dashConvert = int(maxHealth_D/healthDashes)
         currentDashes = int(defender.hp/dashConvert)
@@ -161,7 +179,12 @@ def health_D(game_mode,maxHealth_D):
         remainingDisplay = ''.join([' ' for i in range(remainingHealth)])
         percent = str(int((defender.hp/maxHealth_D)*100)) + "%"
         print(defender.name)
-        print("|" + healthDisplay + remainingDisplay + "|" + percent)
+        if defender.hp>66:
+            print("|" +CGREEN2+ healthDisplay + remainingDisplay +CEND+ "|" + percent)
+        elif defender.hp>33:
+            print("|" +CYELLOW2+ healthDisplay + remainingDisplay + CEND+ "|" + percent)
+        else:
+            print("|" +CRED2+ healthDisplay + remainingDisplay + CEND+ "|" + percent)
 def speed_check(attacker,defender,enemy,maxHealth_A,maxHealth_D):
     if game_mode==3:
         if attacker.spd>defender.spd:
@@ -230,10 +253,10 @@ def comp(enemy,maxHealth_A,maxHealth_D):
 
 def battle_options(enemy,maxHealth_A,maxHealth_D):
     # battle=["Physical Attack", "Magic Attack","Defend","Flee"]
-    print(""" --------------------------------------
-| 1.Physical Attack    2.Magic Attack  |
-| 3.Defend             4.Inspect       |
---------------------------------------""")
+    print("""■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■
+■  1.Physical Attack    2.Magic Attack  ■
+■  3.Defend             4.Inspect       ■
+■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■  """)
     battle=int(input())
     if battle==1:
         combat_offense(attacker,enemy,maxHealth_A,maxHealth_D)
@@ -326,9 +349,7 @@ repeat=0
 low_health=0
 game_mode=0
 def main():
-    global repeat
-    global low_health
-    global game_mode
+    global repeat, low_health, game_mode
     if repeat==0:
         sounds.background_music(1)
         create_player()
@@ -358,9 +379,15 @@ def main():
     print("Deciding who is moving first...")
     pygame.time.wait(1000)
     print("")
+    counter=1
+    sphere_mode=False
     while attacker.hp!=0 or defender.hp!=0:
+        print("Turn",counter,"\n")
+        counter+=1
         speed_check(attacker,defender,enemy,maxHealth_A,maxHealth_D)
         print("")
+        if game_mode==3:
+            sphere_mode=monster.in_sphere_mode(counter,sphere_mode)
         if low_health==0:
             if attacker.hp<50:
                 pygame.mixer.stop()
