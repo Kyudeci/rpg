@@ -1,7 +1,7 @@
 import random
 from math import ceil,floor
 class Monster:
-    def __init__(self,monstertype,rank,hp,atk,dfn,matk,mdef,spd):
+    def __init__(self,monstertype,rank,hp,atk,dfn,matk,mdef,spd,mxp):
         self.m_type=monstertype
         self.rank=rank
         self.hp=hp
@@ -10,10 +10,11 @@ class Monster:
         self.matk=matk
         self.mdef=mdef
         self.spd=spd
+        self.mxp=mxp
 enemyList=[]
 def enemy():
     monstertype=["Gooblins","Slime","Cherry Slime","Dragonn","Virus","Jack Squat","Sphiren","Sfiren"]
-    for x in range(1):
+    for x in range(3):
         for i in range(len(monstertype)):
             if monstertype:
                 rank=random.randint(1,5)
@@ -24,7 +25,8 @@ def enemy():
                     matk=random.randint(5,10)
                     mdef=random.randint(5,10)
                     spd=random.randint(10,15)
-                    enemies=Monster(monstertype[i],rank,hp,atk,dfn,matk,mdef,spd)
+                    mxp=random.randint(5,15)
+                    enemies=Monster(monstertype[i],rank,hp,atk,dfn,matk,mdef,spd,mxp)
                     enemyList.append(enemies)
                 elif rank==2:
                     hp=random.randint(40,60)
@@ -33,7 +35,8 @@ def enemy():
                     matk=random.randint(15,30)
                     mdef=random.randint(15,30)
                     spd=random.randint(30,45)
-                    enemies=Monster(monstertype[i],rank,hp,atk,dfn,matk,mdef,spd)
+                    mxp=random.randint(20,38)
+                    enemies=Monster(monstertype[i],rank,hp,atk,dfn,matk,mdef,spd,mxp)
                     enemyList.append(enemies)
                 elif rank==3:
                     hp=random.randint(70,100)
@@ -42,7 +45,8 @@ def enemy():
                     matk=random.randint(50,100)
                     mdef=random.randint(50,100)
                     spd=random.randint(50,75)
-                    enemies=Monster(monstertype[i],rank,hp,atk,dfn,matk,mdef,spd)
+                    mxp=random.randint(40,65)
+                    enemies=Monster(monstertype[i],rank,hp,atk,dfn,matk,mdef,spd,mxp)
                     enemyList.append(enemies)
                 elif rank==4:
                     hp=random.randint(80,120)
@@ -51,7 +55,8 @@ def enemy():
                     matk=random.randint(70,120)
                     mdef=random.randint(70,120)
                     spd=random.randint(75,113)
-                    enemies=Monster(monstertype[i],rank,hp,atk,dfn,matk,mdef,spd)
+                    mxp=random.randint(66,90)
+                    enemies=Monster(monstertype[i],rank,hp,atk,dfn,matk,mdef,spd,mxp)
                     enemyList.append(enemies)
                 elif rank==5:
                     hp=random.randint(120,180)
@@ -60,7 +65,8 @@ def enemy():
                     matk=random.randint(100,150)
                     mdef=random.randint(100,150)
                     spd=random.randint(80,120)
-                    enemies=Monster(monstertype[i],rank,hp,atk,dfn,matk,mdef,spd)
+                    mxp=random.randint(100,131)
+                    enemies=Monster(monstertype[i],rank,hp,atk,dfn,matk,mdef,spd,mxp)
                     enemyList.append(enemies)
 
 def enemy_stats(num):

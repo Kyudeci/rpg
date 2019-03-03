@@ -5,6 +5,8 @@ Tasks
 # Nice to have: dynamic music shift at low health
 # Compile a list of random names *ANGRILY SHAKES FIST AT HIDALGO*
 # Implement specific moves
+# Display stat increase on level up
+# SAVE and Load
 $ Defend flaw
 $ Bug occurs when player chooses invalid option
 

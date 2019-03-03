@@ -14,6 +14,22 @@ class Player:
         self.matk=matk
         self.mdef=mdef
         self.spd=spd
+        self.lvl=1
+    def levelUp(self,xp):
+        lvlNext=25
+        while xp>=lvlNext:
+            self.lvl+=1
+            xp=xp-lvlNext
+            lvlNext=round(lvlNext*1.5)
+            self.hp+=random.randint(5,10)
+            self.atk+=random.randint(0,3)
+            self.dfn+=random.randint(0,3)
+            self.matk+=random.randint(0,3)
+            self.mdef+=random.randint(0,3)
+            self.spd+=random.randint(0,3)
+            print("You are now level",self.lvl)
+            print("Exp:",xp)
+            print("Next Level:",lvlNext)
 def combat_offense(current,enemy,maxHealth_A,maxHealth_D):
     base_dmg=0
     for n in range(5):
@@ -278,24 +294,18 @@ playerList=["Null"]
 Player1=Player("Kyu",100,23,24,56,57,60)
 Player2=Player("Varis",100,45,54,34,24,60)
 Player3=Player("Y",100,23,25,54,34,90)
-Monsta1=monster.Monster("WizCat",1,100,100,100,100,100,100)
+Monsta1=monster.Monster("WizCat",1,100,100,100,100,100,100,34)
 def subs():
-    global attacker
     global defender
-    attacker=Player1
     if game_mode==3:
         defender=Monsta1
     else:
         defender=Player2
 def give_stats(num):
-    print("")
-    print("Name:",playerList[num].name)
-    print("HP:",playerList[num].hp)
-    print("Attack:",playerList[num].atk)
-    print("Defense:",playerList[num].dfn)
-    print("Magic Attack:",playerList[num].matk)
-    print("Magic Defence:",playerList[num].mdef)
-    print("Speed:",playerList[num].spd)
+    print("\nName:",playerList[num].name,"\nLevel:",playerList[num].lvl)
+    print("HP:",playerList[num].hp,"\nAttack:",playerList[num].atk)
+    print("Defense:",playerList[num].dfn,"\nMagic Attack:",playerList[num].matk)
+    print("Magic Defence:",playerList[num].mdef,"\nSpeed:",playerList[num].spd)
 def create_player():
     global attacker
     name=input("Give me a name peasant! =>")
@@ -406,11 +416,16 @@ def main():
                 break
         elif floor(defender.hp)<=0:
             defender.hp=0
-            print(attacker.name,"is the winner")
+            print(attacker.name,"is the winner\n")
+            if game_mode==3:
+                exp=defender.mxp
+                print("You earned",exp,"exp. points!\n")
+                attacker.levelUp(exp)
+                give_stats(1)
             sounds.victory()
             break
     pygame.mixer.music.pause()
-    restart=int(input("Would you like to start a new battle?(1 for yes): "))
+    restart=int(input("\nWould you like to start a new battle?(1 for yes): "))
     pygame.mixer.stop()
     repeat+=1
     if restart==1:
