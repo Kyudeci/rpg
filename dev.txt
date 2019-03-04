@@ -5,7 +5,6 @@ Tasks
 # Nice to have: dynamic music shift at low health
 # Compile a list of random names *ANGRILY SHAKES FIST AT HIDALGO*
 # Implement specific moves
-# Display stat increase on level up
 # SAVE and Load
 $ Defend flaw
 $ Bug occurs when player chooses invalid option
@@ -13,8 +12,9 @@ $ Bug occurs when player chooses invalid option
 Completed
 # Options: Free Play and Random
 # Figure out how to create a list of players and append each new created player
-$ When/if enemy attacks first and player health is zero
+# Display stat increase on level up
 # Fixed damage calculation(?)
+$ When/if enemy attacks first and player health is zero
 $ The occasional enemy_assign_random() fail(?)
 
 References

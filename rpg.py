@@ -20,19 +20,30 @@ class Player:
         while xp>=lvlNext:
             self.lvl+=1
             xp=xp-lvlNext
-            lvlNext=round(lvlNext*1.5)
-            self.hp+=random.randint(5,10)
-            self.atk+=random.randint(0,3)
-            self.dfn+=random.randint(0,3)
-            self.matk+=random.randint(0,3)
-            self.mdef+=random.randint(0,3)
-            self.spd+=random.randint(0,3)
-            print("You are now level",self.lvl)
+            lvlNext=floor(lvlNext*1.5)
+            print("\nYou are now level",self.lvl)
             print("Exp:",xp)
-            print("Next Level:",lvlNext)
+            print("Next Level:",lvlNext,"\n")
+            stat_attribute=[self.atk,self.dfn,self.matk,self.mdef,self.spd]
+            for x in range(len(stat_attribute)):
+                stat=["\nAttack:","Defense:","Magic Attack:","Magic Defense:","Speed:"]
+                increase=random.randint(0,3)
+                print(stat[x],stat_attribute[x],"+",increase)
+                if stat[x]==stat[0]:
+                    self.atk+=increase
+                elif stat[x]==stat[1]:
+                    self.dfn+=increase
+                elif stat[x]==stat[2]:
+                    self.matk+=increase
+                elif stat[x]==stat[3]:
+                    self.mdef+=increase
+                elif stat[x]==stat[4]:
+                    self.spd+=increase
+                    break
+
 def combat_offense(current,enemy,maxHealth_A,maxHealth_D):
     base_dmg=0
-    for n in range(5):
+    for n in range(4):
         roll=random.randint(1,6)
         base_dmg+=roll
     if current==attacker:
@@ -61,10 +72,9 @@ def combat_offense(current,enemy,maxHealth_A,maxHealth_D):
             battle_state(maxHealth_A,maxHealth_D)
             sounds.tackle()
             return dmg
-
 def combat_magic_offense(current,enemy,maxHealth_A,maxHealth_D):
     base_dmg=0
-    for n in range(5):
+    for n in range(4):
         roll=random.randint(1,6)
         base_dmg+=roll
     if current==attacker:
@@ -166,7 +176,7 @@ def health_A(maxHealth_A):
     else:
         print("|" +CRED2+ healthDisplay + remainingDisplay + CEND+ "|" + percent)
 def health_D(game_mode,maxHealth_D):
-    healthDashes = 20
+    healthDashes = 30
     CEND = '\033[0m'
     CRED2='\33[91m'
     CGREEN2='\33[92m'
@@ -382,7 +392,7 @@ def main():
     elif game_mode==3:
         enemy=monster.monster_assign_random()
         defender.hp=enemyList[enemy].hp
-    maxHealth_A=attacker.hp
+    maxHealth_A=100
     maxHealth_D=defender.hp
     pygame.time.wait(1000)
     print("")
@@ -418,9 +428,11 @@ def main():
             defender.hp=0
             print(attacker.name,"is the winner\n")
             if game_mode==3:
-                exp=defender.mxp
-                print("You earned",exp,"exp. points!\n")
-                attacker.levelUp(exp)
+                xp=enemyList[enemy].mxp
+                attacker.hp=maxHealth_A
+                give_stats(1)
+                print("You earned",xp,"exp. points!\n")
+                attacker.levelUp(xp)
                 give_stats(1)
             sounds.victory()
             break
@@ -429,7 +441,7 @@ def main():
     pygame.mixer.stop()
     repeat+=1
     if restart==1:
-        attacker.hp=100
+        attacker.hp=maxHealth_A
         if game_mode==3:
             defender.hp=enemyList[enemy].hp
         else:
@@ -445,4 +457,4 @@ main()
 # for x in range(1,len(playerList)):
 #     give_stats(x)
 #     print("")
-# attacker.combat_offense(attacker,enemy)
+# attacker.levelUp(120)
