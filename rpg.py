@@ -2,6 +2,7 @@ import random
 import pygame
 import sounds
 import monster
+import moves
 from monster import enemyList
 from math import floor
 pygame.mixer.init()
@@ -41,14 +42,14 @@ class Player:
                     self.spd+=increase
                     break
 
-def combat_offense(current,enemy,maxHealth_A,maxHealth_D):
+def combat_offense(current,enemy,maxHealth_A,maxHealth_D,comp_options):
     base_dmg=0
     for n in range(4):
         roll=random.randint(1,6)
         base_dmg+=roll
     if current==attacker:
         if attacker.atk:
-            dmg=floor(((base_dmg*(attacker.atk/defender.dfn)*10)/5)+2)*2
+            dmg=floor(((floor(2*(attacker.lvl*10)/5+2)*base_dmg*(attacker.atk/attacker.dfn))/50)+2)*2
             if game_mode==3:
                 defender.hp-=dmg
             else:
@@ -56,30 +57,40 @@ def combat_offense(current,enemy,maxHealth_A,maxHealth_D):
             print("")
             print("You used a Physical Attack!")
             if game_mode==3:
-                print(monster.monster_type(),"took",floor(abs(dmg)),"damage!")
+                print(monster.monster_type(),"took",floor(abs(dmg)),"damage!\n")
             else:
-                print(defender.name,"took",floor(abs(dmg)),"damage!")
+                print(defender.name,"took",floor(abs(dmg)),"damage!\n")
             battle_state(maxHealth_A,maxHealth_D)
             sounds.punch()
             return dmg
     else:
         if defender.atk:
-            dmg=floor(((base_dmg+(defender.atk/attacker.dfn)*10)/5)+2)*2
+            if game_mode==3 and monster.monster_type()=="Jack Squat":
+                base_dmg=moves.js_moves(comp_options)
+                if base_dmg==0:
+                    dmg=0
+                elif game_mode==3:
+                    dmg=floor(((floor(2*(defender.rank*15)/5+2)*base_dmg*(defender.atk/defender.dfn))/50)+2)
+                else:
+                    dmg=floor(((floor(2*(defender.rank*15)/5+2)*base_dmg*(defender.atk/defender.dfn))/50)+2)
+            else:
+                dmg=floor(((base_dmg+(defender.atk/defender.dfn)*10)/5)+2)
             attacker.hp-=dmg
             print("")
-            print("The enemy used a Physical Attack!")
-            print(attacker.name,"took",floor(abs(dmg)),"damage!")
+            if game_mode==1 or game_mode==2:
+                print("The enemy used a Physical Attack!")
+            print(attacker.name,"took",floor(abs(dmg)),"damage!\n")
             battle_state(maxHealth_A,maxHealth_D)
             sounds.tackle()
             return dmg
-def combat_magic_offense(current,enemy,maxHealth_A,maxHealth_D):
+def combat_magic_offense(current,enemy,maxHealth_A,maxHealth_D,comp_options):
     base_dmg=0
     for n in range(4):
         roll=random.randint(1,6)
         base_dmg+=roll
     if current==attacker:
         if attacker.matk:
-            dmg=floor(((base_dmg+(attacker.matk/defender.mdef)*10)/5)+2)*2
+            dmg=floor(((floor(2*(attacker.lvl*10)/5+2)*base_dmg*(attacker.matk/attacker.mdef))/50)+2)*2
             if game_mode==3:
                 defender.hp-=dmg
             else:
@@ -87,19 +98,29 @@ def combat_magic_offense(current,enemy,maxHealth_A,maxHealth_D):
             print("")
             print("You used a Magic Attack!")
             if game_mode==3:
-                print(monster.monster_type(),"took",floor(abs(dmg)),"damage!")
+                print(monster.monster_type(),"took",floor(abs(dmg)),"damage!\n")
             else:
-                print(defender.name,"took",floor(abs(dmg)),"damage!")
+                print(defender.name,"took",floor(abs(dmg)),"damage!\n")
             battle_state(maxHealth_A,maxHealth_D)
             sounds.magicAttack()
             return dmg
     else:
         if defender.matk:
-            dmg=floor(((base_dmg+(defender.matk/attacker.mdef)*10)/5)+2)*2
+            if game_mode==3 and monster.monster_type()=="Jack Squat":
+                base_dmg=moves.js_moves(comp_options)
+                if base_dmg==0:
+                    dmg=0
+                elif game_mode==3:
+                    dmg=floor(((floor(2*(defender.rank*15)/5+2)*base_dmg*(defender.matk/defender.mdef))/50)+2)
+                else:
+                    dmg=floor(((floor(2*(defender.rank*15)/5+2)*base_dmg*(defender.matk/defender.mdef))/50)+2)
+            else:
+                dmg=floor(((base_dmg+(defender.matk/defender.mdef)*10)/5)+2)
             attacker.hp-=dmg
             print("")
-            print("The enemy used a Magic Attack!")
-            print(attacker.name,"took",floor(abs(dmg)),"damage!")
+            if game_mode==1 or game_mode==2:
+                print("The enemy used a Magic Attack!")
+            print(attacker.name,"took",floor(abs(dmg)),"damage!\n")
             battle_state(maxHealth_A,maxHealth_D)
             sounds.magicAttack()
             return dmg
@@ -176,7 +197,7 @@ def health_A(maxHealth_A):
     else:
         print("|" +CRED2+ healthDisplay + remainingDisplay + CEND+ "|" + percent)
 def health_D(game_mode,maxHealth_D):
-    healthDashes = 30
+    healthDashes = 20
     CEND = '\033[0m'
     CRED2='\33[91m'
     CGREEN2='\33[92m'
@@ -188,7 +209,7 @@ def health_D(game_mode,maxHealth_D):
 
         healthDisplay = ''.join(['█' for i in range(currentDashes)])
         remainingDisplay = ''.join([' ' for i in range(remainingHealth)])
-        percent = str(int((defender.hp/maxHealth_D)*100)) + "%"
+        percent = str(int((defender.hp/maxHealth_D)*100)) + "%\n"
         print(monster.monster_type())
         if defender.hp>0.66*maxHealth_D:
             print("|" +CGREEN2+ healthDisplay + remainingDisplay +CEND+ "|" + percent)
@@ -203,7 +224,7 @@ def health_D(game_mode,maxHealth_D):
 
         healthDisplay = ''.join(['█' for i in range(currentDashes)])
         remainingDisplay = ''.join([' ' for i in range(remainingHealth)])
-        percent = str(int((defender.hp/maxHealth_D)*100)) + "%"
+        percent = str(int((defender.hp/maxHealth_D)*100)) + "%\n"
         print(defender.name)
         if defender.hp>66:
             print("|" +CGREEN2+ healthDisplay + remainingDisplay +CEND+ "|" + percent)
@@ -211,11 +232,11 @@ def health_D(game_mode,maxHealth_D):
             print("|" +CYELLOW2+ healthDisplay + remainingDisplay + CEND+ "|" + percent)
         else:
             print("|" +CRED2+ healthDisplay + remainingDisplay + CEND+ "|" + percent)
-def speed_check(attacker,defender,enemy,maxHealth_A,maxHealth_D):
+def speed_check(attacker,defender,enemy,maxHealth_A,maxHealth_D,comp_options):
     if game_mode==3:
         if attacker.spd>defender.spd:
             print("You may attack first!")
-            battle_options(enemy,maxHealth_A,maxHealth_D)
+            battle_options(enemy,maxHealth_A,maxHealth_D,comp_options)
             comp(enemy,maxHealth_A,maxHealth_D)
         elif attacker.spd<defender.spd:
             print("The enemy charges forth")
@@ -223,7 +244,7 @@ def speed_check(attacker,defender,enemy,maxHealth_A,maxHealth_D):
             while attacker.hp<=0:
                 break
             else:
-                battle_options(enemy,maxHealth_A,maxHealth_D)
+                battle_options(enemy,maxHealth_A,maxHealth_D,comp_options)
         else:
             choose=random.randint(1,2)
             if choose=="1":
@@ -232,17 +253,17 @@ def speed_check(attacker,defender,enemy,maxHealth_A,maxHealth_D):
                 while attacker.hp<=0:
                     break
                 else:
-                    battle_options(enemy,maxHealth_A,maxHealth_D)
+                    battle_options(enemy,maxHealth_A,maxHealth_D,comp_options)
             else:
                 print("")
                 print("Your fate had been decided in a coin flip.\nYou may make the first move!")
                 print("")
-                battle_options(enemy,maxHealth_A,maxHealth_D)
+                battle_options(enemy,maxHealth_A,maxHealth_D,comp_options)
                 comp(enemy,maxHealth_A,maxHealth_D)
     else:
         if attacker.spd>defender.spd:
             print("You may attack first!")
-            battle_options(enemy,maxHealth_A,maxHealth_D)
+            battle_options(enemy,maxHealth_A,maxHealth_D,comp_options)
             comp(enemy,maxHealth_A,maxHealth_D)
         elif attacker.spd<defender.spd:
             print("The enemy charges forth")
@@ -250,7 +271,7 @@ def speed_check(attacker,defender,enemy,maxHealth_A,maxHealth_D):
             while attacker.hp<=0:
                 break
             else:
-                battle_options(enemy,maxHealth_A,maxHealth_D)
+                battle_options(enemy,maxHealth_A,maxHealth_D,comp_options)
         else:
             choose=random.randint(1,2)
             if choose=="1":
@@ -259,25 +280,25 @@ def speed_check(attacker,defender,enemy,maxHealth_A,maxHealth_D):
                 while attacker.hp<=0:
                     break
                 else:
-                    battle_options(enemy,maxHealth_A,maxHealth_D)
+                    battle_options(enemy,maxHealth_A,maxHealth_D,comp_options)
             else:
                 print("")
                 print("Your fate had been decided in a coin flip.\nYou may make the first move!")
                 print("")
-                battle_options(enemy,maxHealth_A,maxHealth_D)
+                battle_options(enemy,maxHealth_A,maxHealth_D,comp_options)
                 comp(enemy,maxHealth_A,maxHealth_D)
 
 def comp(enemy,maxHealth_A,maxHealth_D):
     # currently does not defend//all offense
     comp_options=random.randint(0,1)
     if comp_options==0:
-        combat_offense(defender,enemy,maxHealth_A,maxHealth_D)
+        combat_offense(defender,enemy,maxHealth_A,maxHealth_D,comp_options)
     elif comp_options==1:
-        combat_magic_offense(defender,enemy,maxHealth_A,maxHealth_D)
+        combat_magic_offense(defender,enemy,maxHealth_A,maxHealth_D,comp_options)
     elif comp_options==2:
         defend(defender,maxHealth_A,maxHealth_D)
 
-def battle_options(enemy,maxHealth_A,maxHealth_D):
+def battle_options(enemy,maxHealth_A,maxHealth_D,comp_options):
     # battle=["Physical Attack", "Magic Attack","Defend","Flee"]
     print("""■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■
 ■  1.Physical Attack    2.Magic Attack  ■
@@ -285,21 +306,21 @@ def battle_options(enemy,maxHealth_A,maxHealth_D):
 ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■  """)
     battle=int(input())
     if battle==1:
-        combat_offense(attacker,enemy,maxHealth_A,maxHealth_D)
+        combat_offense(attacker,enemy,maxHealth_A,maxHealth_D,comp_options)
     elif battle==2:
-        combat_magic_offense(attacker,enemy,maxHealth_A,maxHealth_D)
+        combat_magic_offense(attacker,enemy,maxHealth_A,maxHealth_D,comp_options)
     elif battle==3:
         defend(attacker,maxHealth_A,maxHealth_D)
     elif battle==4:
         if game_mode==3:
             monster.enemy_stats(enemy)
-            battle_options(enemy,maxHealth_A,maxHealth_D)
+            battle_options(enemy,maxHealth_A,maxHealth_D,comp_options)
         else:
             give_stats(enemy)
-            battle_options(enemy,maxHealth_A,maxHealth_D)
+            battle_options(enemy,maxHealth_A,maxHealth_D,comp_options)
     else:
         print("Definitely not valid, what are you doing?")
-        battle_options(enemy,maxHealth_A,maxHealth_D)
+        battle_options(enemy,maxHealth_A,maxHealth_D,comp_options)
 playerList=["Null"]
 Player1=Player("Kyu",100,23,24,56,57,60)
 Player2=Player("Varis",100,45,54,34,24,60)
@@ -365,19 +386,35 @@ def enemy_assign_random():
     enemy=random.randint(2,len(playerList)-1)
     defender=playerList[enemy]
     return enemy+1
+
+def gameStart():
+    print("""
+      █
+     ███
+    █████
+    █████
+    █████
+    █████      Welcome to the Indev Battlesim/RPG!
+    █████
+ █  ██●██  █
+  ███●●●███
+     ███
+      █
+      █
+    █ █ █
+     ███ \n""")
+    sounds.background_music(1)
+    create_player()
+    give_stats(1)
+    random_player()
+    monster.enemy()
+    main()
 repeat=0
 low_health=0
 game_mode=0
 def main():
     global repeat, low_health, game_mode
-    if repeat==0:
-        sounds.background_music(1)
-        create_player()
-        give_stats(1)
-        random_player()
-        monster.enemy()
-    else:
-        sounds.background_music(1)
+    sounds.background_music(1)
     pygame.time.wait(1000)
     print("")
     print("""Pick Game Mode:
@@ -404,7 +441,7 @@ def main():
     while attacker.hp!=0 or defender.hp!=0:
         print("Turn",counter,"\n")
         counter+=1
-        speed_check(attacker,defender,enemy,maxHealth_A,maxHealth_D)
+        speed_check(attacker,defender,enemy,maxHealth_A,maxHealth_D,1)
         print("")
         if game_mode==3:
             sphere_mode=monster.in_sphere_mode(counter,sphere_mode)
@@ -443,13 +480,13 @@ def main():
     if restart==1:
         attacker.hp=maxHealth_A
         if game_mode==3:
-            defender.hp=enemyList[enemy].hp
+            defender.hp=50
         else:
             defender.hp=100
         low_health=0
-        main()
+        return main()
 ### Testing Below ###
-main()
+gameStart()
 # create_player()
 # random_player()
 # enemy_assign_random()

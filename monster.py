@@ -79,7 +79,7 @@ def enemy_stats(num):
     print("Magic Attack:",enemyList[num].matk)
     print("Magic Defence:",enemyList[num].mdef)
     print("Speed:",enemyList[num].spd)
-    print(enemyList[num].mxp)
+    # print(enemyList[num].mxp)
 def monster_assign_random():
     global defender
     enemy=random.randint(0,len(enemyList)-1)
