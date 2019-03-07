@@ -16,15 +16,18 @@ class Player:
         self.mdef=mdef
         self.spd=spd
         self.lvl=1
+        self.xp=0
+        self.lvlNext=25
+
     def levelUp(self,xp):
-        lvlNext=25
-        while xp>=lvlNext:
+        self.xp=xp
+        while self.xp>=self.lvlNext:
             self.lvl+=1
-            xp=xp-lvlNext
-            lvlNext=floor(lvlNext*1.5)
+            self.xp=self.xp-self.lvlNext
+            self.lvlNext=floor(self.lvlNext*1.5)
             print("\nYou are now level",self.lvl)
-            print("Exp:",xp)
-            print("Next Level:",lvlNext,"\n")
+            print("Exp:",self.xp)
+            print("Next Level:",self.lvlNext,"\n")
             stat_attribute=[self.atk,self.dfn,self.matk,self.mdef,self.spd]
             for x in range(len(stat_attribute)):
                 stat=["\nAttack:","Defense:","Magic Attack:","Magic Defense:","Speed:"]
@@ -40,16 +43,15 @@ class Player:
                     self.mdef+=increase
                 elif stat[x]==stat[4]:
                     self.spd+=increase
-                    break
 
 def combat_offense(current,enemy,maxHealth_A,maxHealth_D,comp_options):
     base_dmg=0
-    for n in range(4):
+    for n in range(3):
         roll=random.randint(1,6)
         base_dmg+=roll
     if current==attacker:
         if attacker.atk:
-            dmg=floor(((floor(2*(attacker.lvl*10)/5+2)*base_dmg*(attacker.atk/attacker.dfn))/50)+2)*2
+            dmg=floor(((floor((attacker.lvl)/5+2)*base_dmg*abs(attacker.atk-defender.dfn))/50)+2)
             if game_mode==3:
                 defender.hp-=dmg
             else:
@@ -65,16 +67,19 @@ def combat_offense(current,enemy,maxHealth_A,maxHealth_D,comp_options):
             return dmg
     else:
         if defender.atk:
-            if game_mode==3 and monster.monster_type()=="Jack Squat":
-                base_dmg=moves.js_moves(comp_options)
+            if game_mode==3:
+                if monster.monster_type()=="Jack Squat":
+                    base_dmg=moves.js_moves(comp_options,enemy)
+                elif monster.monster_type()=="Gooblins":
+                    base_dmg=moves.gob_moves(comp_options)
                 if base_dmg==0:
                     dmg=0
                 elif game_mode==3:
-                    dmg=floor(((floor(2*(defender.rank*15)/5+2)*base_dmg*(defender.atk/defender.dfn))/50)+2)
+                    dmg=floor(((floor((defender.rank)/5+2)*base_dmg*abs(defender.atk-attacker.dfn))/50)+2)
                 else:
-                    dmg=floor(((floor(2*(defender.rank*15)/5+2)*base_dmg*(defender.atk/defender.dfn))/50)+2)
+                    dmg=floor(((floor((defender.rank)/5+2)*base_dmg*abs(defender.atk-attacker.dfn))/50)+2)
             else:
-                dmg=floor(((base_dmg+(defender.atk/defender.dfn)*10)/5)+2)
+                dmg=floor(((base_dmg+abs(defender.atk-attacker.dfn)*10)/5)+2)
             attacker.hp-=dmg
             print("")
             if game_mode==1 or game_mode==2:
@@ -85,12 +90,12 @@ def combat_offense(current,enemy,maxHealth_A,maxHealth_D,comp_options):
             return dmg
 def combat_magic_offense(current,enemy,maxHealth_A,maxHealth_D,comp_options):
     base_dmg=0
-    for n in range(4):
+    for n in range(3):
         roll=random.randint(1,6)
         base_dmg+=roll
     if current==attacker:
         if attacker.matk:
-            dmg=floor(((floor(2*(attacker.lvl*10)/5+2)*base_dmg*(attacker.matk/attacker.mdef))/50)+2)*2
+            dmg=floor(((floor((attacker.lvl)/5+2)*base_dmg*abs(attacker.matk-defender.mdef))/50)+2)
             if game_mode==3:
                 defender.hp-=dmg
             else:
@@ -106,16 +111,19 @@ def combat_magic_offense(current,enemy,maxHealth_A,maxHealth_D,comp_options):
             return dmg
     else:
         if defender.matk:
-            if game_mode==3 and monster.monster_type()=="Jack Squat":
-                base_dmg=moves.js_moves(comp_options)
+            if game_mode==3:
+                if monster.monster_type()=="Jack Squat":
+                    base_dmg=moves.js_moves(comp_options,enemy)
+                if monster.monster_type()=="Gooblins":
+                    base_dmg=moves.gob_moves(comp_options)
                 if base_dmg==0:
                     dmg=0
                 elif game_mode==3:
-                    dmg=floor(((floor(2*(defender.rank*15)/5+2)*base_dmg*(defender.matk/defender.mdef))/50)+2)
+                    dmg=floor(((floor((defender.rank)/5+2)*base_dmg*abs(defender.matk-attacker.mdef))/50)+2)
                 else:
-                    dmg=floor(((floor(2*(defender.rank*15)/5+2)*base_dmg*(defender.matk/defender.mdef))/50)+2)
+                    dmg=floor(((floor((defender.rank)/5+2)*base_dmg*abs(defender.matk-attacker.mdef))/50)+2)
             else:
-                dmg=floor(((base_dmg+(defender.matk/defender.mdef)*10)/5)+2)
+                dmg=floor(((base_dmg+abs(defender.matk/attacker.mdef)*10)/5)+2)
             attacker.hp-=dmg
             print("")
             if game_mode==1 or game_mode==2:
@@ -158,7 +166,6 @@ def defend(current,maxHealth_A,maxHealth_D):
             print("Reduced damage to",dmg)
             attacker.hp-=dmg
             battle_state(maxHealth_A,maxHealth_D)
-
 def battle_state(maxHealth_A,maxHealth_D):
     if attacker.hp<=0:
         attacker.hp=0
