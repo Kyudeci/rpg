@@ -3,7 +3,8 @@ import pygame
 import sounds
 import monster
 import moves
-from monster import enemyList
+import sys
+import pickle
 from math import floor
 pygame.mixer.init()
 class Player:
@@ -18,6 +19,7 @@ class Player:
         self.lvl=1
         self.xp=0
         self.lvlNext=25
+    playerList=["Null"]
 
     def levelUp(self,xp):
         self.xp=xp
@@ -114,6 +116,13 @@ def combat_magic_offense(current,enemy,maxHealth_A,maxHealth_D,comp_options):
             if game_mode==3:
                 if monster.monster_type()=="Jack Squat":
                     base_dmg=moves.js_moves(comp_options,enemy)
+                    if base_dmg==1:
+                        base_dmg=0
+                        heal=random.randint(14,30)
+                        defender.hp+=heal
+                        if defender.hp>=maxHealth_D:
+                            defender.hp=maxHealth_D
+                        print("Jack Squat's health increased by", heal)
                 if monster.monster_type()=="Gooblins":
                     base_dmg=moves.gob_moves(comp_options)
                 if base_dmg==0:
@@ -328,11 +337,36 @@ def battle_options(enemy,maxHealth_A,maxHealth_D,comp_options):
     else:
         print("Definitely not valid, what are you doing?")
         battle_options(enemy,maxHealth_A,maxHealth_D,comp_options)
-playerList=["Null"]
 Player1=Player("Kyu",100,23,24,56,57,60)
 Player2=Player("Varis",100,45,54,34,24,60)
 Player3=Player("Y",100,23,25,54,34,90)
 Monsta1=monster.Monster("WizCat",1,100,100,100,100,100,100,34)
+def save(player,plist,elist):
+    player=attacker
+    plist=Player.playerList
+    elist=monster.Monster.enemyList
+    with open('savefile.dat', 'wb') as f:
+        pickle.dump([player,plist,elist], f, protocol=2)
+def load():
+    with open('savefile.dat', 'rb') as f:
+        player,plist,elist = pickle.load(f)
+        for x in range(1,len(plist)):
+            Player.playerList.append(plist[x])
+        for y in range(0,len(elist)):
+            monster.Monster.enemyList.append(elist[y])
+        give_stats(1)
+    return True
+def is_accessible(path, mode='r'):
+    """
+    Check if the file or directory at `path` can
+    be accessed by the program using `mode` open flags.
+    """
+    try:
+        f = open(path, mode)
+        f.close()
+    except IOError:
+        return False
+    return True
 def subs():
     global defender
     if game_mode==3:
@@ -340,10 +374,10 @@ def subs():
     else:
         defender=Player2
 def give_stats(num):
-    print("\nName:",playerList[num].name,"\nLevel:",playerList[num].lvl)
-    print("HP:",playerList[num].hp,"\nAttack:",playerList[num].atk)
-    print("Defense:",playerList[num].dfn,"\nMagic Attack:",playerList[num].matk)
-    print("Magic Defence:",playerList[num].mdef,"\nSpeed:",playerList[num].spd)
+    print("\nName:",Player.playerList[num].name,"\nLevel:",Player.playerList[num].lvl)
+    print("HP:",Player.playerList[num].hp,"\nAttack:",Player.playerList[num].atk)
+    print("Defense:",Player.playerList[num].dfn,"\nMagic Attack:",Player.playerList[num].matk)
+    print("Magic Defence:",Player.playerList[num].mdef,"\nSpeed:",Player.playerList[num].spd)
 def create_player():
     global attacker
     name=input("Give me a name peasant! =>")
@@ -353,8 +387,8 @@ def create_player():
     mdef=random.randint(20,100)
     spd=random.randint(20,100)
     new_player=Player(name,100,atk,dfn,matk,mdef,spd)
-    playerList.append(new_player)
-    attacker=playerList[1]
+    Player.playerList.append(new_player)
+    attacker=Player.playerList[1]
 def random_player():
     names=["NorthStar","Ventus","Xero","Anna","Malla","Korrin"]
     for i in range(len(names)):
@@ -364,18 +398,18 @@ def random_player():
         mdef=random.randint(20,100)
         spd=random.randint(20,100)
         new_player=Player(names[i],100,atk,dfn,matk,mdef,spd)
-        playerList.append(new_player)
+        Player.playerList.append(new_player)
 def enemy_assign_manual():
     global defender
     print("")
-    for x in range(2,len(playerList)):
-        print(x-1,".",playerList[x].name,sep="")
+    for x in range(2,len(Player.playerList)):
+        print(x-1,".",Player.playerList[x].name,sep="")
     print("")
     enemy=int(input("Choose an opponent by selecting a number: "))
-    if enemy+1>=len(playerList):
+    if enemy+1>=len(Player.playerList):
         return enemy_assign_manual()
     else:
-        defender=playerList[enemy+1]
+        defender=Player.playerList[enemy+1]
         print("")
         print("You have chosen",defender.name)
     # print(new_player.name)
@@ -390,11 +424,10 @@ def enemy_assign_manual():
         return enemy+1
 def enemy_assign_random():
     global defender
-    enemy=random.randint(2,len(playerList)-1)
-    defender=playerList[enemy]
-    return enemy+1
-
-def gameStart():
+    enemy=random.randint(2,len(Player.playerList)-1)
+    defender=Player.playerList[enemy]
+    return enemy
+def mainMenu():
     print("""
       █
      ███
@@ -410,17 +443,41 @@ def gameStart():
       █
     █ █ █
      ███ \n""")
-    sounds.background_music(1)
-    create_player()
-    give_stats(1)
-    random_player()
-    monster.enemy()
+    if is_accessible('savefile.dat')==True:
+        print("1.Start\n2.Load\n3.Save\n4.Quit")
+        choice=int(input(">"))
+        if choice==1:
+            gameStart(False)
+        elif choice==2:
+            l_check=load()
+            gameStart(l_check)
+        elif choice==3:
+            save(attacker,Player.playerList,monster.Monster.enemyList)
+        elif choice==4:
+            sys.exit()
+    else:
+        print("1.Start\n2.Quit")
+        choice=int(input(">"))
+        if choice==1:
+            gameStart(False)
+def gameStart(l_check):
+    if l_check==False:
+        sounds.background_music(1)
+        create_player()
+        give_stats(1)
+        random_player()
+        monster.enemy()
+        vfr=monster.Monster.enemyList
+        save(attacker,Player.playerList,vfr)
+    else:
+        main()
     main()
 repeat=0
 low_health=0
 game_mode=0
 def main():
-    global repeat, low_health, game_mode
+    global repeat, low_health, game_mode, attacker
+    attacker=Player.playerList[1]
     sounds.background_music(1)
     pygame.time.wait(1000)
     print("")
@@ -435,7 +492,7 @@ def main():
         enemy=enemy_assign_random()
     elif game_mode==3:
         enemy=monster.monster_assign_random()
-        defender.hp=enemyList[enemy].hp
+        defender.hp=monster.Monster.enemyList[enemy].hp
     maxHealth_A=100
     maxHealth_D=defender.hp
     pygame.time.wait(1000)
@@ -472,7 +529,7 @@ def main():
             defender.hp=0
             print(attacker.name,"is the winner\n")
             if game_mode==3:
-                xp=enemyList[enemy].mxp
+                xp=monster.Monster.enemyList[enemy].mxp
                 attacker.hp=maxHealth_A
                 give_stats(1)
                 print("You earned",xp,"exp. points!\n")
@@ -491,14 +548,16 @@ def main():
         else:
             defender.hp=100
         low_health=0
+        save(attacker,Player.playerList,monster.Monster.enemyList)
         return main()
 ### Testing Below ###
-gameStart()
+# gameStart()
+mainMenu()
 # create_player()
 # random_player()
 # enemy_assign_random()
 # print(defender.name)
-# for x in range(1,len(playerList)):
+# for x in range(1,len(Player.playerList)):
 #     give_stats(x)
 #     print("")
 # attacker.levelUp(120)

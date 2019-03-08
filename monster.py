@@ -11,7 +11,7 @@ class Monster:
         self.mdef=mdef
         self.spd=spd
         self.mxp=mxp
-enemyList=[]
+    enemyList=[]
 def enemy():
     monstertype=["Gooblins","Slime","Cherry Slime","Dragonn","Virus","Jack Squat","Sphiren","Sfiren"]
     for x in range(3):
@@ -27,7 +27,7 @@ def enemy():
                     spd=random.randint(10,15)
                     mxp=random.randint(5,15)
                     enemies=Monster(monstertype[i],rank,hp,atk,dfn,matk,mdef,spd,mxp)
-                    enemyList.append(enemies)
+                    Monster.enemyList.append(enemies)
                 elif rank==2:
                     hp=random.randint(40,60)
                     atk=random.randint(24,36)
@@ -37,7 +37,7 @@ def enemy():
                     spd=random.randint(30,45)
                     mxp=random.randint(20,38)
                     enemies=Monster(monstertype[i],rank,hp,atk,dfn,matk,mdef,spd,mxp)
-                    enemyList.append(enemies)
+                    Monster.enemyList.append(enemies)
                 elif rank==3:
                     hp=random.randint(70,100)
                     atk=random.randint(72,108)
@@ -47,7 +47,7 @@ def enemy():
                     spd=random.randint(50,75)
                     mxp=random.randint(40,65)
                     enemies=Monster(monstertype[i],rank,hp,atk,dfn,matk,mdef,spd,mxp)
-                    enemyList.append(enemies)
+                    Monster.enemyList.append(enemies)
                 elif rank==4:
                     hp=random.randint(80,120)
                     atk=random.randint(78,117)
@@ -57,7 +57,7 @@ def enemy():
                     spd=random.randint(75,113)
                     mxp=random.randint(66,90)
                     enemies=Monster(monstertype[i],rank,hp,atk,dfn,matk,mdef,spd,mxp)
-                    enemyList.append(enemies)
+                    Monster.enemyList.append(enemies)
                 elif rank==5:
                     hp=random.randint(120,180)
                     atk=random.randint(84,126)
@@ -67,23 +67,23 @@ def enemy():
                     spd=random.randint(80,120)
                     mxp=random.randint(100,131)
                     enemies=Monster(monstertype[i],rank,hp,atk,dfn,matk,mdef,spd,mxp)
-                    enemyList.append(enemies)
+                    Monster.enemyList.append(enemies)
 
 def enemy_stats(num):
     print("")
-    print("Monster Type:",enemyList[num].m_type)
-    print("Rank:",enemyList[num].rank)
-    print("HP:",enemyList[num].hp)
-    print("Attack:",enemyList[num].atk)
-    print("Defense:",enemyList[num].dfn)
-    print("Magic Attack:",enemyList[num].matk)
-    print("Magic Defence:",enemyList[num].mdef)
-    print("Speed:",enemyList[num].spd)
-    # print(enemyList[num].mxp)
+    print("Monster Type:",Monster.enemyList[num].m_type)
+    print("Rank:",Monster.enemyList[num].rank)
+    print("HP:",Monster.enemyList[num].hp)
+    print("Attack:",Monster.enemyList[num].atk)
+    print("Defense:",Monster.enemyList[num].dfn)
+    print("Magic Attack:",Monster.enemyList[num].matk)
+    print("Magic Defence:",Monster.enemyList[num].mdef)
+    print("Speed:",Monster.enemyList[num].spd)
+    # print(Monster.enemyList[num].mxp)
 def monster_assign_random():
     global defender
-    enemy=random.randint(0,len(enemyList)-1)
-    defender=enemyList[enemy]
+    enemy=random.randint(0,len(Monster.enemyList)-1)
+    defender=Monster.enemyList[enemy]
     return enemy
 def monster_type():
     return defender.m_type
@@ -114,7 +114,7 @@ def in_sphere_mode(counter,sphere_mode):
 #     if sphere_mode==True:
 # enemy()
 # sphere_mode=False
-# defender=enemyList[6]
+# defender=Monster.enemyList[6]
 # defender.hp=45
 # counter=1
 # while defender.hp!=0:
@@ -124,10 +124,10 @@ def in_sphere_mode(counter,sphere_mode):
 #     print(sphere_mode)
 #     defender.hp-=5
 # enemy_stats(6)
-# print(len(enemyList))
+# print(len(Monster.enemyList))
 # for x in range (0,10):
 #     enemy=monster_assign_random()
 #     print(x,enemy)
-# for x in range(0,len(enemyList)):
+# for x in range(0,len(Monster.enemyList)):
 #     enemy_stats(x)
 #     print("")

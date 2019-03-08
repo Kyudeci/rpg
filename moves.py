@@ -1,6 +1,5 @@
 import random
 import monster as mon
-import rpg
 jack_squat_phys={'Nil!': "Jack Squat lounges about...",'Squat!': random.randint(10,15),'Exist!': random.randint(5,10)}
 jack_squat_magic={'Nil!': "Jack Squat lounges about...",'Schwave!': random.randint(20,25),'Sleep!': random.randint(14,30)}
 
@@ -31,8 +30,7 @@ def js_moves(attack,enemy):
             return list(jack_squat_magic.items())[1][1]
         else:
             print(mon.monster_type(),"used",list(jack_squat_magic.items())[2][0])
-            defender.hp=defender.hp+list(jack_squat_magic.items())[2][1]
-            return 0
+            return 1
 
 def gob_moves(attack):
     if attack==1:
