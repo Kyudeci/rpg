@@ -434,7 +434,7 @@ def mainMenu():
     █████
     █████
     █████
-    █████      Welcome to the Indev Battlesim/RPG!
+    █████      Welcome to the Indev Battlesim/RPG V1.5!
     █████
  █  ██●██  █
   ███●●●███
@@ -443,6 +443,7 @@ def mainMenu():
       █
     █ █ █
      ███ \n""")
+    print("Currently only Monsters give experience.\n")
     if is_accessible('savefile.dat')==True:
         print("1.Start\n2.Load\n3.Save\n4.Quit")
         choice=int(input(">"))
@@ -518,6 +519,12 @@ def main():
             if game_mode==3:
                 attacker.hp=0
                 print(monster.monster_type(),"is the winner")
+                xp=floor(monster.Monster.enemyList[enemy].mxp*0.25)
+                attacker.hp=maxHealth_A
+                give_stats(1)
+                print("You earned",xp,"exp. points!\n")
+                attacker.levelUp(xp)
+                give_stats(1)
                 sounds.defeat()
                 break
             else:

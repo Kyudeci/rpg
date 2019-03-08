@@ -6,6 +6,8 @@ jack_squat_magic={'Nil!': "Jack Squat lounges about...",'Schwave!': random.randi
 gbPhys={'Gooblin Attack Force!': random.randint(10,20),'Pointy Assaulturu!': random.randint(5,16),'Full Charge!': 'Who knows?'}
 gbMagic={'Gooblin Magic Force!': random.randint(10,20),'Magiku Assaulturu!': random.randint(5,16), 'Fireballs!': 'What will it be?' }
 
+dgPhys={"Aerial Strike!": random.randint(15,21),"Shatter Scales!": random.randint(12,16),"Dragon's Fury!":random.randint(37,45)}
+dgMagic={"Leftovers!": "maxHealth_D*0.4", "Bye!": "Dragonn makes its exit!", "Stall": "Both players did nothing"}
 def js_moves(attack,enemy):
     if attack==1:
         chance=random.randint(0,14)
@@ -77,3 +79,28 @@ def gob_moves(attack):
             else:
                 print("They tried their best...")
                 return random.randint(3,7)
+
+def dg_moves(attack,enemy):
+    if attack==1:
+        chance=random.randint(0,14)
+        if chance>=8:
+            print(mon.monster_type(),"used",list(dgPhys.items())[0][0])
+            return list(dgPhys.items())[0][1]
+        elif chance>=1:
+            print(mon.monster_type(),"used",list(dgPhys.items())[1][0])
+            return list(dgPhys.items())[1][1]
+        else:
+            print(mon.monster_type(),"used",list(dgPhys.items())[2][0])
+            print("Dragonn is thrown into a frenzy!")
+            return list(dgPhys.items())[2][1]
+    else:
+        chance=random.randint(0,14)
+        if chance>=4:
+            print(mon.monster_type(),"used",list(dgMagic.items())[0][0])
+            return 0
+        elif chance>=2:
+            print(mon.monster_type(),"used",list(dgMagic.items())[1][0])
+            return list(dgMagic.items())[1][1]
+        else:
+            print(mon.monster_type(),"used",list(dgMagic.items())[2][0])
+            return 1
