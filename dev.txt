@@ -8,6 +8,7 @@ Tasks
 # SAVE and Load
 $ Defend flaw
 $ Bug occurs when player chooses invalid option
+$ Enemy heals not working
 
 Completed
 # Options: Free Play and Random
@@ -16,6 +17,7 @@ Completed
 # Fixed damage calculation(?)
 $ When/if enemy attacks first and player health is zero
 $ The occasional enemy_assign_random() fail(?)
+$ Exp. gain on save load
 
 References
 # https://codereview.stackexchange.com/questions/94116/turn-based-battle-simulator

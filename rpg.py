@@ -22,7 +22,7 @@ class Player:
     playerList=["Null"]
 
     def levelUp(self,xp):
-        self.xp=xp
+        self.xp+=xp
         while self.xp>=self.lvlNext:
             self.lvl+=1
             self.xp=self.xp-self.lvlNext
@@ -71,9 +71,14 @@ def combat_offense(current,enemy,maxHealth_A,maxHealth_D,comp_options):
         if defender.atk:
             if game_mode==3:
                 if monster.monster_type()=="Jack Squat":
-                    base_dmg=moves.js_moves(comp_options,enemy)
+                    base_dmg=moves.js_moves(comp_options,enemy,maxHealth_D)
                 elif monster.monster_type()=="Gooblins":
                     base_dmg=moves.gob_moves(comp_options)
+                elif monster.monster_type()=="Dragonn":
+                    base_dmg=moves.dg_moves(comp_options,maxHealth_D)
+                    if base_dmg==2:
+                        base_dmg=random.randint(12,16)
+                        monster.Monster.enemyList[enemy].dfn=monster.Monster.enemyList[enemy].dfn*0.8
                 if base_dmg==0:
                     dmg=0
                 elif game_mode==3:
@@ -115,16 +120,14 @@ def combat_magic_offense(current,enemy,maxHealth_A,maxHealth_D,comp_options):
         if defender.matk:
             if game_mode==3:
                 if monster.monster_type()=="Jack Squat":
-                    base_dmg=moves.js_moves(comp_options,enemy)
+                    base_dmg=moves.js_moves(comp_options,enemy,maxHealth_D)
+                elif monster.monster_type()=="Gooblins":
+                    base_dmg=moves.gob_moves(comp_options)
+                elif monster.monster_type()=="Dragonn":
+                    base_dmg=moves.dg_moves(comp_options,maxHealth_D)
                     if base_dmg==1:
                         base_dmg=0
-                        heal=random.randint(14,30)
-                        defender.hp+=heal
-                        if defender.hp>=maxHealth_D:
-                            defender.hp=maxHealth_D
-                        print("Jack Squat's health increased by", heal)
-                if monster.monster_type()=="Gooblins":
-                    base_dmg=moves.gob_moves(comp_options)
+                        print("Run....")
                 if base_dmg==0:
                     dmg=0
                 elif game_mode==3:
