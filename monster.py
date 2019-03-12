@@ -111,21 +111,20 @@ def in_sphere_mode(counter,sphere_mode):
             else:
                 return True
 
-def recovery(maxHealth_D):
-    if defender.m_type == "Jack Squat":
-        heal=random.randint(14,30)
-        defender.hp+=heal
-        if defender.hp>=maxHealth_D:
-            defender.hp=maxHealth_D
-        print("Jack Squat healed",heal,"hit points!")
-    elif defender.m_type=="Dragonn":
-        heal=floor(maxHealth_D*0.4)
-        defender.hp+=heal
-        if defender.hp>=maxHealth_D:
-            defender.hp=maxHealth_D
-        print("Dragonn healed",heal,"hit points!")
-# def exit_sphere_mode(counter):
-#     if sphere_mode==True:
+# def recovery(maxHealth_D):
+#     if defender.m_type == "Jack Squat":
+#         heal=random.randint(14,30)
+#         defender.hp+=heal
+#         if defender.hp>=maxHealth_D:
+#             defender.hp=maxHealth_D
+#         print("Jack Squat healed",heal,"hit points!")
+#     elif defender.m_type=="Dragonn":
+#         heal=floor(maxHealth_D*0.4)
+#         defender.hp+=heal
+#         if defender.hp>=maxHealth_D:
+#             defender.hp=maxHealth_D
+#         print("Dragonn healed",heal,"hit points!")
+
 # enemy()
 # sphere_mode=False
 # defender=Monster.enemyList[6]

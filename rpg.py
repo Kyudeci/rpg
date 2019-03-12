@@ -53,11 +53,14 @@ def combat_offense(current,enemy,maxHealth_A,maxHealth_D,comp_options):
         base_dmg+=roll
     if current==attacker:
         if attacker.atk:
-            dmg=floor(((floor((attacker.lvl)/5+2)*base_dmg*abs(attacker.atk-defender.dfn))/50)+2)
-            if game_mode==3:
-                defender.hp-=dmg
+            if attacker.atk==defender.dfn:
+                dmg=floor((100/(attacker.atk-(defender.dfn+1)))*base_dmg*(attacker.lvl/6))
             else:
-                defender.hp-=dmg
+                dmg=floor((100/(attacker.atk-defender.dfn))*base_dmg*(attacker.lvl/6))
+            if game_mode==3:
+                defender.hp-=abs(dmg)
+            else:
+                defender.hp-=abs(dmg)
             print("")
             print("You used a Physical Attack!")
             if game_mode==3:
@@ -78,16 +81,20 @@ def combat_offense(current,enemy,maxHealth_A,maxHealth_D,comp_options):
                     base_dmg=moves.dg_moves(comp_options,maxHealth_D)
                     if base_dmg==2:
                         base_dmg=random.randint(12,16)
-                        monster.Monster.enemyList[enemy].dfn=monster.Monster.enemyList[enemy].dfn*0.8
+                        defender.dfn=defender.dfn*0.8
                 if base_dmg==0:
                     dmg=0
-                elif game_mode==3:
-                    dmg=floor(((floor((defender.rank)/5+2)*base_dmg*abs(defender.atk-attacker.dfn))/50)+2)
                 else:
-                    dmg=floor(((floor((defender.rank)/5+2)*base_dmg*abs(defender.atk-attacker.dfn))/50)+2)
+                    if defender.atk==attacker.dfn:
+                        dmg=floor((50/(defender.atk-(attacker.dfn+1)))*base_dmg*(defender.rank/8))
+                    else:
+                        dmg=floor((50/(defender.atk-attacker.dfn))*base_dmg*(defender.rank/8))
             else:
-                dmg=floor(((base_dmg+abs(defender.atk-attacker.dfn)*10)/5)+2)
-            attacker.hp-=dmg
+                if defender.atk==attacker.dfn:
+                    dmg=floor((50/(defender.atk-(attacker.dfn+1)))*base_dmg)
+                else:
+                    dmg=floor((50/(defender.atk-attacker.dfn))*base_dmg)
+            attacker.hp-=abs(dmg)
             print("")
             if game_mode==1 or game_mode==2:
                 print("The enemy used a Physical Attack!")
@@ -102,11 +109,14 @@ def combat_magic_offense(current,enemy,maxHealth_A,maxHealth_D,comp_options):
         base_dmg+=roll
     if current==attacker:
         if attacker.matk:
-            dmg=floor(((floor((attacker.lvl)/5+2)*base_dmg*abs(attacker.matk-defender.mdef))/50)+2)
-            if game_mode==3:
-                defender.hp-=dmg
+            if attacker.matk==defender.mdef:
+                dmg=floor((100/(attacker.matk-(defender.mdef+1)))*base_dmg*(attacker.lvl/6))
             else:
-                defender.hp-=dmg
+                dmg=floor((100/(attacker.matk-defender.mdef))*base_dmg*(attacker.lvl/6))
+            if game_mode==3:
+                defender.hp-=abs(dmg)
+            else:
+                defender.hp-=abs(dmg)
             print("")
             print("You used a Magic Attack!")
             if game_mode==3:
@@ -128,22 +138,31 @@ def combat_magic_offense(current,enemy,maxHealth_A,maxHealth_D,comp_options):
                     if base_dmg==1:
                         base_dmg=0
                         print("Run....")
-                if base_dmg==0:
-                    dmg=0
-                elif game_mode==3:
-                    dmg=floor(((floor((defender.rank)/5+2)*base_dmg*abs(defender.matk-attacker.mdef))/50)+2)
+                if base_dmg<0:
+                    base_dmg=0
+                    heal=random.randint(14,30)
+                    defender.hp+=heal
+                    if defender.hp>maxHealth_D:
+                        defender.hp=maxHealth_D
+                    print(monster.monster_type(),"recovered health!")
                 else:
-                    dmg=floor(((floor((defender.rank)/5+2)*base_dmg*abs(defender.matk-attacker.mdef))/50)+2)
+                    if defender.matk==attacker.mdef:
+                        dmg=floor((50/(defender.matk-(attacker.mdef+1)))*base_dmg*(defender.rank/8))
+                    else:
+                        dmg=floor((50/(defender.matk-attacker.mdef))*base_dmg*(defender.rank/8))
+                    attacker.hp-=abs(dmg)
+                    print(attacker.name,"took",floor(abs(dmg)),"damage!\n")
             else:
-                dmg=floor(((base_dmg+abs(defender.matk/attacker.mdef)*10)/5)+2)
-            attacker.hp-=dmg
+                if defender.matk==attacker.mdef:
+                    dmg=floor((50/(defender.matk-(attacker.mdef+1)))*base_dmg)
+                else:
+                    dmg=floor((50/(defender.matk-attacker.mdef))*base_dmg)
+                attacker.hp-=abs(dmg)
+                print(attacker.name,"took",floor(abs(dmg)),"damage!\n")
             print("")
-            if game_mode==1 or game_mode==2:
-                print("The enemy used a Magic Attack!")
-            print(attacker.name,"took",floor(abs(dmg)),"damage!\n")
             battle_state(maxHealth_A,maxHealth_D)
             sounds.magicAttack()
-            return dmg
+            return
 
 def defend(current,maxHealth_A,maxHealth_D):
     if current==defender:
