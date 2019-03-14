@@ -86,14 +86,14 @@ def combat_offense(current,enemy,maxHealth_A,maxHealth_D,comp_options):
                     dmg=0
                 else:
                     if defender.atk==attacker.dfn:
-                        dmg=floor((50/(defender.atk-(attacker.dfn+1)))*base_dmg*(defender.rank/8))
+                        dmg=floor((75/(defender.atk-(attacker.dfn+1)))*base_dmg*(defender.rank/8))
                     else:
-                        dmg=floor((50/(defender.atk-attacker.dfn))*base_dmg*(defender.rank/8))
+                        dmg=floor((75/(defender.atk-attacker.dfn))*base_dmg*(defender.rank/8))
             else:
                 if defender.atk==attacker.dfn:
-                    dmg=floor((50/(defender.atk-(attacker.dfn+1)))*base_dmg)
+                    dmg=floor((75/(defender.atk-(attacker.dfn+1)))*base_dmg)
                 else:
-                    dmg=floor((50/(defender.atk-attacker.dfn))*base_dmg)
+                    dmg=floor((75/(defender.atk-attacker.dfn))*base_dmg)
             attacker.hp-=abs(dmg)
             print("")
             if game_mode==1 or game_mode==2:
@@ -147,16 +147,16 @@ def combat_magic_offense(current,enemy,maxHealth_A,maxHealth_D,comp_options):
                     print(monster.monster_type(),"recovered health!")
                 else:
                     if defender.matk==attacker.mdef:
-                        dmg=floor((50/(defender.matk-(attacker.mdef+1)))*base_dmg*(defender.rank/8))
+                        dmg=floor((75/(defender.matk-(attacker.mdef+1)))*base_dmg*(defender.rank/8))
                     else:
-                        dmg=floor((50/(defender.matk-attacker.mdef))*base_dmg*(defender.rank/8))
+                        dmg=floor((75/(defender.matk-attacker.mdef))*base_dmg*(defender.rank/8))
                     attacker.hp-=abs(dmg)
                     print(attacker.name,"took",floor(abs(dmg)),"damage!\n")
             else:
                 if defender.matk==attacker.mdef:
-                    dmg=floor((50/(defender.matk-(attacker.mdef+1)))*base_dmg)
+                    dmg=floor((75/(defender.matk-(attacker.mdef+1)))*base_dmg)
                 else:
-                    dmg=floor((50/(defender.matk-attacker.mdef))*base_dmg)
+                    dmg=floor((75/(defender.matk-attacker.mdef))*base_dmg)
                 attacker.hp-=abs(dmg)
                 print(attacker.name,"took",floor(abs(dmg)),"damage!\n")
             print("")
@@ -402,7 +402,10 @@ def give_stats(num):
     print("Magic Defence:",Player.playerList[num].mdef,"\nSpeed:",Player.playerList[num].spd)
 def create_player():
     global attacker
-    name=input("Give me a name peasant! =>")
+    name=input("Meikahs: What is your name by chance? =>")
+    if len(name)<3:
+        print("Your name is too short.")
+        return create_player()
     atk=random.randint(20,100)
     dfn=random.randint(20,100)
     matk=random.randint(20,100)
@@ -411,6 +414,7 @@ def create_player():
     new_player=Player(name,100,atk,dfn,matk,mdef,spd)
     Player.playerList.append(new_player)
     attacker=Player.playerList[1]
+    return name
 def random_player():
     names=["NorthStar","Ventus","Xero","Anna","Malla","Korrin"]
     for i in range(len(names)):
@@ -581,7 +585,7 @@ def main():
         return main()
 ### Testing Below ###
 # gameStart()
-mainMenu()
+# mainMenu()
 # create_player()
 # random_player()
 # enemy_assign_random()
