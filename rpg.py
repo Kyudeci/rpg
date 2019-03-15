@@ -19,7 +19,8 @@ class Player:
         self.lvl=1
         self.xp=0
         self.lvlNext=25
-    playerList=["Null"]
+        self.karma=0
+    playerList=[]
 
     def levelUp(self,xp):
         self.xp+=xp
@@ -359,6 +360,8 @@ def battle_options(enemy,maxHealth_A,maxHealth_D,comp_options):
     else:
         print("Definitely not valid, what are you doing?")
         battle_options(enemy,maxHealth_A,maxHealth_D,comp_options)
+Origin=Player("Meikahs",999,999,999,999,999,999)
+Player.playerList.append(Origin)
 Player1=Player("Kyu",100,23,24,56,57,60)
 Player2=Player("Varis",100,45,54,34,24,60)
 Player3=Player("Y",100,23,25,54,34,90)
@@ -400,6 +403,7 @@ def give_stats(num):
     print("HP:",Player.playerList[num].hp,"\nAttack:",Player.playerList[num].atk)
     print("Defense:",Player.playerList[num].dfn,"\nMagic Attack:",Player.playerList[num].matk)
     print("Magic Defence:",Player.playerList[num].mdef,"\nSpeed:",Player.playerList[num].spd)
+    print(Player.playerList[num].karma)
 def create_player():
     global attacker
     name=input("Meikahs: What is your name by chance? =>")
