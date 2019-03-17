@@ -94,6 +94,15 @@ def ForestBisca():
         TownSucreNoir()
 def TownSucreNoir():
     playerName=rpg.Player.playerList[1].name
+    player=rpg.Player.playerList[1]
     print("A town appears into your view.")
-start()
+    rpg.Player.playerList[1].location="TownSucreNoir"
+    playerSave=input("Would you like to save?\n>")
+    if playerSave in affirm:
+        rpg.save(player,rpg.Player.playerList)
+        print("Save complete!")
+        sys.exit()
+    print("Hello")
+locations={"TownSucreNoir":TownSucreNoir}
+rpg.mainMenu()
 # ForestBisca()

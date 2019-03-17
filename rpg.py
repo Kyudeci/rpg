@@ -5,6 +5,7 @@ import monster
 import moves
 import sys
 import pickle
+import story
 from math import floor
 pygame.mixer.init()
 class Player:
@@ -20,8 +21,8 @@ class Player:
         self.xp=0
         self.lvlNext=25
         self.karma=0
+        self.location="ForestBisca"
     playerList=[]
-
     def levelUp(self,xp):
         self.xp+=xp
         while self.xp>=self.lvlNext:
@@ -395,19 +396,19 @@ Player1=Player("Kyu",100,23,24,56,57,60)
 Player2=Player("Varis",100,45,54,34,24,60)
 Player3=Player("Y",100,23,25,54,34,90)
 Monsta1=monster.Monster("WizCat",1,100,100,100,100,100,100,34)
-def save(player,plist,elist):
+def save(player,plist):
     player=attacker
     plist=Player.playerList
-    elist=monster.Monster.enemyList
     with open('savefile.dat', 'wb') as f:
-        pickle.dump([player,plist,elist], f, protocol=2)
+        pickle.dump([player,plist], f, protocol=2)
 def load():
+    global attacker
     with open('savefile.dat', 'rb') as f:
-        player,plist,elist = pickle.load(f)
+        player,plist = pickle.load(f)
         for x in range(1,len(plist)):
             Player.playerList.append(plist[x])
-        for y in range(0,len(elist)):
-            monster.Monster.enemyList.append(elist[y])
+        attacker=Player.playerList[1]
+        monster.enemy()
         give_stats(1)
     return True
 def is_accessible(path, mode='r'):
@@ -432,7 +433,7 @@ def give_stats(num):
     print("HP:",Player.playerList[num].hp,"\nAttack:",Player.playerList[num].atk)
     print("Defense:",Player.playerList[num].dfn,"\nMagic Attack:",Player.playerList[num].matk)
     print("Magic Defence:",Player.playerList[num].mdef,"\nSpeed:",Player.playerList[num].spd)
-    print(Player.playerList[num].karma)
+    print(Player.playerList[num].location)
 def create_player():
     global attacker
     name=input("Meikahs: What is your name by chance? =>")
@@ -512,7 +513,7 @@ def mainMenu():
             l_check=load()
             gameStart(l_check)
         elif choice==3:
-            save(attacker,Player.playerList,monster.Monster.enemyList)
+            save(attacker,Player.playerList)
         elif choice==4:
             sys.exit()
     else:
@@ -520,18 +521,22 @@ def mainMenu():
         choice=int(input(">"))
         if choice==1:
             gameStart(False)
+        else:
+            sys.exit()
 def gameStart(l_check):
     if l_check==False:
-        sounds.background_music(1)
-        create_player()
-        give_stats(1)
-        random_player()
-        monster.enemy()
-        vfr=monster.Monster.enemyList
-        save(attacker,Player.playerList,vfr)
+        # sounds.background_music(1)
+        # create_player()
+        # give_stats(1)
+        # random_player()
+        # monster.enemy()
+        # vfr=monster.Monster.enemyList
+        # save(attacker,Player.playerList,vfr)
+        story.start()
     else:
-        main()
-    main()
+        location=Player.playerList[1].location
+        if location in story.locations:
+            story.locations[location]()
 repeat=0
 low_health=0
 game_mode=0

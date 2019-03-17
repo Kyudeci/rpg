@@ -19,8 +19,7 @@ class Monster:
     Rank5=[]
 # Enemy Creation and Stats #
 def enemy():
-    # monstertype=["Gooblins","Slime","Cherry Slime","Dragonn","Virus","Jack Squat","Sphiren","Sfiren"]
-    monstertype=["Dragonn"]
+    monstertype=["Gooblins","Slime","Cherry Slime","Dragonn","Virus","Jack Squat","Sphiren","Sfiren"]
     for i in range(len(monstertype)):
         for rank in range(1,6):
             if monstertype:
