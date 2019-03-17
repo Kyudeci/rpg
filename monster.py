@@ -19,7 +19,8 @@ class Monster:
     Rank5=[]
 # Enemy Creation and Stats #
 def enemy():
-    monstertype=["Gooblins","Slime","Cherry Slime","Dragonn","Virus","Jack Squat","Sphiren","Sfiren"]
+    # monstertype=["Gooblins","Slime","Cherry Slime","Dragonn","Virus","Jack Squat","Sphiren","Sfiren"]
+    monstertype=["Dragonn"]
     for i in range(len(monstertype)):
         for rank in range(1,6):
             if monstertype:
@@ -158,6 +159,18 @@ def xpGain(num):
     elif defender.rank==5:
         xp=Monster.Rank5[num].mxp
     return xp
+def healthReset(num):
+    if defender.rank==1:
+        health=Monster.Rank1[num].hp
+    elif defender.rank==2:
+        health=Monster.Rank2[num].hp
+    elif defender.rank==3:
+        health=Monster.Rank3[num].hp
+    elif defender.rank==4:
+        health=Monster.Rank4[num].hp
+    elif defender.rank==5:
+        health=Monster.Rank5[num].hp
+    return health
 def in_sphere_mode(counter,sphere_mode):
     if defender.m_type == "Sphiren" or defender.m_type == "Sfiren" :
         if sphere_mode==False and defender.hp!=0:

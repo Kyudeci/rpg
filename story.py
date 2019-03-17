@@ -67,7 +67,7 @@ def ForestBisca():
     while walking!=False:
         tWalk=rdm.randint(1,100)
         if tWalk in range(37,50):
-            print("You stumble !")
+            print("You stumble!")
             break
         else:
             print("\n.")
@@ -81,7 +81,7 @@ def ForestBisca():
         print("Instinctively, you take the path to the left!\n")
         defender=mon.Monster.Rank1[enemy]
         rpg.battle(enemy,attacker,defender)
-        #Arrive at Town
+        TownSucreNoir()
     else:
         print("Following your instincts, you take the right path!\n")
         enemy=mon.rank1Assign()
@@ -91,6 +91,9 @@ def ForestBisca():
         enemy=mon.rank1Assign()
         defender=mon.Monster.Rank1[enemy]
         rpg.battle(enemy,attacker,defender)
-        #Arrive at Town
+        TownSucreNoir()
+def TownSucreNoir():
+    playerName=rpg.Player.playerList[1].name
+    print("A town appears into your view.")
 start()
 # ForestBisca()

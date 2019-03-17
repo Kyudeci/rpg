@@ -49,7 +49,7 @@ class Player:
 
 def combat_offense(current,enemy,maxHealth_A,maxHealth_D,comp_options,defender):
     base_dmg=0
-    for n in range(3):
+    for n in range(4):
         roll=random.randint(1,6)
         base_dmg+=roll
     if current==attacker:
@@ -70,7 +70,7 @@ def combat_offense(current,enemy,maxHealth_A,maxHealth_D,comp_options,defender):
                 print(defender.name,"took",floor(abs(dmg)),"damage!\n")
             battle_state(maxHealth_A,maxHealth_D,defender)
             sounds.punch()
-            return dmg
+            return
     else:
         if defender.atk:
             if game_mode==0:
@@ -80,16 +80,20 @@ def combat_offense(current,enemy,maxHealth_A,maxHealth_D,comp_options,defender):
                     base_dmg=moves.gob_moves(comp_options)
                 elif monster.monster_type()=="Dragonn":
                     base_dmg=moves.dg_moves(comp_options,maxHealth_D)
+                    debuff=0
                     if base_dmg==2:
                         base_dmg=random.randint(12,16)
-                        defender.dfn=defender.dfn*0.8
+                        if debuff==0:
+                            defender.dfn=floor(defender.dfn*0.8)
+                            debuff+=1
+
                 if base_dmg==0:
                     dmg=0
                 else:
                     if defender.atk==attacker.dfn:
-                        dmg=floor((75/(defender.atk-(attacker.dfn+1)))*base_dmg*(defender.rank/8))
+                        dmg=floor((75/(defender.atk-(attacker.dfn+1)))*base_dmg*(defender.rank/5))
                     else:
-                        dmg=floor((75/(defender.atk-attacker.dfn))*base_dmg*(defender.rank/8))
+                        dmg=floor((75/(defender.atk-attacker.dfn))*base_dmg*(defender.rank/5))
             else:
                 if defender.atk==attacker.dfn:
                     dmg=floor((75/(defender.atk-(attacker.dfn+1)))*base_dmg)
@@ -102,10 +106,10 @@ def combat_offense(current,enemy,maxHealth_A,maxHealth_D,comp_options,defender):
             print(attacker.name,"took",floor(abs(dmg)),"damage!\n")
             battle_state(maxHealth_A,maxHealth_D,defender)
             sounds.tackle()
-            return dmg
+            return
 def combat_magic_offense(current,enemy,maxHealth_A,maxHealth_D,comp_options,defender):
     base_dmg=0
-    for n in range(3):
+    for n in range(4):
         roll=random.randint(1,6)
         base_dmg+=roll
     if current==attacker:
@@ -126,7 +130,7 @@ def combat_magic_offense(current,enemy,maxHealth_A,maxHealth_D,comp_options,defe
                 print(defender.name,"took",floor(abs(dmg)),"damage!\n")
             battle_state(maxHealth_A,maxHealth_D,defender)
             sounds.magicAttack()
-            return dmg
+            return
     else:
         if defender.matk:
             if game_mode==0:
@@ -138,19 +142,21 @@ def combat_magic_offense(current,enemy,maxHealth_A,maxHealth_D,comp_options,defe
                     base_dmg=moves.dg_moves(comp_options,maxHealth_D)
                     if base_dmg==1:
                         base_dmg=0
-                        print("Run....")
                 if base_dmg<0:
                     base_dmg=0
-                    heal=random.randint(14,30)
+                    heal=random.randint(5,11)
                     defender.hp+=heal
                     if defender.hp>maxHealth_D:
                         defender.hp=maxHealth_D
                     print(monster.monster_type(),"recovered health!")
+                elif base_dmg==0 and defender.m_type=="Dragonn":
+                    print("Dragonn flees the battle!")
+                    return 7133
                 else:
                     if defender.matk==attacker.mdef:
-                        dmg=floor((75/(defender.matk-(attacker.mdef+1)))*base_dmg*(defender.rank/8))
+                        dmg=floor((75/(defender.matk-(attacker.mdef+1)))*base_dmg*(defender.rank/5))
                     else:
-                        dmg=floor((75/(defender.matk-attacker.mdef))*base_dmg*(defender.rank/8))
+                        dmg=floor((75/(defender.matk-attacker.mdef))*base_dmg*(defender.rank/5))
                     attacker.hp-=abs(dmg)
                     print(attacker.name,"took",floor(abs(dmg)),"damage!\n")
             else:
@@ -333,7 +339,8 @@ def comp(enemy,maxHealth_A,maxHealth_D,defender):
     if comp_options==0:
         combat_offense(defender,enemy,maxHealth_A,maxHealth_D,comp_options,defender)
     elif comp_options==1:
-        combat_magic_offense(defender,enemy,maxHealth_A,maxHealth_D,comp_options,defender)
+        identifier=combat_magic_offense(defender,enemy,maxHealth_A,maxHealth_D,comp_options,defender)
+        return identifier
     elif comp_options==2:
         defend(defender,maxHealth_A,maxHealth_D)
     else:
@@ -613,10 +620,13 @@ def battle(enemy,attacker,defender):
     counter=1
     sphere_mode=False
     maxHealth_A=100
+    defender.hp=monster.healthReset(enemy)
     maxHealth_D=defender.hp
     while attacker.hp!=0 or defender.hp!=0:
         print("Turn",counter,"\n")
-        speedCheck(enemy,attacker,defender,maxHealth_A,maxHealth_D,-1,counter)
+        end=speedCheck(enemy,attacker,defender,maxHealth_A,maxHealth_D,-1,counter)
+        if end==1:
+            break
         counter+=1
         if game_mode==0:
             sphere_mode=monster.in_sphere_mode(counter,sphere_mode)
@@ -631,6 +641,7 @@ def battle(enemy,attacker,defender):
                 print(monster.monster_type(),"is the winner!")
                 xp=floor(monster.xpGain(enemy)*0.25)
                 attacker.hp=maxHealth_A
+                defender.hp=maxHealth_D
                 give_stats(1)
                 print("\nYou earned",xp,"exp. points!")
                 attacker.levelUp(xp)
@@ -639,6 +650,7 @@ def battle(enemy,attacker,defender):
                 break
             else:
                 attacker.hp=0
+                defender.hp=maxHealth_D
                 print(defender.name,"is the winner!")
                 # sounds.defeat()
                 break
@@ -648,24 +660,28 @@ def battle(enemy,attacker,defender):
             if game_mode==0:
                 xp=monster.xpGain(enemy)
                 attacker.hp=maxHealth_A
+                defender.hp=maxHealth_D
                 give_stats(1)
                 print("\nYou earned",xp,"exp. points!")
                 attacker.levelUp(xp)
                 give_stats(1)
             break
-    defender.hp=50
+    if end==1:
+        attacker.hp=100
+        defender.hp=maxHealth_D
 def speedCheck(enemy,attacker,defender,maxHealth_A,maxHealth_D,comp_options,turn):
+    identifier=0
     if attacker.spd>defender.spd:
         print("It's your move!")
         story_battle(enemy,maxHealth_A,maxHealth_D,comp_options,defender)
         while defender.hp<=0:
             break
         else:
-            comp(enemy,maxHealth_A,maxHealth_D,defender)
+            identifier=comp(enemy,maxHealth_A,maxHealth_D,defender)
     elif defender.spd>attacker.spd:
         print(defender.name,"moves first.")
         pygame.time.wait(1000)
-        comp(enemy,maxHealth_A,maxHealth_D,defender)
+        identifier=comp(enemy,maxHealth_A,maxHealth_D,defender)
         while attacker.hp<=0:
             break
         else:
@@ -675,9 +691,9 @@ def speedCheck(enemy,attacker,defender,maxHealth_A,maxHealth_D,comp_options,turn
         if choose=="1":
             if turn==1:
                 print("The enemy makes thier move!")
-                comp(enemy,maxHealth_A,maxHealth_D,defender)
+                identifier=comp(enemy,maxHealth_A,maxHealth_D,defender)
             else:
-                comp(enemy,maxHealth_A,maxHealth_D,defender)
+                identifier=comp(enemy,maxHealth_A,maxHealth_D,defender)
             while attacker.hp<=0:
                 break
             else:
@@ -686,13 +702,15 @@ def speedCheck(enemy,attacker,defender,maxHealth_A,maxHealth_D,comp_options,turn
             if turn==1:
                 print("Your fate had been decided in a coin flip.\nYou may make the first move!\n")
                 story_battle(enemy,maxHealth_A,maxHealth_D,comp_options,defender)
-                comp(enemy,maxHealth_A,maxHealth_D,defender)
+                identifier=comp(enemy,maxHealth_A,maxHealth_D,defender)
             else:
                 story_battle(enemy,maxHealth_A,maxHealth_D,comp_options,defender)
                 while defender.hp<=0:
                     break
                 else:
-                    comp(enemy,maxHealth_A,maxHealth_D,defender)
+                    identifier=comp(enemy,maxHealth_A,maxHealth_D,defender)
+    if identifier==7133:
+        return 1
 ### Testing Below ###
 # gameStart()
 # mainMenu()

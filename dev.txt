@@ -21,3 +21,6 @@ $ Enemy heals not working
 
 References
 # https://codereview.stackexchange.com/questions/94116/turn-based-battle-simulator
+
+Identifiers-Number combinations that produce different results
+  7133=Flee
