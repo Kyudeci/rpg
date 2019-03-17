@@ -3,10 +3,12 @@ import sounds
 import sys
 import rpg
 import random as rdm
+import monster as mon
 affirm=['yes','YES','Yes','y','Y','1']
 deny=['no','NO','No','n','N','2']
 Meikahs=rpg.Player.playerList[0].name
 def start():
+    mon.enemy()
     intro=input('\n???: Are you perhaps LOST?\n>Yes...\n>No, not really!\n>>')
     if intro in affirm:
         print('\nWelcome! I am Meikahs, Keeper of the Lost!\n')
@@ -65,19 +67,30 @@ def ForestBisca():
     while walking!=False:
         tWalk=rdm.randint(1,100)
         if tWalk in range(37,50):
-            print("Battle!")
+            print("You stumble !")
             break
         else:
             print("\n.")
             continue
-    print("Which way will you go?\n>Right    >Left")
+    enemy=mon.rank1Assign()
+    defender=mon.Monster.Rank1[enemy]
+    attacker=rpg.Player.playerList[1]
+    rpg.battle(enemy,attacker,defender)
+    print("\nWhich way will you go?\n>Right    >Left\n")
     if rpg.Player.playerList[1].karma>=0:
-        print("Instinctively, you take the path to the left!")
-        #Fixed normal encounter
+        print("Instinctively, you take the path to the left!\n")
+        defender=mon.Monster.Rank1[enemy]
+        rpg.battle(enemy,attacker,defender)
         #Arrive at Town
     else:
-        print("Following your instincts you take the right path")
-        #Fixed buffed encounter x2
+        print("Following your instincts, you take the right path!\n")
+        enemy=mon.rank1Assign()
+        defender=mon.Monster.Rank1[enemy]
+        rpg.battle(enemy,attacker,defender)
+        print("The forest roars!")
+        enemy=mon.rank1Assign()
+        defender=mon.Monster.Rank1[enemy]
+        rpg.battle(enemy,attacker,defender)
         #Arrive at Town
 start()
 # ForestBisca()
