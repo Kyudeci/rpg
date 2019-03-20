@@ -19,7 +19,8 @@ def start():
         return start()
     pygame.time.wait(1000)
     playerName=rpg.create_player()
-    joke=["Do you really want to go with that?", "I mean come on! There are better names!","Here, I'll even give the chance to change it this one time!","I'll even forget what your previous name was!"]
+    joke=["Do you really want to go with that?","I mean come on! There are better names!",
+    "Here, I'll even give the chance to change it this one time!","I'll even forget what your previous name was!"]
     print(Meikahs+":",playerName,"was it?")
     for x in range(len(joke)):
         print(Meikahs+":",joke[x])
@@ -93,16 +94,48 @@ def ForestBisca():
         rpg.battle(enemy,attacker,defender)
         TownSucreNoir()
 def TownSucreNoir():
-    playerName=rpg.Player.playerList[1].name
+    loop=0
+    if loop==0:
+        playerName=rpg.Player.playerList[1].name
+        player=rpg.Player.playerList[1]
+        print("\nA town appears into your view.")
+        rpg.Player.playerList[1].location="TownSucreNoir"
+        print("\nWelcome to Town de SucreNoir!")
+        loop+=TownMenu()
+        print("Hello")
+    if loop==1:
+        TownSucreNoir2()
+        def TownSucreNoir2():
+            print("A twisted pillar appears before you...")
+            pygame.time.wait(1000)
+            print("You inspect it for quite some time before coming to the conclusion it is made of resin.")
+
+def TownMenu():
     player=rpg.Player.playerList[1]
-    print("A town appears into your view.")
-    rpg.Player.playerList[1].location="TownSucreNoir"
-    playerSave=input("Would you like to save?\n>")
-    if playerSave in affirm:
-        rpg.save(player,rpg.Player.playerList)
-        print("Save complete!")
-        sys.exit()
-    print("Hello")
+    location=rpg.Player.playerList[1].location
+    if location=="TownSucreNoir":
+        menu=input("""\nWhat would you like to do?
+    1.Look Around\n    2.Interact with Crest\n    3.Check Stats\n    4.Save\n""")
+        if menu=="1":
+            print("The town looks empty...")
+            return TownMenu()
+        elif menu=="2":
+            print("A change occurs!")
+            return 1
+        elif menu=="3":
+            rpg.give_stats(1)
+            return TownMenu()
+        elif menu=="4":
+            playerSave=input("Would you like to save?\n>")
+            if playerSave in affirm:
+                rpg.save(player,rpg.Player.playerList)
+                print("Save complete!")
+                quit=input("Would you like to quit the game?")
+                return TownMenu()
+            else:
+                return TownMenu()
+
+
 locations={"TownSucreNoir":TownSucreNoir}
 rpg.mainMenu()
 # ForestBisca()
