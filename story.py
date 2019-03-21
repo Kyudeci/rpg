@@ -24,15 +24,16 @@ def start():
     print(Meikahs+":",playerName,"was it?")
     for x in range(len(joke)):
         print(Meikahs+":",joke[x])
-        # pygame.time.wait(1800)
+        pygame.time.wait(1800)
     nameChange=input('Meikahs: So will you change your name?\n>>')
     if nameChange in affirm:
         rpg.Player.playerList.pop()
         playerName=rpg.create_player()
     elif nameChange in deny:
-        print(Meikahs+": I guess you're sticking with "+playerName+",then?")
+        print(Meikahs+": I guess you're sticking with "+playerName+", then?")
+    pygame.time.wait(1800)
     print(Meikahs+": Oh! That reminds me, I have something for you.")
-    # pygame.time.wait(1800)
+    pygame.time.wait(1800)
     rpg.give_stats(1)
     Red="\033[0;31m"
     Green="\033[0;32m"
@@ -41,18 +42,24 @@ def start():
     Purple="\033[0;35m"
     Cyan="\033[0;36m"
     CEND = '\033[0m'
+    pygame.time.wait(2000)
     print('\n'+Meikahs+": Yes, these are your",Red,"Specific but",Cyan,"Telling",Yellow,"Attributes of",Green,"Tactical",Purple,"Strength",CEND,"or STATS for short!")
+    pygame.time.wait(1800)
     clarity=input("\nDo you understand so far?\n1.Yes\n2.Also Yes\n3.What kind of options are these?\n>>")
     if clarity=="1":
         rpg.Player.playerList[1].karma+=1
-        print(Meikahs+": How compliant! Let's continue!")
+        print(Meikahs+": How compliant! Surely you'll survive.")
+        pygame.time.wait(1800)
     elif clarity=="2":
         print(Meikahs+": You could have just chosen the first option...")
+        pygame.time.wait(1800)
     else:
         rpg.Player.playerList[1].karma-=1
         print(Meikahs+": Silly child, you are guided by my hand. I cannot simply leave you to your own devices, now can I?")
+        pygame.time.wait(1800)
     if clarity=="1" or clarity=="2":
         print(Meikahs+": Well now, it's time for you to get going. Ta ta!")
+        pygame.time.wait(1800)
         ForestBisca()
     else:
         print(Meikahs+": It's time for you to LEAVE!!!")
@@ -68,7 +75,7 @@ def ForestBisca():
     while walking!=False:
         tWalk=rdm.randint(1,100)
         if tWalk in range(37,50):
-            print("You stumble!")
+            print("You stumble!\n")
             break
         else:
             print("\n.")
@@ -102,17 +109,18 @@ def TownSucreNoir():
         rpg.Player.playerList[1].location="TownSucreNoir"
         print("\nWelcome to Town de SucreNoir!")
         loop+=TownMenu()
-        print("Hello")
     if loop==1:
-        TownSucreNoir2()
         def TownSucreNoir2():
             print("A twisted pillar appears before you...")
             pygame.time.wait(1000)
-            print("You inspect it for quite some time before coming to the conclusion it is made of resin.")
+            print("\nYou inspect it for quite some time before coming to the conclusion it is made of resin.")
+            print("You make your leave.")
+        TownSucreNoir2()
 
 def TownMenu():
     player=rpg.Player.playerList[1]
     location=rpg.Player.playerList[1].location
+    pygame.time.wait(1800)
     if location=="TownSucreNoir":
         menu=input("""\nWhat would you like to do?
     1.Look Around\n    2.Interact with Crest\n    3.Check Stats\n    4.Save\n""")

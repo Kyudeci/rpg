@@ -648,9 +648,12 @@ def battle(enemy,attacker,defender):
                 attacker.hp=maxHealth_A
                 defender.hp=maxHealth_D
                 give_stats(1)
+                pygame.time.wait(1800)
                 print("\nYou earned",xp,"exp. points!")
                 attacker.levelUp(xp)
+                pygame.time.wait(1800)
                 give_stats(1)
+
                 # sounds.defeat()
                 break
             else:
@@ -667,8 +670,10 @@ def battle(enemy,attacker,defender):
                 attacker.hp=maxHealth_A
                 defender.hp=maxHealth_D
                 give_stats(1)
+                pygame.time.wait(1800)
                 print("\nYou earned",xp,"exp. points!")
                 attacker.levelUp(xp)
+                pygame.time.wait(1800)
                 give_stats(1)
             break
     if end==1:
