@@ -4,6 +4,7 @@ import sys
 import rpg
 import random as rdm
 import monster as mon
+import eventFlags as ef
 affirm=['yes','YES','Yes','y','Y','1']
 deny=['no','NO','No','n','N','2']
 Meikahs=rpg.Player.playerList[0].name
@@ -101,21 +102,21 @@ def ForestBisca():
         rpg.battle(enemy,attacker,defender)
         TownSucreNoir()
 def TownSucreNoir():
-    loop=0
-    if loop==0:
-        playerName=rpg.Player.playerList[1].name
-        player=rpg.Player.playerList[1]
+    playerName=rpg.Player.playerList[1].name
+    player=rpg.Player.playerList[1]
+    if ef.Events().Flags[0].loop==0:
         print("\nA town appears into your view.")
         rpg.Player.playerList[1].location="TownSucreNoir"
         print("\nWelcome to Town de SucreNoir!")
-        loop+=TownMenu()
-    if loop==1:
+        ef.Events().Flags[0].loop+=TownMenu()
+    if ef.Events().Flags[0].loop==1:
         def TownSucreNoir2():
             print("A twisted pillar appears before you...")
             pygame.time.wait(1000)
             print("\nYou inspect it for quite some time before coming to the conclusion it is made of resin.")
             print("You make your leave.")
         TownSucreNoir2()
+        rpg.save(player,rpg.Player.playerList)
 
 def TownMenu():
     player=rpg.Player.playerList[1]
@@ -137,7 +138,6 @@ def TownMenu():
             playerSave=input("Would you like to save?\n>")
             if playerSave in affirm:
                 rpg.save(player,rpg.Player.playerList)
-                print("Save complete!")
                 quit=input("Would you like to quit the game?")
                 return TownMenu()
             else:

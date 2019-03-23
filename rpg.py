@@ -6,6 +6,7 @@ import moves
 import sys
 import pickle
 import story
+import eventFlags as ef
 from math import floor
 pygame.mixer.init()
 class Player:
@@ -399,15 +400,21 @@ Monsta1=monster.Monster("WizCat",1,100,100,100,100,100,100,34)
 def save(player,plist):
     player=attacker
     plist=Player.playerList
+    events=ef.Events().Flags
     with open('savefile.dat', 'wb') as f:
-        pickle.dump([player,plist], f, protocol=2)
+        pickle.dump([player,plist,events], f, protocol=2)
+    print("Save complete!")
 def load():
     global attacker
+    ef.Events().Flags.clear()
     with open('savefile.dat', 'rb') as f:
-        player,plist = pickle.load(f)
+        player,plist,events = pickle.load(f)
         for x in range(1,len(plist)):
             Player.playerList.append(plist[x])
         attacker=Player.playerList[1]
+        for y in range(0,len(events)):
+            ef.Events().Flags.append(events[y])
+        print(ef.Events().Flags)
         monster.enemy()
         give_stats(1)
     return True
