@@ -10,7 +10,7 @@ import eventFlags as ef
 from math import floor
 pygame.mixer.init()
 class Player:
-    def __init__(self,name,hp,atk,dfn,matk,mdef,spd):
+    def __init__(self,name,hp,atk,dfn,matk,mdef,spd,lvl):
         self.name=name
         self.hp=hp
         self.atk=atk
@@ -18,7 +18,7 @@ class Player:
         self.matk=matk
         self.mdef=mdef
         self.spd=spd
-        self.lvl=1
+        self.lvl=lvl
         self.xp=0
         self.lvlNext=25
         self.karma=0
@@ -51,15 +51,15 @@ class Player:
 
 def combat_offense(current,enemy,maxHealth_A,maxHealth_D,comp_options,defender):
     base_dmg=0
-    for n in range(4):
+    for n in range(3):
         roll=random.randint(1,6)
         base_dmg+=roll
     if current==attacker:
         if attacker.atk:
             if attacker.atk==defender.dfn:
-                dmg=floor((100/(attacker.atk-(defender.dfn+1)))*base_dmg*(attacker.lvl/6))
+                dmg=floor((100/(attacker.atk-(defender.dfn+1)))*base_dmg*(attacker.lvl/10))
             else:
-                dmg=floor((100/(attacker.atk-defender.dfn))*base_dmg*(attacker.lvl/6))
+                dmg=floor((100/(attacker.atk-defender.dfn))*base_dmg*(attacker.lvl/10))
             if game_mode==3:
                 defender.hp-=abs(dmg)
             else:
@@ -111,15 +111,15 @@ def combat_offense(current,enemy,maxHealth_A,maxHealth_D,comp_options,defender):
             return
 def combat_magic_offense(current,enemy,maxHealth_A,maxHealth_D,comp_options,defender):
     base_dmg=0
-    for n in range(4):
+    for n in range(3):
         roll=random.randint(1,6)
         base_dmg+=roll
     if current==attacker:
         if attacker.matk:
             if attacker.matk==defender.mdef:
-                dmg=floor((100/(attacker.matk-(defender.mdef+1)))*base_dmg*(attacker.lvl/6))
+                dmg=floor((100/(attacker.matk-(defender.mdef+1)))*base_dmg*(attacker.lvl/10))
             else:
-                dmg=floor((100/(attacker.matk-defender.mdef))*base_dmg*(attacker.lvl/6))
+                dmg=floor((100/(attacker.matk-defender.mdef))*base_dmg*(attacker.lvl/10))
             if game_mode==3:
                 defender.hp-=abs(dmg)
             else:
@@ -391,13 +391,25 @@ def story_battle(enemy,maxHealth_A,maxHealth_D,comp_options,defender):
     else:
         print("Not a valid option!\n")
         story_battle(enemy,maxHealth_A,maxHealth_D,comp_options,defender)
-Origin=Player("Meikahs",999,999,999,999,999,999)
+def walking():
+    tWalk=random.randint(1,100)
+    if tWalk in range(40,51):
+        print("\nA battle!\n")
+        pygame.time.wait(1800)
+        return False
+    else:
+        print("\n.")
+        pygame.time.wait(500)
+        return True
+Origin=Player("Meikahs",999,999,999,999,999,999,999)
 Player.playerList.append(Origin)
-Player1=Player("Kyu",100,23,24,56,57,60)
-Player2=Player("Varis",100,45,54,34,24,60)
-Player3=Player("Y",100,23,25,54,34,90)
+# Player1=Player("Kyu",100,23,24,56,57,60)
+# Player2=Player("Varis",100,45,54,34,24,60)
+# Player3=Player("Y",100,23,25,54,34,90)
 Monsta1=monster.Monster("WizCat",1,100,100,100,100,100,100,34)
 def save(player,plist):
+    ef.Events().Flags.clear()
+    ef.onStartFlagSet()
     player=attacker
     plist=Player.playerList
     events=ef.Events().Flags
@@ -414,7 +426,6 @@ def load():
         attacker=Player.playerList[1]
         for y in range(0,len(events)):
             ef.Events().Flags.append(events[y])
-        print(ef.Events().Flags)
         monster.enemy()
         give_stats(1)
     return True
@@ -447,12 +458,13 @@ def create_player():
     if len(name)<3:
         print("Your name is too short.")
         return create_player()
-    atk=random.randint(20,100)
-    dfn=random.randint(20,100)
-    matk=random.randint(20,100)
-    mdef=random.randint(20,100)
-    spd=random.randint(20,100)
-    new_player=Player(name,100,atk,dfn,matk,mdef,spd)
+    atk=random.randint(20,50)
+    dfn=random.randint(20,50)
+    matk=random.randint(20,50)
+    mdef=random.randint(20,50)
+    spd=random.randint(20,50)
+    lvl=1
+    new_player=Player(name,100,atk,dfn,matk,mdef,spd,lvl)
     Player.playerList.append(new_player)
     attacker=Player.playerList[1]
     return name
@@ -696,7 +708,7 @@ def speedCheck(enemy,attacker,defender,maxHealth_A,maxHealth_D,comp_options,turn
         else:
             identifier=comp(enemy,maxHealth_A,maxHealth_D,defender)
     elif defender.spd>attacker.spd:
-        print(defender.name,"moves first.")
+        print(defender.m_type,"moves first.")
         pygame.time.wait(1000)
         identifier=comp(enemy,maxHealth_A,maxHealth_D,defender)
         while attacker.hp<=0:

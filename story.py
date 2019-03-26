@@ -80,6 +80,7 @@ def ForestBisca():
             break
         else:
             print("\n.")
+            pygame.time.wait(500)
             continue
     enemy=mon.rank1Assign()
     defender=mon.Monster.Rank1[enemy]
@@ -96,7 +97,7 @@ def ForestBisca():
         enemy=mon.rank1Assign()
         defender=mon.Monster.Rank1[enemy]
         rpg.battle(enemy,attacker,defender)
-        print("The forest roars!")
+        print("\nThe forest roars!")
         enemy=mon.rank1Assign()
         defender=mon.Monster.Rank1[enemy]
         rpg.battle(enemy,attacker,defender)
@@ -111,39 +112,102 @@ def TownSucreNoir():
         ef.Events().Flags[0].loop+=TownMenu()
     if ef.Events().Flags[0].loop==1:
         def TownSucreNoir2():
-            print("A twisted pillar appears before you...")
+            print("\nA twisted pillar appears before you...")
             pygame.time.wait(1000)
             print("\nYou inspect it for quite some time before coming to the conclusion it is made of resin.")
-            print("You make your leave.")
+            if ef.Events().Flags[0].loop==2:
+                print("\nA second inspection reveals an indentation that was not previously there.")
+            else:
+                print("You make your leave.")
+                pygame.time.wait(1800)
+                GeardegCrestPath()
         TownSucreNoir2()
-        rpg.save(player,rpg.Player.playerList)
-
+def GeardegCrestPath():
+    playerName=rpg.Player.playerList[1].name
+    player=rpg.Player.playerList[1]
+    attacker=rpg.Player.playerList[1]
+    print("\nA road of battle and desire: Geardeg Crest.")
+    # rpg.save(player,rpg.Player.playerList)
+    rpg.Player.playerList[1].location="GeardegCrestPath"
+    while ef.Events().Flags[1].battles!=10:
+        walking=True
+        while walking==True:
+            walking=rpg.walking()
+            if walking==False:
+                break
+            else:
+                continue
+        if ef.Events().Flags[1].battles<5:
+            enemy=mon.rank1Assign()
+            defender=mon.Monster.Rank1[enemy]
+            rpg.battle(enemy,attacker,defender)
+        else:
+            enemy=mon.rank2Assign()
+            defender=mon.Monster.Rank2[enemy]
+            rpg.battle(enemy,attacker,defender)
+        ef.Events().Flags[1].battles+=1
+    print("\nHaving survived the onslaught of foes, {0} presses forth".format(playerName))
+    pygame.time.wait(1800)
+    if ef.Events().Flags[1].dagger==True:
+        print("Your dagger glows with a brillant but ominous light.")
+    GeardegRath()
+def GeardegRath():
+    print("Soldier: Halt!")
+    obey=input("Obey?\n>")
+    if obey in affirm:
+        rpg.Player.playerList[1].karma+=1
+    elif obey in deny:
+        rpg.Player.playerList[1].karma-=1
+    # rpg.Player.playerList[1].location="GeardegRath"
 def TownMenu():
     player=rpg.Player.playerList[1]
     location=rpg.Player.playerList[1].location
+    eFlags=ef.Events().Flags
     pygame.time.wait(1800)
     if location=="TownSucreNoir":
-        menu=input("""\nWhat would you like to do?
+        if eFlags[0].options==False:
+            menu=input("""\nWhat would you like to do?
+    1.Look Around\n    2.Check Stats\n    3.Save\n""")
+            if menu=="1":
+                print("The town looks empty...")
+                eFlags[0].options=True
+                return TownMenu()
+            elif menu=="2":
+                rpg.give_stats(1)
+                return TownMenu()
+            elif menu=="3":
+                playerSave=input("Would you like to save?\n>")
+                if playerSave in affirm:
+                    rpg.save(player,rpg.Player.playerList)
+                    quit=input("Would you like to quit the game?")
+                    return TownMenu()
+                else:
+                    return TownMenu()
+        else:
+            menu=input("""\nWhat would you like to do?
     1.Look Around\n    2.Interact with Crest\n    3.Check Stats\n    4.Save\n""")
-        if menu=="1":
-            print("The town looks empty...")
-            return TownMenu()
-        elif menu=="2":
-            print("A change occurs!")
-            return 1
-        elif menu=="3":
-            rpg.give_stats(1)
-            return TownMenu()
-        elif menu=="4":
-            playerSave=input("Would you like to save?\n>")
-            if playerSave in affirm:
-                rpg.save(player,rpg.Player.playerList)
-                quit=input("Would you like to quit the game?")
+            if menu=="1":
+                print("The town looks empty...")
                 return TownMenu()
-            else:
+            elif menu=="2":
+                print("A change occurs!")
+                return 1
+            elif menu=="3":
+                rpg.give_stats(1)
                 return TownMenu()
+            elif menu=="4":
+                playerSave=input("Would you like to save?\n>")
+                if playerSave in affirm:
+                    rpg.save(player,rpg.Player.playerList)
+                    quit=input("Would you like to quit the game?")
+                    return TownMenu()
+                else:
+                    return TownMenu()
+    elif location=="GeardegRath":
+        pass
 
 
-locations={"TownSucreNoir":TownSucreNoir}
+locations={"TownSucreNoir":TownSucreNoir,"GeardegCrestPath":GeardegCrestPath,"GeardegRath":GeardegRath}
+ef.onStartFlagSet()
 rpg.mainMenu()
 # ForestBisca()
