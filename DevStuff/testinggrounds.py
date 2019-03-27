@@ -38,6 +38,7 @@ CEND = '\033[0m'
 Yellow="\033[0;33m"
 On_White="\033[47m"
 # puzzleSol=[2,4,1,3]
+# np.random.shuffle(puzzleSol)
 # puzzle=[1,2,3,4]
 # print("Find the correct combination!")
 # print("Rules:\n1.Select the first tile you want to move.\n2.Select the tile to switch with.\n")
@@ -89,13 +90,15 @@ while play==True:
     print("Make a selection for the first number.")
     r1=int(input("Row:"))
     c1=int(input("Column:"))
+    r1=r1-1
+    c1=c1-1
+    print("Selected Tile:",puzz[r1][c1])
     print("\nMake a selection for the second number.")
     r2=int(input("Row:"))
     c2=int(input("Column:"))
-    r1=r1-1
-    c1=c1-1
     r2=r2-1
     c2=c2-1
+    print("Selected Tile:",puzz[r2][c2])
     puzz[r1][c1],puzz[r2][c2]=puzz[r2][c2],puzz[r1][c1]
     moves+=1
     if np.array_equal(puzzSol,puzz)==True:
