@@ -50,10 +50,7 @@ class Player:
                     self.spd+=increase
 
 def combat_offense(current,enemy,maxHealth_A,maxHealth_D,comp_options,defender):
-    base_dmg=0
-    for n in range(3):
-        roll=random.randint(1,6)
-        base_dmg+=roll
+    base_dmg=random.randint(10,20)
     if current==attacker:
         if attacker.atk:
             if attacker.atk==defender.dfn:
@@ -110,10 +107,7 @@ def combat_offense(current,enemy,maxHealth_A,maxHealth_D,comp_options,defender):
             sounds.tackle()
             return
 def combat_magic_offense(current,enemy,maxHealth_A,maxHealth_D,comp_options,defender):
-    base_dmg=0
-    for n in range(3):
-        roll=random.randint(1,6)
-        base_dmg+=roll
+    base_dmg=random.randint(10,20)
     if current==attacker:
         if attacker.matk:
             if attacker.matk==defender.mdef:

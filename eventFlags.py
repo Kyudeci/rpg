@@ -13,6 +13,7 @@ class GeardegCrest:
 class GeardegRath:
     def __init__(self):
         self.options=False
+        self.intro=False
     challenegers=[]
 
 

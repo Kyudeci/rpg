@@ -5,8 +5,14 @@ import rpg
 import random as rdm
 import monster as mon
 import eventFlags as ef
+import numpy as np
 affirm=['yes','YES','Yes','y','Y','1']
 deny=['no','NO','No','n','N','2']
+Red="\033[0;31m"
+Green="\033[0;32m"
+Cyan="\033[0;36m"
+On_White="\033[47m"
+CEND = '\033[0m'
 Meikahs=rpg.Player.playerList[0].name
 def start():
     mon.enemy()
@@ -126,9 +132,9 @@ def GeardegCrestPath():
     playerName=rpg.Player.playerList[1].name
     player=rpg.Player.playerList[1]
     attacker=rpg.Player.playerList[1]
-    print("\nA road of battle and desire: Geardeg Crest.")
-    # rpg.save(player,rpg.Player.playerList)
     rpg.Player.playerList[1].location="GeardegCrestPath"
+    rpg.save(player,rpg.Player.playerList)
+    print("\nA road of battle and desire: Geardeg Crest.")
     while ef.Events().Flags[1].battles!=10:
         walking=True
         while walking==True:
@@ -152,13 +158,20 @@ def GeardegCrestPath():
         print("Your dagger glows with a brillant but ominous light.")
     GeardegRath()
 def GeardegRath():
-    print("Soldier: Halt!")
-    obey=input("Obey?\n>")
-    if obey in affirm:
-        rpg.Player.playerList[1].karma+=1
-    elif obey in deny:
-        rpg.Player.playerList[1].karma-=1
-    # rpg.Player.playerList[1].location="GeardegRath"
+    rpg.Player.playerList[1].location="GeardegRath"
+    if ef.Events().Flags[2].intro==False:
+        print("\nSoldier: Halt!")
+        obey=input("Obey?\n>")
+        if obey in affirm:
+            rpg.Player.playerList[1].karma+=1
+            ef.Events().Flags[2].intro=basicPuzzle()
+        elif obey in deny:
+            rpg.Player.playerList[1].karma-=1
+            print("Soldier: ..... ")
+        else:
+            print("Eh? Battle you say.")
+    else:
+        print("Welcome to GeardegRath!\n || A city of tech built on the ruin of its past! || ")
 def TownMenu():
     player=rpg.Player.playerList[1]
     location=rpg.Player.playerList[1].location
@@ -205,6 +218,33 @@ def TownMenu():
                     return TownMenu()
     elif location=="GeardegRath":
         pass
+def basicPuzzle():
+    puzzleSol=[2,4,1,3]
+    np.random.shuffle(puzzleSol)
+    puzzle=[1,2,3,4]
+    print("Find the correct combination!")
+    print("Rules:\n1.Select the first tile you want to move.\n2.Select the tile to switch with.\n")
+    while puzzle!=puzzleSol:
+        for y in range(0,4):
+            if puzzle[y]==puzzleSol[y]:
+                print(Green,On_White,puzzle[y],CEND,end="")
+            if puzzle[y]!=puzzleSol[y]:
+                print(Red,On_White,puzzle[y],CEND,end="")
+        print("")
+        sel1=int(input())
+        sel2=int(input())
+        sel1=sel1-1
+        sel2=sel2-1
+        if sel1==sel2:
+            print("No tiles moved!")
+            continue
+        if sel1>4 or sel2>4:
+            continue
+        puzzle[sel1],puzzle[sel2]=puzzle[sel2],puzzle[sel1]
+    print("\nPuzzle Complete!")
+    for x in range(4):
+        print(Cyan,On_White,puzzle[x],CEND,end="")
+    return True
 
 
 locations={"TownSucreNoir":TownSucreNoir,"GeardegCrestPath":GeardegCrestPath,"GeardegRath":GeardegRath}
