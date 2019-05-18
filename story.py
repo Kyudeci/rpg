@@ -217,7 +217,13 @@ def TownMenu():
                 else:
                     return TownMenu()
     elif location=="GeardegRath":
-        pass
+        if eFlags[2].options==False:
+            menu=input("""\nWhat would you like to do?
+    1.Look Around\n    2.Check Stats\n    3.Save\n""")
+            if menu=="1":
+                print("You are awe struck by the mechanical marvels")
+
+                return TownMenu()
 def basicPuzzle():
     puzzleSol=[2,4,1,3]
     np.random.shuffle(puzzleSol)
