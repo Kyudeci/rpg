@@ -1,16 +1,31 @@
 import random
 from math import ceil,floor
+import os
 class Monster:
-    def __init__(self,monstertype,rank,hp,atk,dfn,matk,mdef,spd,mxp):
-        self.m_type=monstertype
-        self.rank=rank
-        self.hp=hp
-        self.atk=atk
-        self.dfn=dfn
-        self.matk=matk
-        self.mdef=mdef
-        self.spd=spd
-        self.mxp=mxp
+    def __init__(self,image,name,monstertype,rank,hp,atk,dfn,matk,mdef,spd,mxp):
+        self.image = image
+        self.name = name
+        self.m_type = monstertype
+        self.rank = rank
+        self.baseHP = hp
+        self.hp = hp
+        self.atk = atk
+        self.baseATK = atk
+        self.dfn = dfn
+        self.baseDFN = dfn
+        self.matk = matk
+        self.baseMATK = matk
+        self.mdef = mdef
+        self.baseMDEF = mdef
+        self.spd = spd
+        self.baseSPD = spd
+        self.mxp = mxp
+        if self.m_type=="Sfiren" or self.m_type=="Sphiren":
+            self.sphere_mode=False
+        if self.m_type=="Vitaro1" or self.m_type=="Vitaro2":
+            self.sacrifice=False
+        if self.m_type=="Cherry Slime":
+            self.rebirth=False
     enemyList=[]
     Rank1=[]
     Rank2=[]
@@ -19,9 +34,16 @@ class Monster:
     Rank5=[]
 # Enemy Creation and Stats #
 def enemy():
-    monstertype=["Gooblins","Slime","Cherry Slime","Dragonn","Virus","Jack Squat","Sphiren","Sfiren"]
+    monstertype=["Gooblins","Slime","Cherry Slime","Dragonne","Virus","Jack Squat","Sphiren","Sfiren","Vitaro1","Vitaro2"]
+    monsterIcon=os.listdir("mon_icons")
+    # monstertype=["Sphiren"]
     for i in range(len(monstertype)):
         for rank in range(1,6):
+            image = "mon_icons/"+monstertype[i]+".png"
+            if os.path.isfile(image):
+                pass
+            else:
+                image = "mon_icons/qmark.png"
             if monstertype:
                 if rank==1:
                     hp=random.randint(20,30)
@@ -31,7 +53,7 @@ def enemy():
                     mdef=random.randint(5,10)
                     spd=random.randint(10,15)
                     mxp=random.randint(5,8)
-                    enemies=Monster(monstertype[i],rank,hp,atk,dfn,matk,mdef,spd,mxp)
+                    enemies=Monster(image,monstertype[i],monstertype[i],rank,hp,atk,dfn,matk,mdef,spd,mxp)
                     Monster.enemyList.append(enemies)
                     Monster.Rank1.append(enemies)
                 elif rank==2:
@@ -42,7 +64,7 @@ def enemy():
                     mdef=random.randint(15,30)
                     spd=random.randint(30,45)
                     mxp=random.randint(10,15)
-                    enemies=Monster(monstertype[i],rank,hp,atk,dfn,matk,mdef,spd,mxp)
+                    enemies=Monster(image,monstertype[i],monstertype[i],rank,hp,atk,dfn,matk,mdef,spd,mxp)
                     Monster.enemyList.append(enemies)
                     Monster.Rank2.append(enemies)
                 elif rank==3:
@@ -53,7 +75,7 @@ def enemy():
                     mdef=random.randint(50,100)
                     spd=random.randint(50,75)
                     mxp=random.randint(40,65)
-                    enemies=Monster(monstertype[i],rank,hp,atk,dfn,matk,mdef,spd,mxp)
+                    enemies=Monster(image,monstertype[i],monstertype[i],rank,hp,atk,dfn,matk,mdef,spd,mxp)
                     Monster.enemyList.append(enemies)
                     Monster.Rank3.append(enemies)
                 elif rank==4:
@@ -64,7 +86,7 @@ def enemy():
                     mdef=random.randint(70,120)
                     spd=random.randint(75,113)
                     mxp=random.randint(66,90)
-                    enemies=Monster(monstertype[i],rank,hp,atk,dfn,matk,mdef,spd,mxp)
+                    enemies=Monster(image,monstertype[i],monstertype[i],rank,hp,atk,dfn,matk,mdef,spd,mxp)
                     Monster.enemyList.append(enemies)
                     Monster.Rank4.append(enemies)
                 elif rank==5:
@@ -75,7 +97,7 @@ def enemy():
                     mdef=random.randint(100,150)
                     spd=random.randint(87,130)
                     mxp=random.randint(100,131)
-                    enemies=Monster(monstertype[i],rank,hp,atk,dfn,matk,mdef,spd,mxp)
+                    enemies=Monster(image,monstertype[i],monstertype[i],rank,hp,atk,dfn,matk,mdef,spd,mxp)
                     Monster.enemyList.append(enemies)
                     Monster.Rank5.append(enemies)
 
@@ -143,8 +165,6 @@ def rank5Assign():
     enemy=random.randint(0,len(Monster.Rank5)-1)
     defender=Monster.Rank5[enemy]
     return enemy
-def monster_type():
-    return defender.m_type
 
 def xpGain(num):
     if defender.rank==1:
@@ -170,29 +190,51 @@ def healthReset(num):
     elif defender.rank==5:
         health=Monster.Rank5[num].hp
     return health
-def in_sphere_mode(counter,sphere_mode):
-    if defender.m_type == "Sphiren" or defender.m_type == "Sfiren" :
-        if sphere_mode==False and defender.hp!=0:
-            if counter%3==0:
-                print(defender.m_type,"is now in sphere mode!\n")
-                defender.atk=floor(defender.atk*0.5)
-                defender.matk=floor(defender.matk*0.5)
-                defender.dfn=floor(defender.dfn*1.5)
-                defender.mdef=floor(defender.mdef*1.5)
-                return True
-            else:
-                return False
-        else:
-            if counter%5==0:
-                print(defender.m_type, "is no longer in sphere mode!\n")
-                defender.atk=ceil(defender.atk*2)
-                defender.matk=ceil(defender.matk*2)
-                defender.dfn=ceil(defender.dfn/1.5)
-                defender.mdef=ceil(defender.mdef/1.5)
-                return False
-            else:
-                return True
 
+def in_sphere_mode(counter,defender):
+    from tkinter import messagebox
+    if defender.m_type == "Sphiren" or defender.m_type == "Sfiren" :
+        if defender.sphere_mode==False and defender.hp!=0:
+            if counter in [2,8,14,20]:
+                messagebox.showinfo("Alert",defender.m_type+ " is now in sphere mode!")
+                defender.atk*=0.5
+                defender.matk*=0.5
+                defender.dfn*=2
+                defender.mdef*=2
+                defender.sphere_mode=True
+        else:
+            if counter in [5,11,17,23]:
+                messagebox.showinfo("Alert",defender.m_type+ " is no longer in sphere mode!")
+                defender.atk*=2
+                defender.matk*=2
+                defender.dfn/=2
+                defender.mdef/=2
+                defender.sphere_mode=False
+def multiplier(entity,type,multi):
+    if type=="f":
+        entity.atk*=multi
+        entity.matk*=multi
+        entity.dfn*=multi
+        entity.mdef*=multi
+        entity.spd*=multi
+    elif type=="o":
+        entity.atk*=multi
+        entity.matk*=multi
+    elif type=="d":
+        entity.dfn*=multi
+        entity.mdef*=multi
+    elif type=="s":
+        entity.spd*=multi
+    elif type=="ad":
+        entity.atk*=multi
+        entity.dfn*=multi
+    elif type=="m":
+        entity.matk*=multi
+        entity.mdef*=multi
+    elif type=="A":
+        entity.atk*=multi
+    elif type=="M":
+        entity.matk*=multi
 # def recovery(maxHealth_D):
 #     if defender.m_type == "Jack Squat":
 #         heal=random.randint(14,30)
@@ -209,16 +251,16 @@ def in_sphere_mode(counter,sphere_mode):
 
 # enemy()
 # sphere_mode=False
-# defender=Monster.enemyList[6]
+# defender=Monster.enemyList[2]
 # defender.hp=45
 # counter=1
-# while defender.hp!=0:
+# while defender.hp>0:
 #     print("\nTurn",counter,"\n")
 #     counter+=1
 #     sphere_mode=in_sphere_mode(counter,sphere_mode)
-#     print(sphere_mode)
-#     defender.hp-=5
-# enemy_stats(6)
+#     defender.hp-=10
+#     enemy_stats(2)
+
 # print(len(Monster.enemyList))
 # for x in range (0,10):
 #     enemy=monster_assign_random()

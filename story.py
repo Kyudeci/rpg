@@ -6,6 +6,8 @@ import random as rdm
 import monster as mon
 import eventFlags as ef
 import numpy as np
+from options import *
+import choice as ch
 affirm=['yes','YES','Yes','y','Y','1']
 deny=['no','NO','No','n','N','2']
 Red="\033[0;31m"
@@ -13,64 +15,26 @@ Green="\033[0;32m"
 Cyan="\033[0;36m"
 On_White="\033[47m"
 CEND = '\033[0m'
+Yellow="\033[0;33m"
+Blue="\033[0;34m"
+Purple="\033[0;35m"
 Meikahs=rpg.Player.playerList[0].name
 def start():
     mon.enemy()
-    intro=input('\n???: Are you perhaps LOST?\n>Yes...\n>No, not really!\n>>')
-    if intro in affirm:
-        print('\nWelcome! I am Meikahs, Keeper of the Lost!\n')
-    elif intro in deny:
-        print('\n???: Then begone from here! uwu\n')
-        sys.exit()
-    else:
-        return start()
+    introScene()
     pygame.time.wait(1000)
     playerName=rpg.create_player()
-    joke=["Do you really want to go with that?","I mean come on! There are better names!",
-    "Here, I'll even give the chance to change it this one time!","I'll even forget what your previous name was!"]
-    print(Meikahs+":",playerName,"was it?")
-    for x in range(len(joke)):
-        print(Meikahs+":",joke[x])
-        pygame.time.wait(1800)
-    nameChange=input('Meikahs: So will you change your name?\n>>')
-    if nameChange in affirm:
-        rpg.Player.playerList.pop()
-        playerName=rpg.create_player()
-    elif nameChange in deny:
-        print(Meikahs+": I guess you're sticking with "+playerName+", then?")
+    CharacterText(ch.meikahsJoke)
+    playerName=nameChange(playerName)
     pygame.time.wait(1800)
     print(Meikahs+": Oh! That reminds me, I have something for you.")
     pygame.time.wait(1800)
     rpg.give_stats(1)
-    Red="\033[0;31m"
-    Green="\033[0;32m"
-    Yellow="\033[0;33m"
-    # Blue="\033[0;34m"
-    Purple="\033[0;35m"
-    Cyan="\033[0;36m"
-    CEND = '\033[0m'
     pygame.time.wait(2000)
     print('\n'+Meikahs+": Yes, these are your",Red,"Specific but",Cyan,"Telling",Yellow,"Attributes of",Green,"Tactical",Purple,"Strength",CEND,"or STATS for short!")
     pygame.time.wait(1800)
-    clarity=input("\nDo you understand so far?\n1.Yes\n2.Also Yes\n3.What kind of options are these?\n>>")
-    if clarity=="1":
-        rpg.Player.playerList[1].karma+=1
-        print(Meikahs+": How compliant! Surely you'll survive.")
-        pygame.time.wait(1800)
-    elif clarity=="2":
-        print(Meikahs+": You could have just chosen the first option...")
-        pygame.time.wait(1800)
-    else:
-        rpg.Player.playerList[1].karma-=1
-        print(Meikahs+": Silly child, you are guided by my hand. I cannot simply leave you to your own devices, now can I?")
-        pygame.time.wait(1800)
-    if clarity=="1" or clarity=="2":
-        print(Meikahs+": Well now, it's time for you to get going. Ta ta!")
-        pygame.time.wait(1800)
-        ForestBisca()
-    else:
-        print(Meikahs+": It's time for you to LEAVE!!!")
-        ForestBisca()
+    understand(Meikahs)
+    ForestBisca()
 def ForestBisca():
     print("\nThe road ahead is a long and dark.\nYou trip and fall, and the forest snickers.")
     pygame.time.wait(1800)
@@ -91,31 +55,33 @@ def ForestBisca():
     enemy=mon.rank1Assign()
     defender=mon.Monster.Rank1[enemy]
     attacker=rpg.Player.playerList[1]
-    rpg.battle(enemy,attacker,defender)
+    combat(attacker,defender)
     print("\nWhich way will you go?\n>Right    >Left\n")
     if rpg.Player.playerList[1].karma>=0:
         print("Instinctively, you take the path to the left!\n")
         defender=mon.Monster.Rank1[enemy]
-        rpg.battle(enemy,attacker,defender)
+        combat(attacker,defender)
         TownSucreNoir()
     else:
         print("Following your instincts, you take the right path!\n")
         enemy=mon.rank1Assign()
         defender=mon.Monster.Rank1[enemy]
-        rpg.battle(enemy,attacker,defender)
+        combat(attacker,defender)
         print("\nThe forest roars!")
         enemy=mon.rank1Assign()
         defender=mon.Monster.Rank1[enemy]
-        rpg.battle(enemy,attacker,defender)
+        combat(attacker,defender)
         TownSucreNoir()
 def TownSucreNoir():
-    playerName=rpg.Player.playerList[1].name
-    player=rpg.Player.playerList[1]
+    playerName = rpg.Player.playerList[1].name
+    player = rpg.Player.playerList[1]
+    location = rpg.Player.playerList[1].location
+    eFlags = ef.Events().Flags
     if ef.Events().Flags[0].loop==0:
         print("\nA town appears into your view.")
         rpg.Player.playerList[1].location="TownSucreNoir"
         print("\nWelcome to Town de SucreNoir!")
-        ef.Events().Flags[0].loop+=TownMenu()
+        TSNMenu(player,eFlags)
     if ef.Events().Flags[0].loop==1:
         def TownSucreNoir2():
             print("\nA twisted pillar appears before you...")
@@ -129,11 +95,11 @@ def TownSucreNoir():
                 GeardegCrestPath()
         TownSucreNoir2()
 def GeardegCrestPath():
-    playerName=rpg.Player.playerList[1].name
-    player=rpg.Player.playerList[1]
-    attacker=rpg.Player.playerList[1]
+    playerName = rpg.Player.playerList[1].name
+    player = rpg.Player.playerList[1]
+    attacker = rpg.Player.playerList[1]
     rpg.Player.playerList[1].location="GeardegCrestPath"
-    rpg.save(player,rpg.Player.playerList)
+    # rpg.save(player,rpg.Player.playerList)
     print("\nA road of battle and desire: Geardeg Crest.")
     while ef.Events().Flags[1].battles!=10:
         walking=True
@@ -146,11 +112,11 @@ def GeardegCrestPath():
         if ef.Events().Flags[1].battles<5:
             enemy=mon.rank1Assign()
             defender=mon.Monster.Rank1[enemy]
-            rpg.battle(enemy,attacker,defender)
+            combat(attacker,defender)
         else:
             enemy=mon.rank2Assign()
             defender=mon.Monster.Rank2[enemy]
-            rpg.battle(enemy,attacker,defender)
+            combat(attacker,defender)
         ef.Events().Flags[1].battles+=1
     print("\nHaving survived the onslaught of foes, {0} presses forth".format(playerName))
     pygame.time.wait(1800)
@@ -221,7 +187,7 @@ def TownMenu():
             menu=input("""\nWhat would you like to do?
     1.Look Around\n    2.Check Stats\n    3.Save\n""")
             if menu=="1":
-                print("You are awe struck by the mechanical marvels")
+                print("You are awestruck by the mechanical marvels")
 
                 return TownMenu()
 def basicPuzzle():
@@ -255,5 +221,5 @@ def basicPuzzle():
 
 locations={"TownSucreNoir":TownSucreNoir,"GeardegCrestPath":GeardegCrestPath,"GeardegRath":GeardegRath}
 ef.onStartFlagSet()
-rpg.mainMenu()
+mainmenu()
 # ForestBisca()

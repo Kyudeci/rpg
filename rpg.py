@@ -8,7 +8,7 @@ import pickle
 import eventFlags as ef
 from math import floor
 import tkinter as tk
-# import story
+import story
 pygame.mixer.init()
 class Player:
     def __init__(self,name,hp,atk,dfn,matk,mdef,spd,lvl):

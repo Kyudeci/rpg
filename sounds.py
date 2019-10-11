@@ -20,3 +20,8 @@ def victory():
 def defeat():
     defeat_sound=pygame.mixer.Sound("audio/gameOver.ogg")
     pygame.mixer.Sound.play(defeat_sound,-1)
+def mainTheme():
+    pygame.mixer.music.load("audio/MainTheme.ogg")
+    pygame.mixer.music.play(-1)
+def musicStop():
+    pygame.mixer.stop()
