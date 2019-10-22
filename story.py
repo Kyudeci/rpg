@@ -21,6 +21,7 @@ Purple="\033[0;35m"
 Meikahs=rpg.Player.playerList[0].name
 def start():
     mon.enemy()
+    print('\n???: Are you perhaps LOST?')
     introScene()
     pygame.time.wait(1000)
     playerName=rpg.create_player()
@@ -35,6 +36,7 @@ def start():
     pygame.time.wait(1800)
     understand(Meikahs)
     ForestBisca()
+    
 def ForestBisca():
     print("\nThe road ahead is a long and dark.\nYou trip and fall, and the forest snickers.")
     pygame.time.wait(1800)
@@ -72,22 +74,22 @@ def ForestBisca():
         defender=mon.Monster.Rank1[enemy]
         combat(attacker,defender)
         TownSucreNoir()
+
 def TownSucreNoir():
-    playerName = rpg.Player.playerList[1].name
     player = rpg.Player.playerList[1]
-    location = rpg.Player.playerList[1].location
+    playerName = player.name
     eFlags = ef.Events().Flags
-    if ef.Events().Flags[0].loop==0:
+    if eFlags[0].loop==0:
         print("\nA town appears into your view.")
-        rpg.Player.playerList[1].location="TownSucreNoir"
+        player.location = "TownSucreNoir"
         print("\nWelcome to Town de SucreNoir!")
         TSNMenu(player,eFlags)
-    if ef.Events().Flags[0].loop==1:
+    if eFlags[0].loop==1:
         def TownSucreNoir2():
             print("\nA twisted pillar appears before you...")
             pygame.time.wait(1000)
             print("\nYou inspect it for quite some time before coming to the conclusion it is made of resin.")
-            if ef.Events().Flags[0].loop==2:
+            if eFlags[0].loop==2:
                 print("\nA second inspection reveals an indentation that was not previously there.")
             else:
                 print("You make your leave.")
@@ -95,13 +97,13 @@ def TownSucreNoir():
                 GeardegCrestPath()
         TownSucreNoir2()
 def GeardegCrestPath():
-    playerName = rpg.Player.playerList[1].name
     player = rpg.Player.playerList[1]
-    attacker = rpg.Player.playerList[1]
-    rpg.Player.playerList[1].location="GeardegCrestPath"
+    playerName = player.name
+    eFlags = ef.Events().Flags
+    player.location = "GeardegCrestPath"
     # rpg.save(player,rpg.Player.playerList)
     print("\nA road of battle and desire: Geardeg Crest.")
-    while ef.Events().Flags[1].battles!=10:
+    while eFlags[1].battles!=10:
         walking=True
         while walking==True:
             walking=rpg.walking()
@@ -109,20 +111,21 @@ def GeardegCrestPath():
                 break
             else:
                 continue
-        if ef.Events().Flags[1].battles<5:
+        if eFlags[1].battles<5:
             enemy=mon.rank1Assign()
             defender=mon.Monster.Rank1[enemy]
-            combat(attacker,defender)
+            combat(player,defender)
         else:
             enemy=mon.rank2Assign()
             defender=mon.Monster.Rank2[enemy]
-            combat(attacker,defender)
-        ef.Events().Flags[1].battles+=1
+            combat(player,defender)
+        eFlags[1].battles+=1
     print("\nHaving survived the onslaught of foes, {0} presses forth".format(playerName))
     pygame.time.wait(1800)
-    if ef.Events().Flags[1].dagger==True:
+    if eFlags[1].dagger==True:
         print("Your dagger glows with a brillant but ominous light.")
     GeardegRath()
+
 def GeardegRath():
     rpg.Player.playerList[1].location="GeardegRath"
     if ef.Events().Flags[2].intro==False:
@@ -138,6 +141,7 @@ def GeardegRath():
             print("Eh? Battle you say.")
     else:
         print("Welcome to GeardegRath!\n || A city of tech built on the ruin of its past! || ")
+
 def TownMenu():
     player=rpg.Player.playerList[1]
     location=rpg.Player.playerList[1].location
@@ -158,7 +162,7 @@ def TownMenu():
                 playerSave=input("Would you like to save?\n>")
                 if playerSave in affirm:
                     rpg.save(player,rpg.Player.playerList)
-                    quit=input("Would you like to quit the game?")
+                    exit=input("Would you like to quit the game?")
                     return TownMenu()
                 else:
                     return TownMenu()
@@ -178,7 +182,7 @@ def TownMenu():
                 playerSave=input("Would you like to save?\n>")
                 if playerSave in affirm:
                     rpg.save(player,rpg.Player.playerList)
-                    quit=input("Would you like to quit the game?")
+                    exit=input("Would you like to quit the game?")
                     return TownMenu()
                 else:
                     return TownMenu()
@@ -220,6 +224,7 @@ def basicPuzzle():
 
 
 locations={"TownSucreNoir":TownSucreNoir,"GeardegCrestPath":GeardegCrestPath,"GeardegRath":GeardegRath}
-ef.onStartFlagSet()
-mainmenu()
+# ef.onStartFlagSet()
+# mainmenu()
+basicPuzzle()
 # ForestBisca()

@@ -6,7 +6,6 @@ from time import sleep
 import pickle
 import choice
 import rpg
-from rpg import *
 import sounds as snd
 import monster as mn
 import eventFlags as ef
@@ -22,13 +21,13 @@ def mainmenu():
     def reload():
         snd.musicStop()
         root.destroy()
-        l_check=load()
-        gameStart(l_check)
+        l_check=rpg.load()
+        rpg.gameStart(l_check)
     def start():
         snd.musicStop()
         root.destroy()
-        gameStart()
-    if is_accessible('savefile.dat')==True:
+        rpg.gameStart()
+    if rpg.is_accessible('savefile.dat')==True:
         startB = tk.Radiobutton(root,text="NEW GAME",value=False,indicatoron=0,command=start)
         startB.grid(row=1,column=1,columnspan=2,sticky="w,e")
         loadB = tk.Radiobutton(root,text="LOAD",value=False,indicatoron=0,command=reload)
@@ -47,11 +46,10 @@ def mainmenu():
     root.mainloop()
 
 ##########################################################
-#DEAD ZONE--START
+# DEAD ZONE--START
 ##########################################################
 def introScene():
     root = tk.Tk()
-    print('\n???: Are you perhaps LOST?')
     sleep(1)
     def intro():
         x = var.get()
@@ -64,12 +62,15 @@ def introScene():
             sys.exit()
     OPTIONS = ["Yes...","No","No, not really!"]
     var = tk.StringVar(root)
-    # var.set(OPTIONS[0])
+    # var.set(OPTIONS[2])
     dropDown = tk.OptionMenu(root,var,*OPTIONS)
     dropDown.pack()
     select = tk.Button(root, text="Enter", command=intro)
     select.pack()
     root.mainloop()
+    if var.get() not in OPTIONS:
+        introScene()
+
 
 def nameChange(playerName):
     root = tk.Tk()
@@ -85,12 +86,13 @@ def nameChange(playerName):
             print("\nMeikahs: I guess you're sticking with "+playerName+", then?")
     OPTIONS = ["Yes","No"]
     var = tk.StringVar(root)
-    var.set(OPTIONS[1])
     dropDown = tk.OptionMenu(root,var,*OPTIONS)
     dropDown.pack()
     select = tk.Button(root, text="Enter", command=nameC)
     select.pack()
     root.mainloop()
+    if var.get() not in OPTIONS:
+        nameChange(playerName)
     return playerName
 
 def understand(Meikahs):
@@ -120,6 +122,8 @@ def understand(Meikahs):
         a = tk.Radiobutton(root,text=OPTIONS[o],variable=var,value=o,indicatoron=0).pack(fill="x")
     select = tk.Button(root, text="Enter", command=clarity)
     select.pack()
+    if var.get() not in OPTIONS:
+        understand(Meikahs)
     root.mainloop()
 
 ####################################################
@@ -302,6 +306,7 @@ def combat(p1,p2):
             if enemyH['value']<=0 or playerH['value']<=0:
                 tk.messagebox.showinfo("Status","Battle End")
                 root.destroy()
+    
     def phys():
         global COUNTER
         COUNTER+=1
@@ -323,7 +328,7 @@ def combat(p1,p2):
         txt.insert(tk.INSERT,"Turn "+str(COUNTER)+"\n")
         abi.passiveAbi(p2,COUNTER,txt)
         mn.in_sphere_mode(COUNTER,p2)
-        Admg,Bdmg=tc_combat(p1,p2,root,txt,2)
+        Admg,Bdmg=rpg.tc_combat(p1,p2,root,txt,2)
         if Bdmg<0:
             return
         battl(Admg,Bdmg)
@@ -375,7 +380,7 @@ def combat(p1,p2):
     p1.hp=p1.baseHP
     p2.hp=p2.baseHP
 
-def walking():
+def walking2():
     global x,y,a,b
     root = tk.Tk()
     mt = tk.Tk()
@@ -433,4 +438,4 @@ def walking():
     mt.mainloop()
 
 # combat(Player1,Player2)
-walking()
+# walking()
