@@ -315,7 +315,7 @@ def combat(p1,p2):
         txt.insert(tk.INSERT,"Turn "+str(COUNTER)+"\n")
         abi.passiveAbi(p2,COUNTER,txt)
         mn.in_sphere_mode(COUNTER,p2)
-        Admg,Bdmg=tc_combat(p1,p2,root,txt,1)
+        Admg,Bdmg=rpg.tc_combat(p1,p2,root,txt,1)
         if Bdmg<0:
             return
         battl(Admg,Bdmg)

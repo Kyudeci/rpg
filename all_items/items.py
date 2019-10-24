@@ -17,7 +17,3 @@ class Item(Inventory):
         item_text.insert(insert,"Description: " + self.desc)
         root.mainloop()
 
-item1 = Item(1,"Potion","multi","Restore 20 HP")
-item1.get_item(1)
-item1.use_item()
-print(Inventory.bag)

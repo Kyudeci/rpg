@@ -1,0 +1,13 @@
+[
+    {
+        "id": 0,
+        "name":"Token",
+        "tags": ["Collect"],
+        "description": "None",
+        "buy_price": 0,
+        "sellback_price": 0,
+    },
+    {
+
+    }
+]

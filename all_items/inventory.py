@@ -1,10 +1,9 @@
 
-
 class Inventory():
     inventory = {}
     bag = {}
 
-    def add_item(self, item):
+    def add_item(self):
         Inventory.inventory[self.idn] = self
 
     def get_item(self, amt):
@@ -18,5 +17,9 @@ class Inventory():
             Inventory.bag[self.name]['amount'] -= 1
         if Inventory.bag[self.name]['amount'] == 0:
             Inventory.bag.pop(self.name)
+
+    def dev_check_inventory(self):
+        print(Inventory.bag)
+        print(Inventory.inventory)
 
 
