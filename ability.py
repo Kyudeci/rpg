@@ -1,11 +1,11 @@
-from math import floor
+from math import floor, ceil
 from tkinter import *
 import random
 import monster as mon
 def abiVitaro2(enemy):
     # Regeneration
     if enemy.sacrifice==True:
-        enemy.hp+=random.randint(1,7)
+        enemy.hp+=random.randint(floor(enemy.baseHP*.1),ceil(enemy.baseHP*.2))
 
 def abiCherryS(enemy,txt):
     # Rebirth

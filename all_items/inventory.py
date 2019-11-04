@@ -1,4 +1,3 @@
-
 class Inventory():
     inventory = {}
     bag = {}
@@ -11,6 +10,7 @@ class Inventory():
             Inventory.bag[self.name]['amount'] += amt
         else:
             Inventory.bag[self.name] = {"Item": self, "id": self.idn, "description": self.desc, "amount": amt}
+        print("Received {0} x{1}".format(self.name, amt))
     
     def use_item(self):
         if self.tags:

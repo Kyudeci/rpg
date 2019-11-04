@@ -5,9 +5,70 @@
         "tags": ["Collect"],
         "description": "None",
         "buy_price": 0,
-        "sellback_price": 0,
+        "sellback_price": 0
     },
     {
-
+        "id": 1,
+        "name":"Potion",
+        "tags": ["Recovery"],
+        "description": "Old Reliable.\nRestore 20 Health",
+        "buy_price": 100,
+        "sellback_price": 25
+    },
+    {
+        "id": 2,
+        "name":"M-Potion",
+        "tags": ["Recovery"],
+        "description": "Does What A Potion Do, But More Effectively.\nRestore 70 Health",
+        "buy_price": 250,
+        "sellback_price": 75
+    },
+    {
+        "id": 3,
+        "name":"L-Potion",
+        "tags": ["Recovery"],
+        "description": "High Level Health Recovery. The Best Of The Best.\nRestore 150 Health",
+        "buy_price": 500,
+        "sellback_price": 125
+    },
+    {
+        "id": 4,
+        "name":"A-Boosta",
+        "tags": ["Stats"],
+        "description": "Increase Attack 1 Stage.",
+        "buy_price": 0,
+        "sellback_price": 0
+    },
+    {
+        "id": 5,
+        "name":"D-Boosta",
+        "tags": ["Stats"],
+        "description": "Increase Defense 1 Stage.",
+        "buy_price": 0,
+        "sellback_price": 0
+    },
+    {
+        "id": 6,
+        "name":"M-Boosta",
+        "tags": ["Stats"],
+        "description": "Increase Magic 1 Stage.",
+        "buy_price": 0,
+        "sellback_price": 0
+    },
+    {
+        "id": 7,
+        "name":"S-Boosta",
+        "tags": ["Stats"],
+        "description": "Increase Speed 1 Stage.",
+        "buy_price": 0,
+        "sellback_price": 0
+    },
+    {
+        "id": 8,
+        "name":"Dragonn Scale",
+        "tags": ["Crating"],
+        "description": "It Disappears Only 50% Of The Time.\nCrating Material.",
+        "buy_price": 0,
+        "sellback_price": 0
     }
 ]

@@ -1,13 +1,16 @@
 import pygame
 import sounds
 import sys
-import rpg
 import random as rdm
+import rpg
 import monster as mon
 import eventFlags as ef
 import numpy as np
 from options import *
 import choice as ch
+
+from all_items.inventory import Inventory
+import all_items.item_ as IC
 affirm=['yes','YES','Yes','y','Y','1']
 deny=['no','NO','No','n','N','2']
 Red="\033[0;31m"
@@ -29,15 +32,18 @@ def start():
     playerName=nameChange(playerName)
     pygame.time.wait(1800)
     print(Meikahs+": Oh! That reminds me, I have something for you.")
+    Inventory.inventory[0].get_item(1)
+    rpg.Player.playerList[1].dev_check_inventory()
     pygame.time.wait(1800)
     rpg.give_stats(1)
     pygame.time.wait(2000)
     print('\n'+Meikahs+": Yes, these are your",Red,"Specific but",Cyan,"Telling",Yellow,"Attributes of",Green,"Tactical",Purple,"Strength",CEND,"or STATS for short!")
+    input(">")
     pygame.time.wait(1800)
-    understand(Meikahs)
     ForestBisca()
     
 def ForestBisca():
+    
     print("\nThe road ahead is a long and dark.\nYou trip and fall, and the forest snickers.")
     pygame.time.wait(1800)
     print("There is a single path in front of you. Go forth!")
@@ -120,8 +126,8 @@ def GeardegCrestPath():
             defender=mon.Monster.Rank2[enemy]
             combat(player,defender)
         eFlags[1].battles+=1
-    print("\nHaving survived the onslaught of foes, {0} presses forth".format(playerName))
-    pygame.time.wait(1800)
+    print("\nHaving survived the onslaught of foes, {0} presses forth!".format(playerName))
+    input(">")
     if eFlags[1].dagger==True:
         print("Your dagger glows with a brillant but ominous light.")
     GeardegRath()
@@ -224,7 +230,7 @@ def basicPuzzle():
 
 
 locations={"TownSucreNoir":TownSucreNoir,"GeardegCrestPath":GeardegCrestPath,"GeardegRath":GeardegRath}
-# ef.onStartFlagSet()
-# mainmenu()
-basicPuzzle()
+ef.onStartFlagSet()
+mainmenu()
+# basicPuzzle()
 # ForestBisca()

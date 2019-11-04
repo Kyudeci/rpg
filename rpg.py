@@ -9,65 +9,70 @@ import eventFlags as ef
 from math import floor
 import tkinter as tk
 import story
-pygame.mixer.init()
-class Player:
-    def __init__(self,name,hp,atk,dfn,matk,mdef,spd,lvl):
-        self.name=name
-        self.image="images/qmark.png"
-        self.baseHP=100
-        self.hp=hp
-        self.atk=atk
-        self.dfn=dfn
-        self.matk=matk
-        self.mdef=mdef
-        self.spd=spd
-        self.lvl=lvl
-        self.xp=0
-        self.lvlNext=25
-        self.karma=0
-        self.location="ForestBisca"
-    playerList=[]
-    def levelUp(self,xp):
-        self.xp+=xp
-        while self.xp>=self.lvlNext:
-            self.lvl+=1
-            self.xp=self.xp-self.lvlNext
-            self.lvlNext=floor(self.lvlNext*1.5)
-            print("\nYou are now level",self.lvl)
-            print("Exp:",self.xp)
-            print("To Next Level:",self.lvlNext,"\n")
-            stat_attribute=[self.atk,self.dfn,self.matk,self.mdef,self.spd]
-            for x in range(len(stat_attribute)):
-                stat=["Attack:","Defense:","Magic Attack:","Magic Defense:","Speed:"]
-                increase=random.randint(0,3)
-                print(stat[x],stat_attribute[x],"+",increase)
-                if stat[x]==stat[0]:
-                    self.atk+=increase
-                elif stat[x]==stat[1]:
-                    self.dfn+=increase
-                elif stat[x]==stat[2]:
-                    self.matk+=increase
-                elif stat[x]==stat[3]:
-                    self.mdef+=increase
-                elif stat[x]==stat[4]:
-                    self.spd+=increase
 
-def tc_combat(attacker,defender,root,txt,type):
-    if type==1:
+from all_items.inventory import Inventory
+import all_items.item_
+pygame.mixer.init()
+class Player(Inventory):
+    def __init__(self, name, hp, atk, dfn, matk, mdef, spd, lvl):
+        self.name = name
+        self.image = "images/qmark.png"
+        self.baseHP = 100
+        self.hp = hp
+        self.atk = atk
+        self.dfn = dfn
+        self.matk = matk
+        self.mdef = mdef
+        self.spd = spd
+        self.lvl = lvl
+        self.xp = 0
+        self.lvlNext = 25
+        self.karma = 0
+        self.location = "ForestBisca"
+        self.bag = Inventory.bag
+    playerList=[]
+    Inventory.__init__
+    def levelUp(self,xp):
+        self.xp += xp
+        while self.xp >= self.lvlNext:
+            self.lvl += 1
+            self.xp = self.xp - self.lvlNext
+            self.lvlNext = floor(self.lvlNext * 1.5)
+            print("\nYou are now level", self.lvl)
+            print("Exp:", self.xp)
+            print("To Next Level:", self.lvlNext, "\n")
+            stat_attribute=[self.atk, self.dfn, self.matk, self.mdef, self.spd]
+            for x in range(len(stat_attribute)):
+                stat = ["Attack:", "Defense:", "Magic Attack:", "Magic Defense:", "Speed:"]
+                increase = random.randint(0, 3)
+                print(stat[x], stat_attribute[x], "+", increase)
+                if stat[x] == stat[0]:
+                    self.atk += increase
+                elif stat[x] == stat[1]:
+                    self.dfn += increase
+                elif stat[x] == stat[2]:
+                    self.matk += increase
+                elif stat[x] == stat[3]:
+                    self.mdef += increase
+                elif stat[x] == stat[4]:
+                    self.spd += increase
+
+def tc_combat(attacker, defender, root, txt, type):
+    if type == 1:
         if attacker.spd > defender.spd:
-            base_dmg = random.randint(5,8)
-            Admg = floor((base_dmg+(attacker.atk*.10))*(100/(100+defender.dfn)))
-            enem_rand = random.randint(0,1)
-            Bdmg = enemy_attack(attacker,defender,root,enem_rand,txt)
-            if Bdmg>0:
-                txt.insert(tk.INSERT,"You took "+str(Bdmg)+" damage!\n")
+            base_dmg = random.randint(5, 8)
+            Admg = floor((base_dmg + (attacker.atk * .10)) * (100 / (100 + defender.dfn)))
+            enem_rand = random.randint(0, 1)
+            Bdmg = enemy_attack(attacker, defender, root, enem_rand, txt)
+            if Bdmg > 0:
+                txt.insert(tk.INSERT,"You took " + str(Bdmg) + " damage!\n")
         elif defender.spd > attacker.spd:
-            enem_rand = random.randint(0,1)
-            Bdmg = enemy_attack(attacker,defender,root,enem_rand,txt)
-            if Bdmg>0:
-                txt.insert(tk.INSERT,"You took "+str(Bdmg)+" damage!\n")
-            base_dmg = random.randint(5,8)
-            Admg = floor((base_dmg+(attacker.atk*.10))*(100/(100+defender.dfn)))
+            enem_rand = random.randint(0, 1)
+            Bdmg = enemy_attack(attacker, defender, root, enem_rand, txt)
+            if Bdmg > 0:
+                txt.insert(tk.INSERT, "You took " + str(Bdmg) + " damage!\n")
+            base_dmg = random.randint(5, 8)
+            Admg = floor((base_dmg + (attacker.atk * .10)) * (100 / (100 + defender.dfn)))
         else:
             pass
     elif type==2:
@@ -117,6 +122,7 @@ Player1=Player("Kyu",100,54,24,56,57,61,1)
 Player2 = monster.Monster("mon_icons/Vitaro2.png","Gooblins","Gooblins",2,76,27,35,20,20,45,100)
 # Player3=Player("Y",100,23,25,54,34,90)
 # Monsta1=monster.Monster("WizCat",1,100,100,100,100,100,100,34,256)
+
 def save(player,plist):
     ef.Events().Flags.clear()
     ef.onStartFlagSet()
