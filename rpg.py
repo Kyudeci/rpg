@@ -167,7 +167,7 @@ def create_player():
     global attacker
     name=input("Meikahs: What is your name by chance? =>")
     if len(name)<3:
-        print("Your name is too short.")
+        print("Your name is not up to my standards.")
         return create_player()
     atk=random.randint(20,50)
     dfn=random.randint(20,50)

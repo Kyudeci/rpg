@@ -33,7 +33,7 @@ def start():
     pygame.time.wait(1800)
     print(Meikahs+": Oh! That reminds me, I have something for you.")
     Inventory.inventory[0].get_item(1)
-    rpg.Player.playerList[1].dev_check_inventory()
+    # rpg.Player.playerList[1].dev_check_inventory()
     pygame.time.wait(1800)
     rpg.give_stats(1)
     pygame.time.wait(2000)
@@ -43,10 +43,11 @@ def start():
     ForestBisca()
     
 def ForestBisca():
-    
+    input("Now entering Forest Bisca.\n>")
     print("\nThe road ahead is a long and dark.\nYou trip and fall, and the forest snickers.")
     pygame.time.wait(1800)
     print("There is a single path in front of you. Go forth!")
+    input(">")
     #Running sounds
     #Scripted encounter
     print("\nWalking Simulator Activated!")
@@ -64,7 +65,7 @@ def ForestBisca():
     defender=mon.Monster.Rank1[enemy]
     attacker=rpg.Player.playerList[1]
     combat(attacker,defender)
-    print("\nWhich way will you go?\n>Right    >Left\n")
+    print("You come to a fork in the path.")
     if rpg.Player.playerList[1].karma>=0:
         print("Instinctively, you take the path to the left!\n")
         defender=mon.Monster.Rank1[enemy]
@@ -102,6 +103,7 @@ def TownSucreNoir():
                 pygame.time.wait(1800)
                 GeardegCrestPath()
         TownSucreNoir2()
+
 def GeardegCrestPath():
     player = rpg.Player.playerList[1]
     playerName = player.name

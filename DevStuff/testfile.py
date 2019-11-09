@@ -1,4 +1,4 @@
-from playsound import playsound
+# from playsound import playsound
 from time import sleep
 import tkinter as tk
 from PIL import Image, ImageTk
@@ -18,7 +18,6 @@ import re
 # def uball():
 #     print("This is a Ultra Ball")
 #     root.destroy()
-root = tk.Tk()
 # image = Image.open("C:\\Users\\Kyu\\Desktop\\atomprojects\\pokedex-project\\Ultraball-ani.gif")
 # photo = ImageTk.PhotoImage(image)
 # photo2 = ImageTk.PhotoImage(file="C:\\Users\\Kyu\\Desktop\\atomprojects\\pokedex-project\\Beastball-ani.gif")
@@ -38,4 +37,9 @@ root = tk.Tk()
 # button.pack()
 # root.mainloop()
 # help(ttk.Progressbar)
-print("Casual fights in\033[0;32m bioluminescent\033[0m lights")
+affirm=['yes','YES','Yes','y','Y','1']
+deny=['no','NO','No','n','N','2']
+
+# print("Casual fights in\033[0;32m bioluminescent\033[0m lights")
+while input().lower() not in affirm:
+    print(True)
