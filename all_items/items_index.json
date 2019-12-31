@@ -65,10 +65,34 @@
     },
     {
         "id": 8,
-        "name":"Dragonn Scale",
-        "tags": ["Crating"],
+        "name":"Dragonne Scale",
+        "tags": ["Crating","Drop","Dragonne"],
         "description": "It Disappears Only 50% Of The Time.\nCrating Material.",
         "buy_price": 0,
         "sellback_price": 0
+    },
+    {
+        "id": 9,
+        "name":"Slime Drop",
+        "tags": ["Crating","Drop","Slime"],
+        "description": "One Can Only Wonder Where This Piece Came From.\nCrating Material.",
+        "buy_price": 0,
+        "sellback_price": 10
+    },
+    {
+        "id": 10,
+        "name":"Virus Fragment",
+        "tags": ["Crating","Drop","Virus"],
+        "description": "01000011 01101111 01110010 01110010 01110101 01110000 01110100 01101001 01101111 01101110.\nCrating Material.",
+        "buy_price": 0,
+        "sellback_price": 10
+    },
+    {
+        "id": 11,
+        "name":"Nothing",
+        "tags": ["Crating","Drop","Virus"],
+        "description": "Pure Sweet Nothing's Obtained From a Jack Squat.\nCrating Material.",
+        "buy_price": 0,
+        "sellback_price": 10
     }
 ]

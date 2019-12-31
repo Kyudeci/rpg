@@ -21,7 +21,7 @@ def abiDragonne(enemy,turn,txt):
 def abiGooblins(enemy,turn,txt):
     mul = 0.1*turn
     if turn%2==0:
-        mon.multiplier(enemy,"o",mul)
+        enemy.multiplier("o",mul)
         txt.insert(INSERT,"More Gooblins join the fight!\n")
 
 def passiveAbi(enemy,turn,txt):

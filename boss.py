@@ -19,3 +19,4 @@ class Boss():
         self.spd = spd
         self.baseSPD = spd
         self.mxp = mxp
+        self.giga = False

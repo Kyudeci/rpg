@@ -118,13 +118,13 @@ def dg_moves(attack,enemy,root,txt):
             # Shatter Scales
             txt.insert(INSERT,enemy.name+" used "+dgP[1][0]+"\n")
             txt.insert(INSERT,"Its defense decreased!\n")
-            mon.multiplier(enemy,"d",0.8)
+            enemy.multiplier("d",0.8)
             return dgP[1][1]
         else:
             # Dragonne's Fury
             txt.insert(INSERT,enemy.name+" used "+dgP[2][0]+"\n")
             txt.insert(INSERT,enemy.name+" is thrown into a frenzy!\n")
-            mon.multiplier(enemy,"A",1.1)
+            enemy.multiplier("A",1.1)
             return dgP[2][1]
     else:
         if chance>=12:
@@ -171,7 +171,7 @@ def spf_moves(attack,enemy,txt):
         elif enemy.sphere_mode==False and enemy.m_type=="Sphiren" and chance<2:
             txt.insert(INSERT,enemy.name+" used "+spfM[1][0]+"\n")
             txt.insert(INSERT,enemy.name+"'s stats increased!\n")
-            mon.multiplier(enemy,"f",spfM[1][1])
+            enemy.multiplier("f",spfM[1][1])
             return 0
         elif enemy.sphere_mode==False and enemy.m_type=="Sphiren" and chance>=2:
             txt.insert(INSERT,enemy.name+" used "+spfM[2][0]+"\n")
@@ -179,7 +179,7 @@ def spf_moves(attack,enemy,txt):
         elif enemy.sphere_mode==False and enemy.m_type=="Sfiren" and chance<2:
             txt.insert(INSERT,enemy.name+" used "+spfM[3][0]+"\n")
             txt.insert(INSERT,enemy.name+"'s stats increased!\n")
-            mon.multiplier(enemy,"f",spfM[3][1])
+            enemy.multiplier("f",spfM[3][1])
             return 0
         elif enemy.sphere_mode==False and enemy.m_type=="Sfiren" and chance>=2:
             txt.insert(INSERT,enemy.name+" used "+spfM[4][0]+"\n")
@@ -195,7 +195,7 @@ def cs_moves(attack,enemy,txt):
             # Double or Nothing
             txt.insert(INSERT,enemy.name+" used "+csP[0][0]+"\n")
             if double%2==0:
-                mon.multiplier(enemy,"A",2)
+                enemy.multiplier("A",2)
                 txt.insert(INSERT,enemy.name+"'s Attack doubled!\n")
             else:
                 txt.insert(INSERT,"Nothing happened!\n")
@@ -213,7 +213,7 @@ def cs_moves(attack,enemy,txt):
             # Double or Nothing
             txt.insert(INSERT,enemy.name+" used "+csM[0][0]+"\n")
             if double%2==0:
-                mon.multiplier(enemy,"M",2)
+                enemy.multiplier("M",2)
                 txt.insert(INSERT,enemy.name+"'s Magic doubled!\n")
             else:
                 txt.insert(INSERT,"Nothing happened!\n")
@@ -236,22 +236,22 @@ def vt_moves(attack,enemy,txt):
             # Sacrifice
             txt.insert(INSERT,enemy.name+" used "+vtP[0][0]+"\n")
             if chance>90:
-                mon.multiplier(enemy,"f",1.3)
+                enemy.multiplier("f",1.3)
                 txt.insert(INSERT,"A gift of burning blood!\n")
             elif chance>70:
-                mon.multiplier(enemy,"d",1.5)
+                enemy.multiplier("d",1.5)
                 txt.insert(INSERT,"A gift of frozen flesh!\n")
             elif chance>50:
-                mon.multiplier(enemy,"o",1.5)
+                enemy.multiplier("o",1.5)
                 txt.insert(INSERT,"A gift of spatial fangs!\n")
             elif chance>30:
-                mon.multiplier(enemy,"m",1.5)
+                enemy.multiplier("m",1.5)
                 txt.insert(INSERT,"A gift of tuned scales!\n")
             elif chance>10:
-                mon.multiplier(enemy,"ad",1.5)
+                enemy.multiplier("ad",1.5)
                 txt.insert(INSERT,"A gift of warrior tears!\n")
             else:
-                mon.multiplier(enemy,"s",1.8)
+                enemy.multiplier("s",1.8)
                 txt.insert(INSERT,"A gift of restless bones!\n")
             enemy.sacrifice=True
             return 0

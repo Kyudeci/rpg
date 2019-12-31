@@ -13,14 +13,6 @@ from all_items.inventory import Inventory
 import all_items.item_ as IC
 affirm=['yes','YES','Yes','y','Y','1']
 deny=['no','NO','No','n','N','2']
-Red="\033[0;31m"
-Green="\033[0;32m"
-Cyan="\033[0;36m"
-On_White="\033[47m"
-CEND = '\033[0m'
-Yellow="\033[0;33m"
-Blue="\033[0;34m"
-Purple="\033[0;35m"
 Meikahs=rpg.Player.playerList[0].name
 def start():
     mon.enemy()
@@ -37,7 +29,7 @@ def start():
     pygame.time.wait(1800)
     rpg.give_stats(1)
     pygame.time.wait(2000)
-    print('\n'+Meikahs+": Yes, these are your",Red,"Specific but",Cyan,"Telling",Yellow,"Attributes of",Green,"Tactical",Purple,"Strength",CEND,"or STATS for short!")
+    print('\n'+Meikahs+": Yes, these are your Specific but Telling Attributes of Tactical Strength or STATS for short!")
     input(">")
     pygame.time.wait(1800)
     ForestBisca()
@@ -65,7 +57,7 @@ def ForestBisca():
     defender=mon.Monster.Rank1[enemy]
     attacker=rpg.Player.playerList[1]
     combat(attacker,defender)
-    print("You come to a fork in the path.")
+    input("You come to a fork in the path.\n>")
     if rpg.Player.playerList[1].karma>=0:
         print("Instinctively, you take the path to the left!\n")
         defender=mon.Monster.Rank1[enemy]

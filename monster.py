@@ -26,6 +26,34 @@ class Monster:
             self.sacrifice=False
         if self.m_type=="Cherry Slime":
             self.rebirth=False
+        
+    def multiplier(self,type,multi):
+        if type=="f":
+            self.atk*=multi
+            self.matk*=multi
+            self.dfn*=multi
+            self.mdef*=multi
+            self.spd*=multi
+        elif type=="o":
+            self.atk*=multi
+            self.matk*=multi
+        elif type=="d":
+            self.dfn*=multi
+            self.mdef*=multi
+        elif type=="s":
+            self.spd*=multi
+        elif type=="ad":
+            self.atk*=multi
+            self.dfn*=multi
+        elif type=="m":
+            self.matk*=multi
+            self.mdef*=multi
+        elif type=="A":
+            self.atk*=multi
+        elif type=="M":
+            self.matk*=multi
+
+
     enemyList=[]
     Rank1=[]
     Rank2=[]
@@ -210,44 +238,6 @@ def in_sphere_mode(counter,defender):
                 defender.dfn/=2
                 defender.mdef/=2
                 defender.sphere_mode=False
-def multiplier(entity,type,multi):
-    if type=="f":
-        entity.atk*=multi
-        entity.matk*=multi
-        entity.dfn*=multi
-        entity.mdef*=multi
-        entity.spd*=multi
-    elif type=="o":
-        entity.atk*=multi
-        entity.matk*=multi
-    elif type=="d":
-        entity.dfn*=multi
-        entity.mdef*=multi
-    elif type=="s":
-        entity.spd*=multi
-    elif type=="ad":
-        entity.atk*=multi
-        entity.dfn*=multi
-    elif type=="m":
-        entity.matk*=multi
-        entity.mdef*=multi
-    elif type=="A":
-        entity.atk*=multi
-    elif type=="M":
-        entity.matk*=multi
-# def recovery(maxHealth_D):
-#     if defender.m_type == "Jack Squat":
-#         heal=random.randint(14,30)
-#         defender.hp+=heal
-#         if defender.hp>=maxHealth_D:
-#             defender.hp=maxHealth_D
-#         print("Jack Squat healed",heal,"hit points!")
-#     elif defender.m_type=="Dragonn":
-#         heal=floor(maxHealth_D*0.4)
-#         defender.hp+=heal
-#         if defender.hp>=maxHealth_D:
-#             defender.hp=maxHealth_D
-#         print("Dragonn healed",heal,"hit points!")
 
 # enemy()
 # sphere_mode=False

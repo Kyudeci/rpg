@@ -6,7 +6,7 @@ from all_items.items import Item
 # item1.add_item()
 # item1.dev_check_inventory()
 
-ITEMS = json.load(open("all_items/items_index.json","r"),)
+ITEMS = json.load(open("all_items/items_index.json","r"))
 for item in ITEMS:
     Item(item['id'],item['name'],item['tags'],item['description'],item['buy_price'],item['sellback_price']).add_item()
 
@@ -27,6 +27,6 @@ def viewInv(inv):
         for name, amt in x:
             print(name, "x", amt)
         input()
-# print(Item.inventory[0])
+# print(Item.inventory[10].desc)
 # while input() != '3':
 #     print(False)
