@@ -146,6 +146,7 @@ def load():
         monster.enemy()
         give_stats(1)
     return True
+    
 def is_accessible(path, mode='r'):
     """
     Check if the file or directory at `path` can

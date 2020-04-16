@@ -1,6 +1,7 @@
 import random
 from math import ceil,floor
 import os
+import numpy as np
 class Monster:
     def __init__(self,image,name,monstertype,rank,hp,atk,dfn,matk,mdef,spd,mxp):
         self.image = image
@@ -53,7 +54,7 @@ class Monster:
         elif type=="M":
             self.matk*=multi
 
-
+    # define method that adds item drops to monsters
     enemyList=[]
     Rank1=[]
     Rank2=[]
@@ -239,6 +240,12 @@ def in_sphere_mode(counter,defender):
                 defender.mdef/=2
                 defender.sphere_mode=False
 
+def itemdrop(itemset):
+    dropNum = np.random.randint(1,len(itemset)+1)
+    return np.random.choice(list(itemset.values()),dropNum,True,list(itemset.keys()))
+
+# green = {0.5:"Potion",0.4:"Claw",0.1:"Grape"}
+# print(itemdrop(green))
 # enemy()
 # sphere_mode=False
 # defender=Monster.enemyList[2]

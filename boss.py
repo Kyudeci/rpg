@@ -20,3 +20,32 @@ class Boss():
         self.baseSPD = spd
         self.mxp = mxp
         self.giga = False
+    
+    def powered(self):
+        self.giga = True
+        
+    def multiplier(self,type,multi):
+        if type=="f":
+            self.atk*=multi
+            self.matk*=multi
+            self.dfn*=multi
+            self.mdef*=multi
+            self.spd*=multi
+        elif type=="o":
+            self.atk*=multi
+            self.matk*=multi
+        elif type=="d":
+            self.dfn*=multi
+            self.mdef*=multi
+        elif type=="s":
+            self.spd*=multi
+        elif type=="ad":
+            self.atk*=multi
+            self.dfn*=multi
+        elif type=="m":
+            self.matk*=multi
+            self.mdef*=multi
+        elif type=="A":
+            self.atk*=multi
+        elif type=="M":
+            self.matk*=multi
