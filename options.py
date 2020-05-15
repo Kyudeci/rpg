@@ -129,7 +129,7 @@ def understand(Meikahs):
 ####################################################
 # TOWN DE SUCRE NOIR
 ####################################################
-def TSNMenu(player,eFlags):
+def TSNMenu(player, eFlags):
     root = tk.Tk()
     def menu():
         x = var.get()
@@ -140,6 +140,7 @@ def TSNMenu(player,eFlags):
         elif x==2:
             print("A change occurs!")
             eFlags[0].loop+=1
+            rpg.save(player,rpg.Player.playerList)
             root.destroy()
         elif x==3:
             rpg.give_stats(1)
