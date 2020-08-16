@@ -89,80 +89,14 @@ Player1 = Player("Kyu", 100, 54, 24, 56, 57, 61, 1)
 # Monsta1=monster.Monster("WizCat",1,100,100,100,100,100,100,34,256)
 
 
-def save(player, plist):
-    ef.Events().Flags.clear()
-    ef.onStartFlagSet()
-    player = attacker
-    plist = Player.playerList
-    events = ef.Events().Flags
-    with open('savefile.dat', 'wb') as f:
-        pickle.dump([player, plist, events], f, protocol=2)
-    print("\nSave complete!")
 
 
-def load():
-    global attacker
-    ef.Events().Flags.clear()
-    with open('savefile.dat', 'rb') as f:
-        player, plist, events = pickle.load(f)
-        for x in range(1, len(plist)):
-            Player.playerList.append(plist[x])
-        attacker = Player.playerList[1]
-        for y in range(0, len(events)):
-            ef.Events().Flags.append(events[y])
-        monster.enemy()
-        give_stats(1)
-    return True
 
 
-def is_accessible(path, mode='r'):
-    """
-    Check if the file or directory at `path` can
-    be accessed by the program using `mode` open flags.
-    """
-    try:
-        f = open(path, mode)
-        f.close()
-    except IOError:
-        return False
-    return True
 
 
-def give_stats(num):
-    print("\nName:", Player.playerList[num].name,
-          "\nLevel:", Player.playerList[num].lvl)
-    print("HP:", Player.playerList[num].hp,
-          "\nAttack:", Player.playerList[num].atk)
-    print("Defense:", Player.playerList[num].dfn,
-          "\nMagic Attack:", Player.playerList[num].matk)
-    print("Magic Defence:",
-          Player.playerList[num].mdef, "\nSpeed:", Player.playerList[num].spd)
-    print(Player.playerList[num].location)
 
 
-def create_player():
-    name = input("Meikahs: What is your name by chance? => ")
-    if len(name) < 3 and name != 'AI':
-        print("Your name is not up to my standards.")
-        return create_player()
-    atk = random.randint(20, 50)
-    dfn = random.randint(20, 50)
-    matk = random.randint(20, 50)
-    mdef = random.randint(20, 50)
-    spd = random.randint(20, 50)
-    lvl = 1
-    new_player = Player(name, 100, atk, dfn, matk, mdef, spd, lvl)
-    Player.playerList.append(new_player)
-    return name
-
-def gameStart(l_check=False):
-    if l_check == False:
-        sounds.background_music(3)
-        story.start()
-    else:
-        location = Player.playerList[1].location
-        if location in story.locations:
-            story.locations[location]()
 
 ### Testing Below ###
 # gameStart()

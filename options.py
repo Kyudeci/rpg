@@ -5,7 +5,7 @@ import sys
 from time import sleep
 import pickle
 import choice
-import rpg
+# import rpg
 import sounds as snd
 import monster as mn
 import eventFlags as ef

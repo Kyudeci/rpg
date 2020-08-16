@@ -22,8 +22,18 @@ class Player(Inventory):
         self.karma = 0
         self.location = "ForestBisca"
         self.bag = Inventory.bag
-    playerList = []
     Inventory.__init__
+
+    def give_stats(self):
+        print("\nName:", self.name,
+            "\nLevel:", self.lvl)
+        print("HP:", self.hp,
+            "\nAttack:", self.atk)
+        print("Defense:", self.dfn,
+            "\nMagic Attack:", self.matk)
+        print("Magic Defence:",
+            self.mdef, "\nSpeed:", self.spd)
+        print(self.location)
 
     def levelUp(self, xp):
         self.xp += xp
@@ -54,5 +64,4 @@ class Player(Inventory):
 
 
 Origin = Player("Meikahs", 999, 999, 999, 999, 999, 999, 999)
-Player.playerList.append(Origin)
 Player1 = Player("Kyu", 100, 54, 24, 56, 57, 61, 1)

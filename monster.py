@@ -70,7 +70,7 @@ ranks = {
         "hp": random.randint(*[50,56])
     }
 }
-print(ranks)
+# print(ranks)
 def enemy():
     monstertype = ["Gooblins", "Slime", "Cherry Slime", "Dragonne", "Virus",
                    "Jack Squat", "Pixle", "Pixri", "Sphiren", "Sfiren", "Vitaro1", "Vitaro2"]

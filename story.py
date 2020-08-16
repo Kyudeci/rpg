@@ -2,40 +2,45 @@ import pygame
 import sounds
 import sys
 import random as rdm
-import rpg
 import monster as mon
 import eventFlags as ef
 import numpy as np
-from options import *
+# from options import *
 import choice as ch
 from player import Player
 from all_items.inventory import Inventory
 import all_items.item_ as IC
+import mechanics as mech
 
 affirm = ['yes', 'YES', 'Yes', 'y', 'Y', '1']
 deny = ['no', 'NO', 'No', 'n', 'N', '2']
-Meikahs = Player.playerList[0].name
+Meikahs = Player("Meikahs", 999, 999, 999, 999, 999, 999, 999)
 
+class Story:
+    def __init__(self):
+        self.player = None
+
+protag = Story().player
 
 def start():
     mon.enemy()
     print('\n???: Are you perhaps LOST?')
-    introScene()
+    # introScene()
     pygame.time.wait(1000)
-    playerName = rpg.create_player()
-    CharacterText(ch.meikahsJoke)
-    playerName = nameChange(playerName)
+    protag = mech.create_player()
+    # CharacterText(ch.meikahsJoke)
+    # playerName = nameChange(playerName)
     pygame.time.wait(1800)
-    print(Meikahs+": Oh! That reminds me, I have something for you.")
+    print(Meikahs.name+": Oh! That reminds me, I have something for you.")
     Inventory.inventory[0].get_item(1)
     # Player.playerList[1].dev_check_inventory()
     pygame.time.wait(1800)
-    rpg.give_stats(1)
+    protag.give_stats()
     pygame.time.wait(2000)
-    print('\n'+Meikahs+": Yes, these are your Specific but Telling Attributes of Tactical Strength or STATS for short!")
+    print('\n'+ Meikahs.name +": Yes, these are your Specific but Telling Attributes of Tactical Strength or STATS for short!")
     input("> Press Enter To Continue <")
     pygame.time.wait(1800)
-    ForestBisca()
+    # ForestBisca()
 
 
 def ForestBisca():
@@ -59,29 +64,26 @@ def ForestBisca():
             continue
     enemy = mon.rank1Assign()
     defender = mon.Monster.Rank1[enemy]
-    attacker = Player.playerList[1]
-    combat(attacker, defender)
+    # combat(protag, defender)
     input("You come to a fork in the path.\n>")
-    if Player.playerList[1].karma >= 0:
+    if protag.karma >= 0:
         print("Instinctively, you take the path to the left!\n")
         defender = mon.Monster.Rank1[enemy]
-        combat(attacker, defender)
+        # combat(protag, defender)
         TownSucreNoir()
     else:
         print("Following your instincts, you take the right path!\n")
         enemy = mon.rank1Assign()
         defender = mon.Monster.Rank1[enemy]
-        combat(attacker, defender)
+        # combat(protag, defender)
         print("\nThe forest roars!")
         enemy = mon.rank1Assign()
         defender = mon.Monster.Rank1[enemy]
-        combat(attacker, defender)
+        # combat(protag, defender)
         TownSucreNoir()
 
 
 def TownSucreNoir():
-    player = Player.playerList[1]
-    playerName = player.name
     eFlags = ef.Events().Flags
     if eFlags[0].loop == 0:
         print("\nA town appears into your view.")
@@ -240,6 +242,6 @@ def basicPuzzle():
 locations = {"TownSucreNoir": TownSucreNoir,
              "GeardegCrestPath": GeardegCrestPath, "GeardegRath": GeardegRath}
 ef.onStartFlagSet()
-mainmenu()
+# mainmenu()
 # basicPuzzle()
 # ForestBisca()
